@@ -1,7 +1,14 @@
-import './bootstrap';
+import 'flowbite';
+import axios from 'axios';
+import alpine from 'alpinejs';
+import { createIcons, icons } from 'lucide';
 
-import Alpine from 'alpinejs';
+window.axios = axios;
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-window.Alpine = Alpine;
+window.Alpine = alpine;
+alpine.start();
 
-Alpine.start();
+createIcons({
+  icons,
+});
