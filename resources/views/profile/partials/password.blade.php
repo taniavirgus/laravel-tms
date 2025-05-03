@@ -1,7 +1,4 @@
-<form method="post" action="{{ route('password.update') }}" class="form">
-  @csrf
-  @method('put')
-
+<div class="form">
   <div>
     <x-ui.label for="update_password_current_password" value="Current Password" />
     <x-ui.input id="update_password_current_password" name="current_password" type="password"
@@ -10,7 +7,7 @@
         <i data-lucide="lock" class="text-base-400 size-5"></i>
       </x-slot:right>
     </x-ui.input>
-    <x-ui.errors :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+    <x-ui.errors :messages="$errors->updatePassword->get('current_password')" />
   </div>
 
   <div>
@@ -20,7 +17,7 @@
         <i data-lucide="lock" class="text-base-400 size-5"></i>
       </x-slot:right>
     </x-ui.input>
-    <x-ui.errors :messages="$errors->updatePassword->get('password')" class="mt-2" />
+    <x-ui.errors :messages="$errors->updatePassword->get('password')" />
   </div>
 
   <div>
@@ -31,15 +28,6 @@
         <i data-lucide="lock" class="text-base-400 size-5"></i>
       </x-slot:right>
     </x-ui.input>
-    <x-ui.errors :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
-
+    <x-ui.errors :messages="$errors->updatePassword->get('password_confirmation')" />
   </div>
-
-  <div class="flex items-center gap-4">
-    <x-ui.button>Save</x-ui.button>
-    @if (session('status') === 'password-updated')
-      <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="text-sm text-base-600">
-        Saved.</p>
-    @endif
-  </div>
-</form>
+</div>

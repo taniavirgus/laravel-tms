@@ -18,6 +18,10 @@
     scrollbar-width: none;
     -ms-overflow-style: none; 
   }
+
+  [x-cloak] {
+    display: none !important;
+  }
 }
 
 @layer components {

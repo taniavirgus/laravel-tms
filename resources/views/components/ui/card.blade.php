@@ -11,7 +11,7 @@
 
   $props->header = $header?->attributes->class([
       'flex flex-col items-start justify-start',
-      'px-8 py-5 border-b bg-zinc-100 border-base-200',
+      'px-8 py-5 border-b bg-zinc-100 border-base-200 font-medium',
   ]);
 
   $props->footer = $footer?->attributes->class([
