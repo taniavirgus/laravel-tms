@@ -2,6 +2,7 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 import flowbite from 'flowbite/plugin';
 import colors from 'tailwindcss/colors';
+import plugin from "tailwindcss/plugin"
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -21,10 +22,17 @@ export default {
         sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        primary: colors.indigo
+        base: colors.zinc,
+        primary: colors.blue
       }
     },
   },
 
-  plugins: [forms, flowbite],
+  plugins: [
+    forms,
+    flowbite,
+    plugin(({ addVariant }) => {
+      addVariant("both", ["&:focus", "&:hover"])
+    })
+  ],
 };

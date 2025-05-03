@@ -1,30 +1,28 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<x-head />
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+<body class="font-sans antialiased">
+  <div class="grid xl:grid-cols-3">
+    <div class="relative items-center hidden col-span-2 xl:grid bg-gradient-to-t from-primary-900 to-primary-600">
+      <div class="relative flex flex-col w-full max-w-4xl gap-2 mx-auto text-white">
+        <h1 class="text-5xl font-bold">PT <span class="text-yellow-400">MNC</span> Tbk.</h1>
+        <span class="text-2xl"> Talent Management System</span>
+      </div>
+    </div>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+    <div class="relative grid items-center h-screen overflow-y-auto">
+      <div class="absolute top-0 right-0 p-10">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-32" />
+      </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
-            </div>
-        </div>
-    </body>
+      <div class="container grid max-w-lg gap-6">
+        <x-ui.alert variant="success" status="{{ session('success') }}" />
+        {{ $slot }}
+      </div>
+    </div>
+  </div>
+</body>
+
 </html>

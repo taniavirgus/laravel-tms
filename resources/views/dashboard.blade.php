@@ -1,17 +1,12 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<x-dashboard-layout>
+  <x-dashboard.heading>
+    <x-slot:title>Dashboard</x-slot:title>
+    <x-slot:description>Welcome to the dashboard</x-slot:description>
+  </x-dashboard.heading>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+  <div class="grid grid-cols-3 gap-6">
+    @foreach (range(1, 20) as $i)
+      <div class="border rounded-lg bg-base-50 aspect-video border-base-200"></div>
+    @endforeach
+  </div>
+</x-dashboard-layout>

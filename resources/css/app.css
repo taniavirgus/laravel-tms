@@ -4,6 +4,28 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --font-sans: 'Inter', sans-serif;
+
+@layer base {
+  :root {
+    --font-sans: 'Inter', sans-serif;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none; 
+  }
+}
+
+@layer components {
+  .form {
+    @apply grid gap-4;
+  }
+  
+  .field {
+    @apply grid gap-1;
+  }
 }
