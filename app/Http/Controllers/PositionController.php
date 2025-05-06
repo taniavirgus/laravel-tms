@@ -30,11 +30,15 @@ class PositionController extends Controller
     $search = $request->input('search');
 
     $positions = Position::query()
+      ->withCount('employees')
       ->when($search, function ($q) use ($search) {
         $q->where('name', 'like', '%' . $search . '%')
           ->orWhere('description', 'like', '%' . $search . '%');
       })
-      ->paginate(5);
+      ->with(['employees' => function ($query) {
+        $query->select('id', 'name', 'position_id')->limit(3);
+      }])
+      ->paginate(10);
 
     return view('dashboard.positions.index', [
       'positions' => $positions

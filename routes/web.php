@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -21,6 +22,7 @@ Route::middleware('auth', 'role:sysadmin')
     Route::resource('users', UserController::class)->except('show');
     Route::resource('positions', PositionController::class)->except('show');
     Route::resource('departments', DepartmentController::class)->except('show');
+    Route::resource('employees', EmployeeController::class)->except('show');
   });
 
 require __DIR__ . '/auth.php';

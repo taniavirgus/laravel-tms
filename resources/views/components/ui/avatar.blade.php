@@ -4,9 +4,8 @@
 ])
 
 @php
-  $avatar = 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&color=FFFFFF&background=3b82f6&size=128';
-
-  $props = $attributes->class(['rounded-full overflow-hidden'])->merge([
+  $avatar = 'https://i.pravatar.cc/150?u=' . urlencode($name);
+  $props = $attributes->class(['rounded-full overflow-hidden flex-none'])->merge([
       'alt' => $alt,
       'src' => $avatar,
       'class' => 'size-9',

@@ -40,6 +40,7 @@
 
     <x-slot:head>
       <th>No</th>
+      <th>Employees</th>
       <th>Position Name</th>
       <th>Level</th>
       <th>Description</th>
@@ -50,15 +51,18 @@
       @forelse ($positions as $position)
         <tr>
           <td class="w-10">{{ $position->id }}</td>
+          <td>
+            <x-avatar-list :count="$position->employees_count" :names="$position->employees->pluck('name')" />
+          </td>
           <td>{{ $position->name }}</td>
           <td>
             <div class="flex">
               @php
                 $color = $position->level->color();
-                $class = 'border border-' . $color . '-500';
+                $class = 'text-white bg-' . $color . '-500';
               @endphp
 
-              <span class="flex gap-2 px-3 py-1 text-xs font-medium rounded-full {{ $class }}">
+              <span class="px-3 py-1 text-xs font-medium rounded-full {{ $class }}">
                 {{ $position->level->label() }}
               </span>
             </div>
@@ -75,7 +79,7 @@
           </td>
         </tr>
       @empty
-        <x-ui.empty colspan="5" />
+        <x-ui.empty colspan="6" />
       @endforelse
     </x-slot:body>
   </x-ui.table>

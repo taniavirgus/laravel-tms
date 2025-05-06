@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\LevelType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Position extends Model
 {
@@ -30,5 +31,15 @@ class Position extends Model
       'requirements' => 'array',
       'level' => LevelType::class,
     ];
+  }
+
+  /**
+   * Relationship with between model and other model.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function employees(): HasMany
+  {
+    return $this->hasMany(Employee::class);
   }
 }

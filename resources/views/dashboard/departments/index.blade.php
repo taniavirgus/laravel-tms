@@ -40,15 +40,19 @@
 
     <x-slot:head>
       <th>No</th>
+      <th>Employees</th>
       <th>Department Name</th>
       <th>Description</th>
       <th>Actions</th>
     </x-slot:head>
 
     <x-slot:body>
-      @foreach ($departments as $department)
+      @forelse ($departments as $department)
         <tr>
           <td class="w-10">{{ $department->id }}</td>
+          <td>
+            <x-avatar-list :count="$department->employees_count" :names="$department->employees->pluck('name')" />
+          </td>
           <td>{{ $department->name }}</td>
           <td>
             <p class="truncate">
@@ -61,7 +65,9 @@
             </a>
           </td>
         </tr>
-      @endforeach
+      @empty
+        <x-ui.empty colspan="5" />
+      @endforelse
     </x-slot:body>
   </x-ui.table>
 

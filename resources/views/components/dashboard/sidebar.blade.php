@@ -57,14 +57,14 @@
           'label' => 'Employee',
           'menus' => [
               [
-                  'href' => route('dashboard'),
-                  'active' => request()->routeIs('dashboard'),
+                  'href' => route('sysadmin.employees.index'),
+                  'active' => request()->routeIs('sysadmin.employees.index'),
                   'name' => 'Employee List',
                   'icon' => 'users',
               ],
               [
-                  'href' => '#',
-                  'active' => false,
+                  'href' => route('sysadmin.employees.create'),
+                  'active' => request()->routeIs('sysadmin.employees.create'),
                   'name' => 'Add Employee',
                   'icon' => 'user-plus',
               ],

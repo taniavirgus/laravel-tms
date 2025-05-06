@@ -2,18 +2,17 @@
 <div class="grid-cols-2 form">
   <div class="field">
     <x-ui.label for="name" value="Position Name" />
-    <x-ui.input id="name" name="name" type="text" class="block w-full mt-1" :value="$position->name ?? old('name')" required
+    <x-ui.input id="name" name="name" type="text" value="{{ $position->name ?? old('name') }}" required
       autofocus />
     <x-ui.errors :messages="$errors->get('name')" />
   </div>
 
   <div class="field">
     <x-ui.label for="level" value="Position Level" />
-    <x-ui.select id="level" name="level" class="block w-full mt-1">
+    <x-ui.select id="level" name="level">
       <option value="">Select level</option>
       @foreach ($levels as $level)
-        <option value="{{ $level->value }}"
-          {{ (isset($position) && $position->level === $level) || old('level') == $level->value ? 'selected' : '' }}>
+        <option value="{{ $level->value }}" @selected((isset($position) && $position->level === $level) || old('level') == $level->value)>
           {{ $level->label() }}
         </option>
       @endforeach
@@ -23,7 +22,7 @@
 
   <div class="field col-span-full">
     <x-ui.label for="description" value="Description" />
-    <x-ui.textarea id="description" name="description" class="block w-full mt-1"
+    <x-ui.textarea id="description" name="description"
       rows="4">{{ $position->description ?? old('description') }}</x-ui.textarea>
     <x-ui.errors :messages="$errors->get('description')" />
   </div>
@@ -45,6 +44,7 @@
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
+
               <span class="sr-only">Remove</span>
             </x-ui.button>
           </div>

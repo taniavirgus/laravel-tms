@@ -29,11 +29,16 @@ class DepartmentController extends Controller
     $search = $request->input('search');
 
     $departments = Department::query()
+      ->withCount('employees')
       ->when($search, function ($q) use ($search) {
         $q->where('name', 'like', '%' . $search . '%')
           ->orWhere('description', 'like', '%' . $search . '%');
       })
+      ->with(['employees' => function ($query) {
+        $query->select('id', 'name', 'department_id')->limit(3);
+      }])
       ->paginate(10);
+
 
     return view('dashboard.departments.index', [
       'departments' => $departments

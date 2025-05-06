@@ -26,6 +26,5 @@
         <i data-lucide="arrow-up-right" class="size-5"></i>
       </x-ui.button>
     </x-slot:footer>
-    </x-slot:footer>
   </x-ui.card>
 </x-dashboard-layout>
