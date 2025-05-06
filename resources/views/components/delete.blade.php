@@ -4,26 +4,20 @@
     'route' => null,
 ])
 
-<button x-data
-  x-on:click.prevent="
-  $dispatch('open-modal', 'confirm-deletion');
-  $dispatch('set-delete-data', {
-    id: {{ $id }},
-    title: '{{ $title }}',
-    route: '{{ $route }}'
-  });
-"
-  class="text-red-600">
-  Delete
-</button>
+<div x-data>
+  <button
+    x-on:click="$dispatch('trigger', { 
+      id: @js($id),
+      title: @js($title),
+      route: @js($route)
+  })"
+    class="text-red-600">
+    Delete
+  </button>
+</div>
 
 @once
-  <div x-data="{ id: null, title: null, route: null }"
-    x-on:set-delete-data.window="
-  id = $event.detail.id;
-  title = $event.detail.title;
-  route = $event.detail.route;
-">
+  <div x-data="confirmation" x-on:trigger.window="open($event.detail.id, $event.detail.title, $event.detail.route)">
     <x-modal name="confirm-deletion" focusable>
       <x-ui.card as="form" method="POST" x-bind:action="route">
         @csrf
@@ -35,14 +29,13 @@
           </h5>
         </x-slot:header>
 
-        <div class="form">
-          <p class="mt-2 text-sm text-zinc-600">
-            This action cannot be undone. All of the data will be permanently removed.
-          </p>
-        </div>
+        <p class="text-zinc-600 text-wrap">
+          Be careful! This action cannot be undone. All of the data will be permanently removed,
+          including all related data, make sure you have a backup of the data before proceeding.
+        </p>
 
         <x-slot:footer>
-          <x-ui.button variant="secondary" type="button" x-on:click="$dispatch('close')">
+          <x-ui.button variant="secondary" type="button" x-on:click="$dispatch('close-modal', 'confirm-deletion')">
             Cancel
           </x-ui.button>
 
@@ -54,4 +47,21 @@
     </x-modal>
   </div>
 
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('confirmation', () => ({
+        id: null,
+        title: null,
+        route: null,
+
+        open(id, title, route) {
+          console.log("Opening modal:", id, title, route);
+          this.id = id;
+          this.title = title;
+          this.route = route;
+          this.$dispatch('open-modal', 'confirm-deletion');
+        },
+      }));
+    });
+  </script>
 @endonce

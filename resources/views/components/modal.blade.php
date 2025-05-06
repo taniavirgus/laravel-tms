@@ -1,17 +1,11 @@
 @props([
     'show' => false,
     'name' => 'modal',
-    'width' => 'xl',
 ])
 
 @php
-  $props = $attributes->class([
-      'sm:max-w-sm' => $width == 'sm',
-      'sm:max-w-md' => $width == 'md',
-      'sm:max-w-lg' => $width == 'lg',
-      'sm:max-w-xl' => $width == 'xl',
-      'sm:max-w-2xl' => $width == '2xl',
-      'bg-white rounded-xl overflow-hidden w-full mx-auto z-50',
+  $props = $attributes->merge([
+      'class' => 'relative bg-white overflow-hidden max-w-xl rounded-xl mx-auto z-50',
   ]);
 @endphp
 

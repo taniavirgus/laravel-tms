@@ -16,7 +16,7 @@
 
     <x-slot:footer class="justify-end">
       <a href="{{ route('sysadmin.employees.index') }}">
-        <x-ui.button variant="outline">
+        <x-ui.button variant="outline" type="button">
           <span>Cancel</span>
         </x-ui.button>
       </a>

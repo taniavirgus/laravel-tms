@@ -6,8 +6,8 @@
 ])
 
 @php
-  $props = $attributes->class(['relative overflow-hidden', 'bg-white border rounded-xl border-base-200'])->merge([
-      'class' => '',
+  $props = $attributes->class(['bg-white border rounded-xl border-base-200'])->merge([
+      'class' => 'w-full',
   ]);
 
   $props->header = $header?->attributes->class(['px-8 py-5 border-b bg-base-100 border-base-200 font-medium'])->merge([
