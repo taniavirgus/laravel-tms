@@ -46,7 +46,7 @@
 
       @include('profile.partials.delete')
 
-      <x-slot:footer>
+      <x-slot:footer class="justify-end">
         <x-ui.button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
           variant="destructive">
           Delete Account

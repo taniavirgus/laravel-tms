@@ -22,6 +22,58 @@
   [x-cloak] {
     display: none !important;
   }
+
+  table {
+    @apply w-full text-sm caption-bottom;
+
+    & tr {
+      @apply border-b transition-colors hover:bg-zinc-100;
+    }
+
+    & th {
+      @apply p-4 whitespace-nowrap text-left align-middle font-semibold;
+    }
+
+    & td {
+      @apply truncate p-4 max-w-80 align-middle;
+    }
+
+    & th:first-child,
+    & td:first-child {
+      @apply pl-8;
+    }
+
+    & th:last-child,
+    & td:last-child {
+      @apply pr-8;
+    }
+
+    & caption {
+      @apply mt-4 text-sm text-zinc-200;
+    }
+
+    & thead {
+      @apply bg-zinc-100;
+
+      & tr {
+        @apply border-b;
+      }
+    }
+
+    & tbody {
+      & tr:last-child {
+        @apply border-0;
+      }
+    }
+
+    & tfoot {
+      @apply border-t bg-zinc-200/50 font-medium;
+
+      & tr:last {
+        @apply border-b-0;
+      }
+    }
+  }
 }
 
 @layer components {

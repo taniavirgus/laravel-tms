@@ -7,8 +7,8 @@
 @php
   $props = $attributes
       ->class([
-          'size-10' => $size === 'icon',
-          'px-8 p-3' => $size === 'default',
+          'size-icon' => $size === 'icon',
+          'px-6 p-3' => $size === 'default',
           'flex-none flex items-center justify-center gap-2',
           'disabled:opacity-70 disabled:cursor-not-allowed' => $disabled,
           'border-transparent text-white bg-primary-500 both:bg-primary-600' => $variant === 'primary',

@@ -17,7 +17,7 @@
       ]);
 @endphp
 
-<div class="relative w-full">
+<div class="relative">
   @isset($left)
     <div class="absolute -translate-y-1/2 top-1/2 left-4">
       {{ $left }}
@@ -30,5 +30,7 @@
     </div>
   @endisset
 
-  <input {{ $props }} />
+  <select {{ $props }}>
+    {{ $slot }}
+  </select>
 </div>

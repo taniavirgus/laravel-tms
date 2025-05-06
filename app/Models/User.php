@@ -49,4 +49,15 @@ class User extends Authenticatable
       'role' => RoleType::class,
     ];
   }
+
+  /**
+   * Check if user has permission to view dashboard menus.
+   * 
+   * @params string $menu
+   * @return bool
+   */
+  public function permitted(string $menu): bool
+  {
+    return $this->role->permitted($menu);
+  }
 }

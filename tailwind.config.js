@@ -6,10 +6,16 @@ import plugin from "tailwindcss/plugin"
 
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: null,
   content: [
     './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     './storage/framework/views/*.php',
     './resources/views/**/*.blade.php',
+  ],
+  safelist: [
+    {
+      pattern: /(bg|border|text)-(red|green|yellow)-(500)/,
+    },
   ],
 
   theme: {
@@ -24,6 +30,9 @@ export default {
       colors: {
         base: colors.zinc,
         primary: colors.blue
+      },
+      spacing: {
+        'icon': '46px',
       }
     },
   },

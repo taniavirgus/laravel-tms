@@ -17,6 +17,43 @@
 
   $navigations = array_to_object([
       [
+          'id' => 'departments',
+          'label' => 'Departments',
+          'menus' => [
+              [
+                  'href' => route('sysadmin.departments.index'),
+                  'active' => request()->routeIs('sysadmin.departments.index'),
+                  'name' => 'Department List',
+                  'icon' => 'house',
+              ],
+              [
+                  'href' => route('sysadmin.departments.create'),
+                  'active' => request()->routeIs('sysadmin.departments.create'),
+                  'name' => 'Add Department',
+                  'icon' => 'plus',
+              ],
+          ],
+      ],
+      [
+          'id' => 'positions',
+          'label' => 'Positions',
+          'menus' => [
+              [
+                  'href' => route('sysadmin.positions.index'),
+                  'active' => request()->routeIs('sysadmin.positions.index'),
+                  'name' => 'Position List',
+                  'icon' => 'briefcase',
+              ],
+              [
+                  'href' => route('sysadmin.positions.create'),
+                  'active' => request()->routeIs('sysadmin.positions.create'),
+                  'name' => 'Add Position',
+                  'icon' => 'plus',
+              ],
+          ],
+      ],
+      [
+          'id' => 'employees',
           'label' => 'Employee',
           'menus' => [
               [
@@ -34,7 +71,8 @@
           ],
       ],
       [
-          'label' => 'Benchmark',
+          'id' => 'evaluations',
+          'label' => 'Evaluation',
           'menus' => [
               [
                   'href' => '#',
@@ -63,6 +101,7 @@
           ],
       ],
       [
+          'id' => 'trainings',
           'label' => 'Training',
           'menus' => [
               [
@@ -81,6 +120,7 @@
           ],
       ],
       [
+          'id' => 'developments',
           'label' => 'Talent Pool',
           'menus' => [
               [
@@ -99,6 +139,7 @@
           ],
       ],
       [
+          'id' => 'account',
           'label' => 'Account',
           'menus' => [
               [
@@ -133,6 +174,8 @@
     </div>
 
     @foreach ($navigations as $navigation)
+      @continue(Auth::user()->permitted($navigation->id) === false)
+
       <div class="grid gap-2">
         <h3 class="px-6 text-sm font-medium text-base-400">{{ $navigation->label }}</h3>
         <ul>
