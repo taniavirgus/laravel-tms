@@ -1,13 +1,17 @@
-<x-ui.button type="button" data-dropdown-toggle="notification-dropdown" variant="ghost" size="icon">
+<x-ui.button variant="ghost" size="icon" aria-expanded="false" data-dropdown-toggle="notification"
+  data-dropdown-placement="bottom-start">
   <span class="sr-only">View notifications</span>
   <i data-lucide="bell" class="size-5"></i>
 </x-ui.button>
 
-<div class="z-50 hidden max-w-sm my-4 overflow-hidden text-base list-none bg-white divide-y divide-base-100 rounded-xl"
-  id="notification-dropdown">
-  <div class="block px-4 py-2 text-base font-medium text-center text-base-700 bg-base-50">
-    Notifications
+<div id="notification"
+  class="z-50 hidden overflow-hidden bg-white border divide-y w-96 divide-base-200 rounded-xl border-base-200 text-base-700">
+
+  <div class="px-4 py-3 text-sm">
+    <span class="block font-semibold text-base-900">Notifications</span>
+    <span class="block truncate">You have no unread notifications.</span>
   </div>
+
   <div>
     <a href="#" class="flex px-4 py-3 border-b hover:bg-base-100">
       <div class="flex-shrink-0">

@@ -44,7 +44,7 @@
         <h5>Delete Account</h5>
       </x-slot:header>
 
-      @include('profile.partials.delete-user-form')
+      @include('profile.partials.delete')
 
       <x-slot:footer>
         <x-ui.button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"

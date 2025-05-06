@@ -18,7 +18,11 @@
       </div>
 
       <div class="container grid max-w-lg gap-6">
+        <x-ui.alert variant="info" status="{{ session('info') }}" />
         <x-ui.alert variant="success" status="{{ session('success') }}" />
+        <x-ui.alert variant="warning" status="{{ session('warning') }}" />
+        <x-ui.alert variant="error" status="{{ session('error') }}" />
+
         {{ $slot }}
       </div>
     </div>

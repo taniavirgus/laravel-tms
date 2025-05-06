@@ -7,9 +7,9 @@
           <i data-lucide="menu" class="size-5"></i>
           <span class="sr-only">Toggle sidebar</span>
         </x-ui.button>
-
         <span>Dashboard</span>
       </div>
+
       <div class="flex items-center gap-2">
         <x-dashboard.notification />
         <x-dashboard.profile />
