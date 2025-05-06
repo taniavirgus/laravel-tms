@@ -60,9 +60,13 @@
             </p>
           </td>
           <td>
-            <a href="{{ route('sysadmin.departments.edit', $department) }}" class="text-primary-500">
-              Edit
-            </a>
+            <div class="flex items-center gap-4">
+              <a href="{{ route('sysadmin.departments.edit', $department) }}" class="text-primary-500">
+                Edit
+              </a>
+              <x-delete id="{{ $department->id }}" title="{{ $department->name }}"
+                route="{{ route('sysadmin.departments.destroy', $department) }}" />
+            </div>
           </td>
         </tr>
       @empty

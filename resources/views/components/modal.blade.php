@@ -11,7 +11,7 @@
       'sm:max-w-lg' => $width == 'lg',
       'sm:max-w-xl' => $width == 'xl',
       'sm:max-w-2xl' => $width == '2xl',
-      'bg-white rounded-xl overflow-hidden w-full mx-auto',
+      'bg-white rounded-xl overflow-hidden w-full mx-auto z-50',
   ]);
 @endphp
 

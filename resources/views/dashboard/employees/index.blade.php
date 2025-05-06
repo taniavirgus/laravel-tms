@@ -93,9 +93,13 @@
           </td>
           <td>{{ $employee->position->name }}</td>
           <td>
-            <a href="{{ route('sysadmin.employees.edit', $employee) }}" class="text-primary-500">
-              Edit
-            </a>
+            <div class="flex items-center gap-4">
+              <a href="{{ route('sysadmin.employees.edit', $employee) }}" class="text-primary-500">
+                Edit
+              </a>
+              <x-delete id="{{ $employee->id }}" title="{{ $employee->name }}"
+                route="{{ route('sysadmin.employees.destroy', $employee) }}" />
+            </div>
           </td>
         </tr>
       @empty
