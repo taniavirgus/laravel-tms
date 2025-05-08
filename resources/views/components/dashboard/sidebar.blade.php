@@ -214,28 +214,18 @@
   </div>
 
   <div class="absolute bottom-0 left-0 z-20 w-full bg-white border-t border-base-200">
-    <div class="items-center hidden h-16 gap-4 px-6 item-center lg:flex">
-      <a href="#" data-tooltip-target="settings">
-        <i data-lucide="settings" class="size-5"></i>
+    <div class="items-center hidden h-16 gap-2 px-6 item-center lg:flex">
+      <a href="#">
+        <x-ui.button size="icon" variant="ghost" tooltip="Settings page" class="rounded-full size-8">
+          <i data-lucide="settings" class="size-5"></i>
+        </x-ui.button>
       </a>
 
-      <a href="#" data-tooltip-target="help">
-        <i data-lucide="help-circle" class="size-5"></i>
+      <a href="#">
+        <x-ui.button size="icon" variant="ghost" tooltip="Help page" class="rounded-full size-8">
+          <i data-lucide="help-circle" class="size-5"></i>
+        </x-ui.button>
       </a>
-
-      <div id="settings" role="tooltip" class="absolute z-10 invisible opacity-0 tooltip">
-        <div class="px-3 py-2 text-sm font-medium text-white rounded-lg whitespace-nowrap bg-base-900">
-          <span>Settings page</span>
-          <div class="tooltip-arrow" data-popper-arrow></div>
-        </div>
-      </div>
-
-      <div id="help" role="tooltip" class="absolute z-10 invisible opacity-0 tooltip">
-        <div class="px-3 py-2 text-sm font-medium text-white rounded-lg whitespace-nowrap bg-base-900">
-          <span>Help page</span>
-          <div class="tooltip-arrow" data-popper-arrow></div>
-        </div>
-      </div>
     </div>
   </div>
 </aside>

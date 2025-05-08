@@ -27,26 +27,27 @@
     <x-ui.errors :messages="$errors->get('description')" />
   </div>
 
-  <div x-data="multiple()" class="flex flex-col items-start gap-6 col-span-full">
+  <div x-data="multiple()" class="flex flex-col items-start gap-4 col-span-full">
     <div class="w-full field">
       <x-ui.label for="requirements" value="Requirements" />
 
-      <div class="grid gap-4 xl:grid-cols-2">
+      <div class="grid gap-4 xl:grid-cols-2" x-show="requirements.length > 0">
         <template x-for="(req, index) in requirements" x-bind:key="index">
           <div class="flex items-center w-full gap-2">
             <x-ui.input x-model="requirements[index]" x-bind:name="'requirements[' + index + ']'"
-              placeholder="Enter requirement" />
-
-            <x-ui.button type="button" size="icon" variant="secondary" x-on:click="remove(index)">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-x">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-
-              <span class="sr-only">Remove</span>
-            </x-ui.button>
+              placeholder="Enter requirement">
+              <x-slot:right>
+                <button type="button" x-on:click="remove(index)" class="block text-base-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="fill-current lucide lucide-x">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  <span class="sr-only">Remove</span>
+                </button>
+              </x-slot:right>
+            </x-ui.input>
           </div>
         </template>
       </div>

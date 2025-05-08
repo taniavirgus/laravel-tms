@@ -8,8 +8,10 @@
   ]);
 @endphp
 
-<div {{ $props }}>
-  @foreach ($messages as $message)
-    <p>{{ $message }}</p>
-  @endforeach
-</div>
+@if ($messages && count($messages) > 0)
+  <div {{ $props }}>
+    @foreach ($messages as $message)
+      <p>{{ $message }}</p>
+    @endforeach
+  </div>
+@endif

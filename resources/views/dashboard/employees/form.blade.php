@@ -52,27 +52,41 @@
 
   <div class="field">
     <x-ui.label for="department_id" value="Department" />
-    <x-ui.select id="department_id" name="department_id">
-      <option value="">Select Department</option>
-      @foreach ($departments as $department)
-        <option value="{{ $department->id }}" @selected((isset($employee) && $employee->department_id == $department->id) || old('department_id') == $department->id)>
-          {{ $department->name }}
-        </option>
-      @endforeach
-    </x-ui.select>
+    <div class="flex items-center gap-2">
+      <x-ui.select id="department_id" name="department_id" class="w-full">
+        <option value="">Select Department</option>
+        @foreach ($departments as $department)
+          <option value="{{ $department->id }}" @selected((isset($employee) && $employee->department_id == $department->id) || old('department_id') == $department->id)>
+            {{ $department->name }}
+          </option>
+        @endforeach
+      </x-ui.select>
+      <a href="{{ route('sysadmin.departments.create') }}">
+        <x-ui.button size="icon" type="button" tooltip="Add Department">
+          <i data-lucide="plus" class="size-5"></i>
+        </x-ui.button>
+      </a>
+    </div>
     <x-ui.errors :messages="$errors->get('department_id')" />
   </div>
 
   <div class="field">
     <x-ui.label for="position_id" value="Position" />
-    <x-ui.select id="position_id" name="position_id">
-      <option value="">Select Position</option>
-      @foreach ($positions as $position)
-        <option value="{{ $position->id }}" @selected((isset($employee) && $employee->position_id == $position->id) || old('position_id') == $position->id)>
-          {{ $position->name }}
-        </option>
-      @endforeach
-    </x-ui.select>
+    <div class="flex items-center gap-2">
+      <x-ui.select id="position_id" name="position_id" class="w-full">
+        <option value="">Select Position</option>
+        @foreach ($positions as $position)
+          <option value="{{ $position->id }}" @selected((isset($employee) && $employee->position_id == $position->id) || old('position_id') == $position->id)>
+            {{ $position->name }}
+          </option>
+        @endforeach
+      </x-ui.select>
+      <a href="{{ route('sysadmin.positions.create') }}">
+        <x-ui.button size="icon" type="button" tooltip="Add Position">
+          <i data-lucide="plus" class="size-5"></i>
+        </x-ui.button>
+      </a>
+    </div>
     <x-ui.errors :messages="$errors->get('position_id')" />
   </div>
 

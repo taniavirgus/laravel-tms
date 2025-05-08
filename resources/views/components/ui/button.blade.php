@@ -1,7 +1,10 @@
 @props([
+    'id' => uniqid(),
     'size' => 'default',
     'disabled' => false,
+    'placement' => 'top',
     'variant' => 'primary',
+    'tooltip' => 'Tooltip',
 ])
 
 @php
@@ -20,6 +23,8 @@
       ->merge([
           'type' => 'submit',
           'disabled' => $disabled,
+          'data-tooltip-target' => $id,
+          'data-tooltip-placement' => $placement,
           'class' => 'rounded-lg text-sm font-medium focus:outline-none border',
       ]);
 @endphp
@@ -27,3 +32,11 @@
 <button {{ $props }}>
   {{ $slot }}
 </button>
+
+@if ($size === 'icon')
+  <div id="{{ $id }}" role="tooltip"
+    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+    {{ $tooltip }}
+    <div class="tooltip-arrow" data-popper-arrow></div>
+  </div>
+@endif
