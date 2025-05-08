@@ -40,7 +40,7 @@
 
   <div class="px-4 py-3 text-sm">
     <span class="block font-semibold text-base-900">{{ Auth::user()->name }}</span>
-    <span class="block truncate text-base-700">{{ Auth::user()->role->label() }}</span>
+    <span class="block truncate text-base-500">{{ Auth::user()->role->label() }}</span>
   </div>
 
   <ul class="text-sm list-none">
