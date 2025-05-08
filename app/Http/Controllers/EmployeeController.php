@@ -47,7 +47,7 @@ class EmployeeController extends Controller
       ->when($department_id, function ($q) use ($department_id) {
         $q->where('department_id', $department_id);
       })
-      ->paginate(10);
+      ->paginate(5);
 
     return view('dashboard.employees.index', [
       'employees' => $employees,
@@ -79,7 +79,7 @@ class EmployeeController extends Controller
     $employee = Employee::create($validated);
 
     return redirect()
-      ->route('sysadmin.employees.index')
+      ->route('employees.index')
       ->with('success', 'Employee created successfully!');
   }
 
@@ -107,7 +107,7 @@ class EmployeeController extends Controller
     $employee->update($validated);
 
     return redirect()
-      ->route('sysadmin.employees.index', $employee)
+      ->route('employees.index', $employee)
       ->with('success', 'Employee updated successfully!');
   }
 
@@ -119,7 +119,7 @@ class EmployeeController extends Controller
     $employee->delete();
 
     return redirect()
-      ->route('sysadmin.employees.index')
+      ->route('employees.index')
       ->with('success', 'Employee deleted successfully!');
   }
 }

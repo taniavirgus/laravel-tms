@@ -10,6 +10,15 @@ use Illuminate\Auth\Access\Response;
 class EmployeePolicy
 {
   /**
+   * List of allowed roles for the employee policy.
+   * @var array
+   */
+  private array $allowed = [
+    RoleType::SYSADMIN,
+    RoleType::PD,
+  ];
+
+  /**
    * Determine whether the user can view any models.
    */
   public function viewAny(User $user): bool
@@ -30,7 +39,7 @@ class EmployeePolicy
    */
   public function create(User $user): bool
   {
-    return $user->role === RoleType::SYSADMIN;
+    return in_array($user->role, $this->allowed);
   }
 
   /**
@@ -38,7 +47,7 @@ class EmployeePolicy
    */
   public function update(User $user, Employee $employee): bool
   {
-    return $user->role === RoleType::SYSADMIN;
+    return in_array($user->role, $this->allowed);
   }
 
   /**
@@ -46,7 +55,7 @@ class EmployeePolicy
    */
   public function delete(User $user, Employee $employee): bool
   {
-    return $user->role === RoleType::SYSADMIN;
+    return in_array($user->role, $this->allowed);
   }
 
   /**

@@ -38,7 +38,7 @@ class PositionController extends Controller
       ->with(['employees' => function ($query) {
         $query->select('id', 'name', 'position_id')->limit(3);
       }])
-      ->paginate(10);
+      ->paginate(5);
 
     return view('dashboard.positions.index', [
       'positions' => $positions
@@ -64,7 +64,7 @@ class PositionController extends Controller
     $position = Position::create($validated);
 
     return redirect()
-      ->route('sysadmin.positions.index')
+      ->route('positions.index')
       ->with('success', 'Position created successfully.');
   }
 
@@ -88,7 +88,7 @@ class PositionController extends Controller
     $position->update($validated);
 
     return redirect()
-      ->route('sysadmin.positions.index', $position)
+      ->route('positions.index', $position)
       ->with('success', 'Position updated successfully.');
   }
 
@@ -100,7 +100,7 @@ class PositionController extends Controller
     $position->delete();
 
     return redirect()
-      ->route('sysadmin.positions.index')
+      ->route('positions.index')
       ->with('success', 'Position deleted successfully.');
   }
 }

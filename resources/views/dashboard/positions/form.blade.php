@@ -57,7 +57,7 @@
     </div>
 
     <x-ui.button type="button" x-on:click="append()">
-      <i data-lucide="plus-circle" class="size-4"></i>
+      <i data-lucide="plus" class="size-5"></i>
       <span>Add Requirement</span>
     </x-ui.button>
   </div>

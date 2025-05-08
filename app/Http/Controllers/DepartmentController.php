@@ -37,7 +37,7 @@ class DepartmentController extends Controller
       ->with(['employees' => function ($query) {
         $query->select('id', 'name', 'department_id')->limit(3);
       }])
-      ->paginate(10);
+      ->paginate(5);
 
 
     return view('dashboard.departments.index', [
@@ -64,7 +64,7 @@ class DepartmentController extends Controller
     $department = Department::create($validated);
 
     return redirect()
-      ->route('sysadmin.departments.index')
+      ->route('departments.index')
       ->with('success', 'Department created successfully.');
   }
 
@@ -87,7 +87,7 @@ class DepartmentController extends Controller
     $department->update($validated);
 
     return redirect()
-      ->route('sysadmin.departments.index', $department)
+      ->route('departments.index', $department)
       ->with('success', 'Department updated successfully.');
   }
 
@@ -99,7 +99,7 @@ class DepartmentController extends Controller
     $department->delete();
 
     return redirect()
-      ->route('sysadmin.departments.index')
+      ->route('departments.index')
       ->with('success', 'Department deleted successfully.');
   }
 }

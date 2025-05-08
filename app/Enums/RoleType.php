@@ -96,6 +96,7 @@ enum RoleType: string
         return in_array($menu, [
           'account',
           'trainings',
+          'employees',
           'evaluations',
           'developments',
         ]);

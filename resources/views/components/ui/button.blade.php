@@ -2,7 +2,6 @@
     'id' => uniqid(),
     'size' => 'default',
     'disabled' => false,
-    'placement' => 'top',
     'variant' => 'primary',
     'tooltip' => 'Tooltip',
 ])
@@ -24,7 +23,6 @@
           'type' => 'submit',
           'disabled' => $disabled,
           'data-tooltip-target' => $id,
-          'data-tooltip-placement' => $placement,
           'class' => 'rounded-lg text-sm font-medium focus:outline-none border',
       ]);
 @endphp

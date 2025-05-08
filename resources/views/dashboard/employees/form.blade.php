@@ -61,7 +61,7 @@
           </option>
         @endforeach
       </x-ui.select>
-      <a href="{{ route('sysadmin.departments.create') }}">
+      <a href="{{ route('departments.create') }}">
         <x-ui.button size="icon" type="button" tooltip="Add Department">
           <i data-lucide="plus" class="size-5"></i>
         </x-ui.button>
@@ -81,7 +81,7 @@
           </option>
         @endforeach
       </x-ui.select>
-      <a href="{{ route('sysadmin.positions.create') }}">
+      <a href="{{ route('positions.create') }}">
         <x-ui.button size="icon" type="button" tooltip="Add Position">
           <i data-lucide="plus" class="size-5"></i>
         </x-ui.button>

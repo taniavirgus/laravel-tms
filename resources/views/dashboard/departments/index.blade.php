@@ -11,7 +11,7 @@
     </x-slot:title>
 
     <x-slot:action class="justify-between">
-      <form action="{{ route('sysadmin.departments.index') }}" method="GET" class="w-full max-w-sm">
+      <form action="{{ route('departments.index') }}" method="GET" class="w-full max-w-sm">
         <x-ui.input name="search" value="{{ request('search') }}" placeholder="Search by name or description">
           <x-slot:left>
             <i data-lucide="search" class="text-base-500 size-5"></i>
@@ -21,7 +21,7 @@
 
       <div class="flex items-center gap-2">
         @if (request()->has('search'))
-          <a href="{{ route('sysadmin.departments.index') }}">
+          <a href="{{ route('departments.index') }}">
             <x-ui.button variant="outline">
               <i data-lucide="x" class="size-5"></i>
               <span>Reset</span>
@@ -29,7 +29,7 @@
           </a>
         @endif
 
-        <a href="{{ route('sysadmin.departments.create') }}">
+        <a href="{{ route('departments.create') }}">
           <x-ui.button>
             <i data-lucide="plus" class="size-5"></i>
             <span>Department</span>
@@ -61,11 +61,11 @@
           </td>
           <td>
             <div class="flex items-center gap-4">
-              <a href="{{ route('sysadmin.departments.edit', $department) }}" class="text-primary-500">
+              <a href="{{ route('departments.edit', $department) }}" class="text-primary-500">
                 Edit
               </a>
               <x-delete id="{{ $department->id }}" title="{{ $department->name }}"
-                route="{{ route('sysadmin.departments.destroy', $department) }}" />
+                route="{{ route('departments.destroy', $department) }}" />
             </div>
           </td>
         </tr>

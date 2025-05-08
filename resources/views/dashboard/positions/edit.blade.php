@@ -4,7 +4,7 @@
     <x-slot:description>Update position information in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
-  <x-ui.card as="form" method="POST" action="{{ route('sysadmin.positions.update', $position) }}">
+  <x-ui.card as="form" method="POST" action="{{ route('positions.update', $position) }}">
     @method('PUT')
 
     <x-slot:header>
@@ -17,7 +17,7 @@
     ])
 
     <x-slot:footer class="justify-end">
-      <a href="{{ route('sysadmin.departments.index') }}">
+      <a href="{{ route('departments.index') }}">
         <x-ui.button variant="outline" type="button">
           <span>Cancel</span>
         </x-ui.button>

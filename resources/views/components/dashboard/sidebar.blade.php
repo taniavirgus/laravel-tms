@@ -21,13 +21,13 @@
           'label' => 'Departments',
           'menus' => [
               [
-                  'href' => route('sysadmin.departments.index'),
+                  'href' => route('departments.index'),
                   'active' => request()->routeIs('sysadmin.departments.index'),
                   'name' => 'Department List',
                   'icon' => 'house',
               ],
               [
-                  'href' => route('sysadmin.departments.create'),
+                  'href' => route('departments.create'),
                   'active' => request()->routeIs('sysadmin.departments.create'),
                   'name' => 'Add Department',
                   'icon' => 'plus',
@@ -39,13 +39,13 @@
           'label' => 'Positions',
           'menus' => [
               [
-                  'href' => route('sysadmin.positions.index'),
+                  'href' => route('positions.index'),
                   'active' => request()->routeIs('sysadmin.positions.index'),
                   'name' => 'Position List',
                   'icon' => 'briefcase',
               ],
               [
-                  'href' => route('sysadmin.positions.create'),
+                  'href' => route('positions.create'),
                   'active' => request()->routeIs('sysadmin.positions.create'),
                   'name' => 'Add Position',
                   'icon' => 'plus',
@@ -57,16 +57,16 @@
           'label' => 'Employee',
           'menus' => [
               [
-                  'href' => route('sysadmin.employees.index'),
+                  'href' => route('employees.index'),
                   'active' => request()->routeIs('sysadmin.employees.index'),
                   'name' => 'Employee List',
                   'icon' => 'users',
               ],
               [
-                  'href' => route('sysadmin.employees.create'),
+                  'href' => route('employees.create'),
                   'active' => request()->routeIs('sysadmin.employees.create'),
                   'name' => 'Add Employee',
-                  'icon' => 'user-plus',
+                  'icon' => 'plus',
               ],
           ],
       ],
@@ -198,16 +198,6 @@
               </a>
             </li>
           @endforeach
-
-          @if ($loop->last)
-            <li class="relative text-sm font-medium">
-              <a href="#"
-                class="flex items-center gap-3 p-3 px-6 rounded-lg hover:bg-primary-50 @if ($menu->active) bg-primary-50 @endif">
-                <i data-lucide="chevron-down" class="size-5 text-primary-500"></i>
-                <span>See All</span>
-              </a>
-            </li>
-          @endif
         </ul>
       </div>
     @endforeach

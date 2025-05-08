@@ -1,5 +1,5 @@
 <x-ui.button variant="ghost" size="icon" aria-expanded="false" data-dropdown-toggle="notification"
-  data-dropdown-placement="bottom-start" tooltip="View notifications" placement="bottom">
+  data-dropdown-placement="bottom-start" tooltip="View notifications">
   <i data-lucide="bell" class="size-5"></i>
   <span class="sr-only">View notifications</span>
 </x-ui.button>

@@ -11,7 +11,7 @@
     </x-slot:title>
 
     <x-slot:action class="justify-between">
-      <form x-data="{}" action="{{ route('sysadmin.employees.index') }}" method="GET"
+      <form x-data="{}" action="{{ route('employees.index') }}" method="GET"
         class="flex flex-col gap-2 xl:flex-row xl:items-center">
         <x-ui.input name="search" value="{{ request('search') }}" placeholder="Search by name or email">
           <x-slot:left>
@@ -40,7 +40,7 @@
 
       <div class="flex items-center gap-2">
         @if (request()->has('search'))
-          <a href="{{ route('sysadmin.employees.index') }}">
+          <a href="{{ route('employees.index') }}">
             <x-ui.button variant="outline">
               <i data-lucide="x" class="size-5"></i>
               <span>Reset</span>
@@ -48,7 +48,7 @@
           </a>
         @endif
 
-        <a href="{{ route('sysadmin.employees.create') }}">
+        <a href="{{ route('employees.create') }}">
           <x-ui.button>
             <i data-lucide="plus" class="size-5"></i>
             <span>Employee</span>
@@ -94,11 +94,11 @@
           <td>{{ $employee->position->name }}</td>
           <td>
             <div class="flex items-center gap-4">
-              <a href="{{ route('sysadmin.employees.edit', $employee) }}" class="text-primary-500">
+              <a href="{{ route('employees.edit', $employee) }}" class="text-primary-500">
                 Edit
               </a>
               <x-delete id="{{ $employee->id }}" title="{{ $employee->name }}"
-                route="{{ route('sysadmin.employees.destroy', $employee) }}" />
+                route="{{ route('employees.destroy', $employee) }}" />
             </div>
           </td>
         </tr>

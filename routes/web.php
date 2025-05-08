@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\RoleType;
+use App\Helpers\MiddlewareRule;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PositionController;
@@ -15,14 +17,18 @@ Route::middleware('auth')->group(function () {
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth', 'role:sysadmin')
-  ->prefix('sysadmin')
-  ->as('sysadmin.')
+Route::middleware('auth', MiddlewareRule::role('role', RoleType::SYSADMIN, RoleType::PD))
+  ->group(function () {
+    Route::resource('employees', EmployeeController::class)->except('show');
+  });
+
+Route::middleware('auth', MiddlewareRule::role('role', RoleType::SYSADMIN))
   ->group(function () {
     Route::resource('users', UserController::class)->except('show');
     Route::resource('positions', PositionController::class)->except('show');
     Route::resource('departments', DepartmentController::class)->except('show');
-    Route::resource('employees', EmployeeController::class)->except('show');
   });
+
+
 
 require __DIR__ . '/auth.php';

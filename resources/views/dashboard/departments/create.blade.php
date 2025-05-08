@@ -4,7 +4,7 @@
     <x-slot:description>Create a new department in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
-  <x-ui.card as="form" method="post" action="{{ route('sysadmin.departments.store') }}">
+  <x-ui.card as="form" method="post" action="{{ route('departments.store') }}">
     <x-slot:header>
       <i data-lucide="building2" class="size-5 text-primary-500"></i>
       <h5>Department Information</h5>
@@ -13,7 +13,7 @@
     @include('dashboard.departments.form')
 
     <x-slot:footer class="justify-end">
-      <a href="{{ route('sysadmin.departments.index') }}">
+      <a href="{{ route('departments.index') }}">
         <x-ui.button variant="outline" type="button">
           <span>Cancel</span>
         </x-ui.button>

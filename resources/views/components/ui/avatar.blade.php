@@ -1,6 +1,7 @@
 @props([
-    'name' => null,
+    'id' => uniqid(),
     'alt' => null,
+    'name' => null,
 ])
 
 @php
@@ -9,7 +10,10 @@
       'alt' => $alt,
       'src' => $avatar,
       'class' => 'size-9',
+      'data-tooltip-target' => $id,
+      'data-tooltip-placement' => 'top',
   ]);
 @endphp
 
 <img {{ $props }} />
+<x-ui.tooltip id="{{ $id }}" tooltip="{{ $name }}" />
