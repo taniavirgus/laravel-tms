@@ -88,7 +88,7 @@
                   'icon' => 'chart-pie',
               ],
               [
-                  'href' => '#',
+                  'href' => route('evaluations.summary'),
                   'active' => false,
                   'name' => 'Performance Summary',
                   'icon' => 'chart-bar',

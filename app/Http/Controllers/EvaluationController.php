@@ -12,6 +12,7 @@ use App\Models\Department;
 use App\Models\Topic;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -54,6 +55,133 @@ class EvaluationController extends Controller
       'evaluations' => $evaluations,
       'departments' => Department::select(['name', 'id'])->get(),
       'topics' => Topic::select(['name', 'id'])->get(),
+    ]);
+  }
+
+  /**
+   * Show the summary of the evaluation.
+   */
+  public function summary(Request $request): View
+  {
+    $department_id = $request->input('department_id');
+    $topic_id = $request->input('topic_id');
+
+    $evaluations_query = Evaluation::with(['department', 'topic', 'employees'])
+      ->when($department_id, function ($q) use ($department_id) {
+        $q->where('department_id', $department_id);
+      })
+      ->when($topic_id, function ($q) use ($topic_id) {
+        $q->where('topic_id', $topic_id);
+      });
+
+    $evaluations = $evaluations_query->get();
+    $evaluation_count = $evaluations->count();
+    $average_score = 0;
+    $employees_count = 0;
+
+    if ($evaluation_count > 0) {
+      $evaluation_ids = $evaluations->pluck('id')->toArray();
+      $score_data = DB::table('employee_evaluations')
+        ->join('evaluations', 'evaluations.id', '=', 'employee_evaluations.evaluation_id')
+        ->whereIn('evaluation_id', $evaluation_ids)
+        ->selectRaw('
+          AVG((CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * 100) as average_score, 
+          COUNT(DISTINCT employee_id) as unique_employees, 
+          COUNT(*) as total_records
+        ')
+        ->first();
+
+      $average_score = $score_data->average_score ?? 0;
+      $employees_count = $score_data->unique_employees ?? 0;
+    }
+
+    $total_employees = Employee::count();
+    $completion_rate = $total_employees > 0 ? round(($employees_count / $total_employees) * 100) : 0;
+
+    $department_data = collect();
+    $departments = Department::take(5)->get();
+
+    if ($evaluation_count > 0) {
+      $evaluation_ids = $evaluations->pluck('id')->toArray();
+      $department_scores = DB::table('employee_evaluations')
+        ->join('evaluations', 'evaluations.id', '=', 'employee_evaluations.evaluation_id')
+        ->whereIn('evaluation_id', $evaluation_ids)
+        ->groupBy('evaluations.department_id')
+        ->select(
+          'evaluations.department_id',
+          DB::raw('AVG((CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * 100) as average_score')
+        )
+        ->get()
+        ->keyBy('department_id');
+    }
+
+    foreach ($departments as $department) {
+      $department_data->push([
+        'name' => $department->name,
+        'average_score' => $evaluation_count > 0 ? ($department_scores[$department->id]->average_score ?? 0) : 0
+      ]);
+    }
+
+    $department_names = $department_data->pluck('name')->toArray();
+    $department_scores = $department_data->pluck('average_score')->toArray();
+
+    $topic_data = collect();
+    $topics = Topic::take(5)->get();
+
+    if ($evaluation_count > 0) {
+      $evaluation_ids = $evaluations->pluck('id')->toArray();
+      $topic_scores = DB::table('employee_evaluations')
+        ->join('evaluations', 'evaluations.id', '=', 'employee_evaluations.evaluation_id')
+        ->whereIn('evaluation_id', $evaluation_ids)
+        ->groupBy('evaluations.topic_id')
+        ->select(
+          'evaluations.topic_id',
+          DB::raw('AVG((CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * 100) as average_score')
+        )
+        ->get()
+        ->keyBy('topic_id');
+    }
+
+    foreach ($topics as $topic) {
+      $topic_data->push([
+        'name' => $topic->name,
+        'average_score' => $evaluation_count > 0 ? ($topic_scores[$topic->id]->average_score ?? 0) : 0
+      ]);
+    }
+
+    $topic_names = $topic_data->pluck('name')->toArray();
+    $topic_scores = $topic_data->pluck('average_score')->toArray();
+
+    $top_performers = Employee::select('employees.*')
+      ->join('employee_evaluations', 'employees.id', '=', 'employee_evaluations.employee_id')
+      ->join('evaluations', 'evaluations.id', '=', 'employee_evaluations.evaluation_id')
+      ->with(['department', 'position'])
+      ->groupBy('employees.id')
+      ->selectRaw('AVG((CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * 100) as average_score')
+      ->selectRaw('COUNT(DISTINCT evaluations.id) as evaluations_count')
+      ->orderByDesc('average_score')
+      ->when($department_id, function ($q) use ($department_id) {
+        $q->where('employees.department_id', $department_id);
+      })
+      ->when($topic_id, function ($q) use ($topic_id) {
+        $q->where('evaluations.topic_id', $topic_id);
+      })
+      ->limit(5)
+      ->get();
+
+    return view('dashboard.evaluations.summary', [
+      'evaluations' => $evaluations,
+      'departments' => $departments,
+      'topics' => $topics,
+      'average_score' => $average_score,
+      'evaluation_count' => $evaluation_count,
+      'employees_count' => $employees_count,
+      'completion_rate' => $completion_rate,
+      'department_names' => $department_names,
+      'department_scores' => $department_scores,
+      'topic_names' => $topic_names,
+      'topic_scores' => $topic_scores,
+      'top_performers' => $top_performers,
     ]);
   }
 

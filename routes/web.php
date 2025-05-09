@@ -48,13 +48,15 @@ Route::middleware('auth', MiddlewareRule::role(
 ))
   ->group(function () {
     Route::resource('topics', TopicController::class)->except('show');
-    Route::resource('evaluations', EvaluationController::class);
 
     Route::controller(EvaluationController::class)->group(function () {
+      Route::get('evaluations/summary', 'summary')->name('evaluations.summary');
       Route::post('evaluations/{evaluation}/assign', 'assign')->name('evaluations.assign');
       Route::patch('evaluations/{evaluation}/approval', 'approval')->name('evaluations.approval');
       Route::delete('evaluations/{evaluation}/unassign/{employee}', 'unassign')->name('evaluations.unassign');
     });
+
+    Route::resource('evaluations', EvaluationController::class);
   });
 
 require __DIR__ . '/auth.php';
