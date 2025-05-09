@@ -8,6 +8,7 @@ use App\Enums\StatusType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Employee extends Model
 {
@@ -64,5 +65,15 @@ class Employee extends Model
   public function position(): BelongsTo
   {
     return $this->belongsTo(Position::class);
+  }
+
+  /**
+   * The evaluations that belong to the employee.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+   */
+  public function evaluations(): BelongsToMany
+  {
+    return $this->belongsToMany(Evaluation::class, 'employee_evaluations');
   }
 }

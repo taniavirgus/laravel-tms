@@ -5,7 +5,7 @@
 @php
   $props = $attributes->merge([
       'colspan' => $colspan,
-      'class' => 'w-full py-10 text-gray-500 text-red-500',
+      'class' => 'w-full py-10 text-base-400',
   ]);
 @endphp
 

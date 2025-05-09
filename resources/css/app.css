@@ -24,7 +24,7 @@
   }
 
   table {
-    @apply w-full text-sm caption-bottom;
+    @apply w-full  text-sm caption-bottom;
 
     & tr {
       @apply border-b transition-colors hover:bg-zinc-100;
@@ -35,7 +35,7 @@
     }
 
     & td {
-      @apply truncate p-4 max-w-80 align-middle;
+      @apply truncate p-4 align-middle;
     }
 
     & th:first-child,

@@ -67,6 +67,7 @@
                   'active' => request()->routeIs('sysadmin.employees.create'),
                   'name' => 'Add Employee',
                   'icon' => 'plus',
+                  'show' => Auth::user()->can('create', App\Models\Employee::class),
               ],
           ],
       ],
@@ -75,15 +76,21 @@
           'label' => 'Evaluation',
           'menus' => [
               [
-                  'href' => '#',
+                  'href' => route('topics.index'),
                   'active' => false,
-                  'name' => 'KPI List',
+                  'name' => 'Evaluation Topic',
+                  'icon' => 'clipboard-list',
+              ],
+              [
+                  'href' => route('evaluations.index'),
+                  'active' => false,
+                  'name' => 'Evaluation List',
                   'icon' => 'chart-pie',
               ],
               [
                   'href' => '#',
                   'active' => false,
-                  'name' => 'Assign Employee KPI',
+                  'name' => 'Assign Employee',
                   'icon' => 'user-plus',
               ],
               [
@@ -91,12 +98,6 @@
                   'active' => false,
                   'name' => 'Performance Summary',
                   'icon' => 'chart-bar',
-              ],
-              [
-                  'href' => '#',
-                  'active' => false,
-                  'name' => 'Performance History',
-                  'icon' => 'calendar',
               ],
           ],
       ],
@@ -184,6 +185,10 @@
               @if ($menu->active)
                 <div class="absolute top-0 right-0 w-1 h-full bg-primary-500"></div>
               @endif
+
+              @isset($menu->show)
+                @continue(!$menu->show)
+              @endisset
 
               @isset($menu->count)
                 <div class="absolute text-center transform -translate-y-1/2 right-6 top-1/2">

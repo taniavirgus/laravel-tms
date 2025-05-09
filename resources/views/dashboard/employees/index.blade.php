@@ -11,29 +11,24 @@
     </x-slot:title>
 
     <x-slot:action class="justify-between">
-      <form x-data="{}" action="{{ route('employees.index') }}" method="GET"
-        class="flex flex-col gap-2 xl:flex-row xl:items-center">
+      <form action="{{ route('employees.index') }}" method="GET" class="flex flex-col gap-2 xl:flex-row xl:items-center">
         <x-ui.input name="search" value="{{ request('search') }}" placeholder="Search by name or email">
           <x-slot:left>
             <i data-lucide="search" class="text-base-500 size-5"></i>
           </x-slot:left>
         </x-ui.input>
 
-        <x-ui.select name="department_id" placeholder="Department" x-on:change="$el.form.submit()">
-          <option value="">Select Department</option>
+        <x-ui.select name="department_id" onchange="this.form.submit()">
+          <option value="">All Departments</option>
           @foreach ($departments as $department)
-            <option value="{{ $department->id }}" @selected(request('department_id') == $department->id)>
-              {{ $department->name }}
-            </option>
+            <option value="{{ $department->id }}" @selected(request('department_id') == $department->id)>{{ $department->name }}</option>
           @endforeach
         </x-ui.select>
 
-        <x-ui.select name="position_id" placeholder="Position" x-on:change="$el.form.submit()">
+        <x-ui.select name="position_id" placeholder="Position" onchange="this.form.submit()">
           <option value="">Select Position</option>
           @foreach ($positions as $position)
-            <option value="{{ $position->id }}" @selected(request('position_id') == $position->id)>
-              {{ $position->name }}
-            </option>
+            <option value="{{ $position->id }}" @selected(request('position_id') == $position->id)>{{ $position->name }}</option>
           @endforeach
         </x-ui.select>
       </form>
@@ -48,12 +43,14 @@
           </a>
         @endif
 
-        <a href="{{ route('employees.create') }}">
-          <x-ui.button>
-            <i data-lucide="plus" class="size-5"></i>
-            <span>Employee</span>
-          </x-ui.button>
-        </a>
+        @can('create', App\Models\Employee::class)
+          <a href="{{ route('employees.create') }}">
+            <x-ui.button>
+              <i data-lucide="plus" class="size-5"></i>
+              <span>Employee</span>
+            </x-ui.button>
+          </a>
+        @endcan
       </div>
     </x-slot:action>
 
@@ -94,11 +91,16 @@
           <td>{{ $employee->position->name }}</td>
           <td>
             <div class="flex items-center gap-4">
-              <a href="{{ route('employees.edit', $employee) }}" class="text-primary-500">
-                Edit
-              </a>
-              <x-delete id="{{ $employee->id }}" title="{{ $employee->name }}"
-                route="{{ route('employees.destroy', $employee) }}" />
+              @can('update', $employee)
+                <a href="{{ route('employees.edit', $employee) }}" class="text-primary-500">
+                  Edit
+                </a>
+              @endcan
+
+              @can('delete', $employee)
+                <x-delete id="{{ $employee->id }}" title="{{ $employee->name }}"
+                  route="{{ route('employees.destroy', $employee) }}" />
+              @endcan
             </div>
           </td>
         </tr>

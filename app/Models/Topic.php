@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Department extends Model
+class Topic extends Model
 {
   /**
    * The attributes that are mass assignable.
@@ -22,17 +21,7 @@ class Department extends Model
    * 
    * @return \Illuminate\Database\Eloquent\Relations\HasMany
    */
-  public function employees(): HasMany
-  {
-    return $this->hasMany(Employee::class);
-  }
-
-  /**
-   * Relationship with between model and other model.
-   * 
-   * @return \Illuminate\Database\Eloquent\Relations\HasMany
-   */
-  public function evaluations(): HasMany
+  public function evaluations()
   {
     return $this->hasMany(Evaluation::class);
   }
