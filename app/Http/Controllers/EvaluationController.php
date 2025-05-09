@@ -75,7 +75,7 @@ class EvaluationController extends Controller
     $evaluation = Evaluation::create($validated);
 
     return redirect()
-      ->route('evaluations.index')
+      ->route('evaluations.show', $evaluation->id)
       ->with('success', 'Evaluation created successfully!');
   }
 
@@ -122,10 +122,13 @@ class EvaluationController extends Controller
   public function update(UpdateEvaluationRequest $request, Evaluation $evaluation): RedirectResponse
   {
     $validated = $request->validated();
+    $department = $evaluation->department;
     $evaluation->update($validated);
 
+    if ($department->id != $evaluation->department_id) $evaluation->employees()->detach();
+
     return redirect()
-      ->route('evaluations.index')
+      ->route('evaluations.show', $evaluation->id)
       ->with('success', 'Evaluation updated successfully!');
   }
 
@@ -157,7 +160,9 @@ class EvaluationController extends Controller
     ]);
 
     $id = $validated['employee_id'];
-    $evaluation->employees()->attach($id);
+    $evaluation->employees()->attach($id, [
+      'score' => 0
+    ]);
 
     return back()->with('success', 'Employee assigned successfully!');
   }
@@ -185,8 +190,11 @@ class EvaluationController extends Controller
       ],
     ]);
 
-    $evaluation->status = ApprovalType::from($validated['status']);
+    $status = $validated['status'];
+    $evaluation->status = ApprovalType::from($status);
     $evaluation->save();
+
+    if ($status !== ApprovalType::APPROVED->value) $evaluation->employees()->detach();
 
     return back()->with('success', "Evaluation status updated successfully!");
   }

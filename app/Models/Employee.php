@@ -74,6 +74,8 @@ class Employee extends Model
    */
   public function evaluations(): BelongsToMany
   {
-    return $this->belongsToMany(Evaluation::class, 'employee_evaluations');
+    return $this->belongsToMany(Evaluation::class, 'employee_evaluations')
+      ->withPivot('score')
+      ->withTimestamps();
   }
 }

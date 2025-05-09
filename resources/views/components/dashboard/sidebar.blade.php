@@ -90,12 +90,6 @@
               [
                   'href' => '#',
                   'active' => false,
-                  'name' => 'Assign Employee',
-                  'icon' => 'user-plus',
-              ],
-              [
-                  'href' => '#',
-                  'active' => false,
                   'name' => 'Performance Summary',
                   'icon' => 'chart-bar',
               ],

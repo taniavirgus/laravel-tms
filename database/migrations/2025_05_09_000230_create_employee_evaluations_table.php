@@ -18,7 +18,11 @@ return new class extends Migration
       $table->timestamps();
       $table->foreignIdFor(Employee::class)->constrained()->cascadeOnDelete();
       $table->foreignIdFor(Evaluation::class)->constrained()->cascadeOnDelete();
-      $table->unique(['employee_id', 'evaluation_id']);
+      $table->integer('score')->default(0);
+      $table->unique([
+        'employee_id',
+        'evaluation_id'
+      ]);
     });
   }
 

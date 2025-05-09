@@ -15,6 +15,7 @@ class EmployeeEvaluation extends Model
   protected $fillable = [
     'employee_id',
     'evaluation_id',
+    'score',
   ];
 
   /**

@@ -99,9 +99,10 @@
       <x-slot:head>
         <th>No</th>
         <th>Name</th>
-        <th>Email</th>
         <th>Status</th>
+        <th>Department</th>
         <th>Position</th>
+        <th>Score</th>
         <th>Actions</th>
       </x-slot:head>
 
@@ -115,7 +116,6 @@
                 <span>{{ $employee->name }}</span>
               </div>
             </td>
-            <td>{{ $employee->email }}</td>
             <td>
               <div class="flex">
                 @php
@@ -128,7 +128,9 @@
                 </span>
               </div>
             </td>
+            <td>{{ $employee->department->name }}</td>
             <td>{{ $employee->position->name }}</td>
+            <td>{{ $employee->pivot->score }}</td>
             <td>
               <div class="flex items-center gap-4">
                 @can('unassign', $evaluation)
@@ -160,8 +162,8 @@
       <x-slot:head>
         <th>No</th>
         <th>Name</th>
-        <th>Email</th>
         <th>Status</th>
+        <th>Department</th>
         <th>Position</th>
         <th>Actions</th>
       </x-slot:head>
@@ -176,7 +178,6 @@
                 <span>{{ $employee->name }}</span>
               </div>
             </td>
-            <td>{{ $employee->email }}</td>
             <td>
               <div class="flex">
                 @php
@@ -189,6 +190,7 @@
                 </span>
               </div>
             </td>
+            <td>{{ $employee->department->name }}</td>
             <td>{{ $employee->position->name }}</td>
             <td>
               <div class="flex items-center gap-4">
