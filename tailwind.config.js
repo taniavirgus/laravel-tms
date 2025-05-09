@@ -14,7 +14,7 @@ export default {
   ],
   safelist: [
     {
-      pattern: /(bg|border|text)-(red|green|yellow)-(500)/,
+      pattern: /(bg|border|text)-(base|red|green|yellow)-(500)/,
     },
   ],
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ApprovalType;
 use App\Models\Employee;
 use App\Models\Evaluation;
 use App\Http\Requests\StoreEvaluationRequest;
@@ -169,5 +170,24 @@ class EvaluationController extends Controller
     $evaluation->employees()->detach($employee->id);
 
     return back()->with('success', 'Employee unassigned successfully!');
+  }
+
+  /**
+   * Change the approval status of an evaluation.
+   */
+  public function approval(Request $request, Evaluation $evaluation): RedirectResponse
+  {
+    $validated = $request->validate([
+      'status' => [
+        'required',
+        'string',
+        Rule::in(array_map(fn($type) => $type->value, ApprovalType::cases())),
+      ],
+    ]);
+
+    $evaluation->status = ApprovalType::from($validated['status']);
+    $evaluation->save();
+
+    return back()->with('success', "Evaluation status updated successfully!");
   }
 }

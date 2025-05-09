@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ApprovalType;
 use App\Models\Department;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,7 +13,9 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('evaluations', function (Blueprint $table) {
+    $approvals = ApprovalType::cases();
+
+    Schema::create('evaluations', function (Blueprint $table) use ($approvals) {
       $table->id();
       $table->timestamps();
       $table->string('name');
@@ -20,6 +23,7 @@ return new class extends Migration
       $table->integer('point')->default(0);
       $table->integer('target')->default(0);
       $table->integer('weight')->default(0);
+      $table->enum('status', array_map(fn($type) => $type->value, $approvals))->default(ApprovalType::DRAFT->value);
       $table->foreignIdFor(Department::class)->constrained()->onDelete('cascade');
     });
   }

@@ -38,6 +38,7 @@ Route::middleware('auth', MiddlewareRule::role('role', RoleType::PD, RoleType::M
 
     Route::controller(EvaluationController::class)->group(function () {
       Route::post('evaluations/{evaluation}/assign', 'assign')->name('evaluations.assign');
+      Route::patch('evaluations/{evaluation}/approval', 'approval')->name('evaluations.approval');
       Route::delete('evaluations/{evaluation}/unassign/{employee}', 'unassign')->name('evaluations.unassign');
     });
   });

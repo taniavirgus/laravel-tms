@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ApprovalType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,9 +20,22 @@ class Evaluation extends Model
     'point',
     'target',
     'weight',
+    'status',
     'department_id',
     'topic_id',
   ];
+
+  /**
+   * The attributes that should be cast.
+   *
+   * @return array<string, string>
+   */
+  protected function casts(): array
+  {
+    return [
+      'status' => ApprovalType::class,
+    ];
+  }
 
   /**
    * Relationship with between model and other model.

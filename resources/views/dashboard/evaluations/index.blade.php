@@ -60,6 +60,7 @@
       <th>Name</th>
       <th>Department</th>
       <th>Topic</th>
+      <th>Status</th>
       <th>Point</th>
       <th>Target</th>
       <th>Weight</th>
@@ -73,6 +74,9 @@
           <td>{{ $evaluation->name }}</td>
           <td>{{ $evaluation->department->name }}</td>
           <td>{{ $evaluation->topic->name }}</td>
+          <td>
+            <x-ui.badge :value="$evaluation->status" />
+          </td>
           <td>{{ $evaluation->point }}</td>
           <td>{{ $evaluation->target }}</td>
           <td>{{ $evaluation->weight }}%</td>
@@ -88,6 +92,11 @@
                 </a>
               @endcan
 
+              @can('approval', $evaluation)
+                <x-approval id="{{ $evaluation->id }}" title="{{ $evaluation->name }}"
+                  route="{{ route('evaluations.approval', $evaluation) }}" />
+              @endcan
+
               @can('delete', $evaluation)
                 <x-delete id="{{ $evaluation->id }}" title="{{ $evaluation->name }}"
                   route="{{ route('evaluations.destroy', $evaluation) }}" />
@@ -96,7 +105,7 @@
           </td>
         </tr>
       @empty
-        <x-ui.empty colspan="8" />
+        <x-ui.empty colspan="9" />
       @endforelse
     </x-slot:body>
   </x-ui.table>

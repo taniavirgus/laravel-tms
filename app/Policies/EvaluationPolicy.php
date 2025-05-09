@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\ApprovalType;
 use App\Enums\RoleType;
 use App\Models\Evaluation;
 use App\Models\User;
@@ -29,7 +30,7 @@ class EvaluationPolicy
    */
   public function create(User $user): bool
   {
-    return $user->role == RoleType::PD;
+    return $user->role === RoleType::PD;
   }
 
   /**
@@ -37,7 +38,7 @@ class EvaluationPolicy
    */
   public function update(User $user, Evaluation $evaluation): bool
   {
-    return $user->role == RoleType::PD;
+    return $user->role === RoleType::PD;
   }
 
   /**
@@ -45,7 +46,7 @@ class EvaluationPolicy
    */
   public function delete(User $user, Evaluation $evaluation): bool
   {
-    return $user->role == RoleType::PD;
+    return $user->role === RoleType::PD;
   }
 
   /**
@@ -69,7 +70,7 @@ class EvaluationPolicy
    */
   public function assign(User $user, Evaluation $evaluation): bool
   {
-    return $user->role == RoleType::PD;
+    return $user->role === RoleType::PD && $evaluation->status === ApprovalType::APPROVED;
   }
 
   /**
@@ -77,6 +78,14 @@ class EvaluationPolicy
    */
   public function unassign(User $user, Evaluation $evaluation): bool
   {
-    return $user->role == RoleType::PD;
+    return $user->role === RoleType::PD && $evaluation->status === ApprovalType::APPROVED;
+  }
+
+  /**
+   * Determine whether the user can change the approval status of the evaluation.
+   */
+  public function approval(User $user, Evaluation $evaluation): bool
+  {
+    return $user->role === RoleType::MANAGER || $user->role === RoleType::SUPERVISOR;
   }
 }

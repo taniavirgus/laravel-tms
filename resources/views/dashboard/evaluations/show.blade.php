@@ -27,6 +27,13 @@
       </dl>
 
       <dl>
+        <dt class="text-sm font-medium text-base-500">Status</dt>
+        <dd>
+          <x-ui.badge :value="$evaluation->status" />
+        </dd>
+      </dl>
+
+      <dl>
         <dt class="text-sm font-medium text-base-500">Point</dt>
         <dd class="flex items-center gap-2">
           <i data-lucide="chart-no-axes-column" class="size-4"></i>
@@ -65,6 +72,12 @@
         </x-ui.button>
       </a>
 
+      @can('approval', $evaluation)
+        <x-approval id="{{ $evaluation->id }}" title="{{ $evaluation->name }}"
+          route="{{ route('evaluations.approval', $evaluation) }}"
+          class="p-3 px-6 text-sm font-medium text-white border border-transparent rounded-lg focus:outline-none bg-primary-500 both:bg-primary-600" />
+      @endcan
+
       @can('update', $evaluation)
         <a href="{{ route('evaluations.edit', $evaluation) }}">
           <x-ui.button>
@@ -79,7 +92,7 @@
   <div class="mt-6">
     <x-ui.table>
       <x-slot:title>
-        <i data-lucide="users" class="size-5 text-primary-500"></i>
+        <i data-lucide="user-check" class="size-5 text-primary-500"></i>
         <h4>Assigned Employees</h4>
       </x-slot:title>
 
