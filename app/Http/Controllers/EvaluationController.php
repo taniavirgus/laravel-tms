@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ApprovalType;
+use App\Enums\StatusType;
 use App\Models\Employee;
 use App\Models\Evaluation;
 use App\Http\Requests\StoreEvaluationRequest;
@@ -46,7 +47,8 @@ class EvaluationController extends Controller
       ->when($topic_id, function ($q) use ($topic_id) {
         $q->where('topic_id', $topic_id);
       })
-      ->paginate(5);
+      ->paginate(5)
+      ->withQueryString();
 
     return view('dashboard.evaluations.index', [
       'evaluations' => $evaluations,
@@ -94,6 +96,7 @@ class EvaluationController extends Controller
 
     $employees = Employee::with(['department', 'position'])
       ->where('department_id', $evaluation->department_id)
+      ->where('status', StatusType::ACTIVE->value)
       ->whereNotIn('id', $assigned_ids)
       ->get();
 

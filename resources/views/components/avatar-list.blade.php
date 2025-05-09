@@ -13,7 +13,7 @@
 <div {{ $props }}>
   @foreach ($names as $name)
     @break($loop->index >= $max)
-    <div class="-ml-3">
+    <div class="flex-none -ml-3">
       <x-ui.avatar name="{{ $name }}" alt="{{ $name }}" class="border-2 border-white" />
     </div>
   @endforeach

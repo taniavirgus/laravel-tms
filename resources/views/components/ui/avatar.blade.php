@@ -16,4 +16,5 @@
 @endphp
 
 <img {{ $props }} />
+
 <x-ui.tooltip id="{{ $id }}" tooltip="{{ $name }}" />

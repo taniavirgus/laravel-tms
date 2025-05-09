@@ -38,7 +38,8 @@ class PositionController extends Controller
       ->with(['employees' => function ($query) {
         $query->select('id', 'name', 'position_id')->limit(3);
       }])
-      ->paginate(5);
+      ->paginate(5)
+      ->withQueryString();
 
     return view('dashboard.positions.index', [
       'positions' => $positions

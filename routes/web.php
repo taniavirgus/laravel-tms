@@ -19,19 +19,33 @@ Route::middleware('auth')->group(function () {
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth', MiddlewareRule::role('role', RoleType::SYSADMIN, RoleType::PD))
+Route::middleware('auth', MiddlewareRule::role(
+  'role',
+  RoleType::SYSADMIN,
+  RoleType::PD,
+  RoleType::MANAGER,
+  RoleType::SUPERVISOR
+))
   ->group(function () {
     Route::resource('employees', EmployeeController::class)->except('show');
   });
 
-Route::middleware('auth', MiddlewareRule::role('role', RoleType::SYSADMIN))
+Route::middleware('auth', MiddlewareRule::role(
+  'role',
+  RoleType::SYSADMIN
+))
   ->group(function () {
     Route::resource('users', UserController::class)->except('show');
     Route::resource('positions', PositionController::class)->except('show');
     Route::resource('departments', DepartmentController::class)->except('show');
   });
 
-Route::middleware('auth', MiddlewareRule::role('role', RoleType::PD, RoleType::MANAGER, RoleType::SUPERVISOR))
+Route::middleware('auth', MiddlewareRule::role(
+  'role',
+  RoleType::PD,
+  RoleType::MANAGER,
+  RoleType::SUPERVISOR
+))
   ->group(function () {
     Route::resource('topics', TopicController::class)->except('show');
     Route::resource('evaluations', EvaluationController::class);

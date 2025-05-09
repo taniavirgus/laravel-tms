@@ -37,7 +37,8 @@ class DepartmentController extends Controller
       ->with(['employees' => function ($query) {
         $query->select('id', 'name', 'department_id')->limit(3);
       }])
-      ->paginate(5);
+      ->paginate(5)
+      ->withQueryString();
 
 
     return view('dashboard.departments.index', [

@@ -32,7 +32,8 @@ class TopicController extends Controller
       ->when($search, function ($q) use ($search) {
         $q->where('name', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%');
       })
-      ->paginate(5);
+      ->paginate(5)
+      ->withQueryString();
 
     return view('dashboard.topics.index', [
       'topics' => $topics

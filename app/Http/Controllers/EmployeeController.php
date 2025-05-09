@@ -33,6 +33,7 @@ class EmployeeController extends Controller
     $search = $request->input('search');
     $position_id = $request->input('position_id');
     $department_id = $request->input('department_id');
+    $status = $request->input('status');
 
     $employees = Employee::query()
       ->with(['position', 'department'])
@@ -47,12 +48,17 @@ class EmployeeController extends Controller
       ->when($department_id, function ($q) use ($department_id) {
         $q->where('department_id', $department_id);
       })
-      ->paginate(5);
+      ->when($status, function ($q) use ($status) {
+        $q->where('status', $status);
+      })
+      ->paginate(5)
+      ->withQueryString();
 
     return view('dashboard.employees.index', [
       'employees' => $employees,
       'departments' => Department::select(['name', 'id'])->get(),
       'positions' => Position::select(['name', 'id'])->get(),
+      'statuses' => StatusType::cases(),
     ]);
   }
 

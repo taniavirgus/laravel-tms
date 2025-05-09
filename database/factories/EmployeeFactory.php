@@ -29,7 +29,13 @@ class EmployeeFactory extends Factory
       'birthdate' => fake()->dateTimeBetween('-60 years', '-18 years')->format('Y-m-d'),
       'gender' => fake()->randomElement(array_column(GenderType::cases(), 'value')),
       'religion' => fake()->randomElement(array_column(ReligionType::cases(), 'value')),
-      'status' => fake()->randomElement(array_column(StatusType::cases(), 'value')),
+      'status' => fake()->randomElement([
+        StatusType::ACTIVE->value,
+        StatusType::ACTIVE->value,
+        StatusType::ACTIVE->value,
+        StatusType::ACTIVE->value,
+        StatusType::INACTIVE->value,
+      ]),
     ];
   }
 
