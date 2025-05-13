@@ -14,7 +14,7 @@ export default {
   ],
   safelist: [
     {
-      pattern: /(bg|border|text)-(base|red|green|yellow)-(500)/,
+      pattern: /(bg|border|text)-(base|red|green|yellow|indigo|emerald|blue)-(500)/,
     },
   ],
 
@@ -33,6 +33,9 @@ export default {
       },
       spacing: {
         'icon': '46px',
+      },
+      aspectRatio: {
+        'banner': '3/1',
       }
     },
   },

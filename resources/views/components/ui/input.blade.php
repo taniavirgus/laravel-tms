@@ -1,5 +1,6 @@
 @props([
     'disabled' => false,
+    'required' => false,
 ])
 
 @php
@@ -14,6 +15,7 @@
       ->merge([
           'class' => 'w-full text-sm px-4 p-3 rounded-lg',
           'disabled' => $disabled,
+          'required' => $required,
       ]);
 @endphp
 

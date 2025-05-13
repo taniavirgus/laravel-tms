@@ -88,6 +88,18 @@ class EmployeeController extends Controller
       ->route('employees.index')
       ->with('success', 'Employee created successfully!');
   }
+  /**
+   * Display the specified resource.
+   */
+  public function show(Employee $employee): View
+  {
+    $evaluations = $employee->evaluations()->with(['topic', 'department'])->get();
+
+    return view('dashboard.employees.show', [
+      'employee' => $employee->load(['position', 'department']),
+      'evaluations' => $evaluations
+    ]);
+  }
 
   /**
    * Show the form for editing the specified resource.

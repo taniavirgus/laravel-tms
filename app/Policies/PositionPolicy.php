@@ -13,7 +13,7 @@ class PositionPolicy
    */
   public function viewAny(User $user): bool
   {
-    return true;
+    return $user->role === RoleType::SYSADMIN;
   }
 
   /**
@@ -21,7 +21,7 @@ class PositionPolicy
    */
   public function view(User $user, Position $position): bool
   {
-    return true;
+    return $user->role === RoleType::SYSADMIN;
   }
 
   /**

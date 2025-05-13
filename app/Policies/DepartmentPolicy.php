@@ -13,7 +13,7 @@ class DepartmentPolicy
    */
   public function viewAny(User $user): bool
   {
-    return true;
+    return $user->role === RoleType::SYSADMIN;
   }
 
   /**
@@ -21,7 +21,7 @@ class DepartmentPolicy
    */
   public function view(User $user, Department $department): bool
   {
-    return true;
+    return $user->role === RoleType::SYSADMIN;
   }
 
   /**

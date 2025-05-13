@@ -43,10 +43,10 @@ enum RoleType: string
   public function color(): string
   {
     return match ($this) {
-      self::SYSADMIN => 'bg-indigo-500',
-      self::MANAGER => 'bg-emerald-500',
-      self::SUPERVISOR => 'bg-emerald-500',
-      self::PD => 'bg-blue-500',
+      self::SYSADMIN => 'indigo',
+      self::MANAGER => 'emerald',
+      self::SUPERVISOR => 'emerald',
+      self::PD => 'blue',
     };
   }
 

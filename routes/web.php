@@ -2,6 +2,7 @@
 
 use App\Enums\RoleType;
 use App\Helpers\MiddlewareRule;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EvaluationController;
@@ -11,7 +12,7 @@ use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn() => view('dashboard'))->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,7 +28,7 @@ Route::middleware('auth', MiddlewareRule::role(
   RoleType::SUPERVISOR
 ))
   ->group(function () {
-    Route::resource('employees', EmployeeController::class)->except('show');
+    Route::resource('employees', EmployeeController::class);
   });
 
 Route::middleware('auth', MiddlewareRule::role(

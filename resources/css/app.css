@@ -78,7 +78,7 @@
 
 @layer components {
   .form {
-    @apply grid gap-4;
+    @apply grid gap-4 items-start;
   }
   
   .field {

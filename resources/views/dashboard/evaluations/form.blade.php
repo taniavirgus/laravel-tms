@@ -54,7 +54,7 @@
     <x-ui.errors :messages="$errors->get('topic_id')" />
   </div>
 
-  <div class="grid gap-4 xl:grid-cols-3 col-span-full">
+  <div class="form xl:grid-cols-3 col-span-full">
     <div class="field">
       <x-ui.label for="point" value="Point" />
       <x-ui.input id="point" name="point" type="number" min="0" step="1"

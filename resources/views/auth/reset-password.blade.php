@@ -4,7 +4,7 @@
     <x-slot:description>Enter your new password</x-slot:description>
   </x-ui.heading>
 
-  <form method="POST" action="{{ route('password.update') }}" class="grid gap-4">
+  <form method="POST" action="{{ route('password.update') }}" class="form">
     @csrf
 
     <input type="hidden" name="token" value="{{ $request->route('token') }}">

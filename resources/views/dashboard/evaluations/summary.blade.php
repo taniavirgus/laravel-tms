@@ -93,7 +93,7 @@
       <th>Department</th>
       <th>Position</th>
       <th>Average Score</th>
-      <th>Evaluations</th>
+      <th>Total Evaluations</th>
     </x-slot:head>
 
     <x-slot:body>
@@ -109,12 +109,7 @@
           <td>{{ $employee->department->name }}</td>
           <td>{{ $employee->position->name }}</td>
           <td>
-            <div class="flex items-center gap-2">
-              <div class="w-24 h-2 overflow-hidden rounded-full bg-base-200">
-                <div class="h-full bg-primary-500" style="width: {{ ($employee->average_score / 100) * 100 }}%"></div>
-              </div>
-              <span class="font-medium">{{ number_format($employee->average_score, 1) }}</span>
-            </div>
+            <x-ui.progrses :value="$employee->average_score" />
           </td>
           <td>{{ $employee->evaluations_count }}</td>
         </tr>

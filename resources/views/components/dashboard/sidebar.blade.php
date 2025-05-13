@@ -17,6 +17,24 @@
 
   $navigations = array_to_object([
       [
+          'id' => 'users',
+          'label' => 'Users',
+          'menus' => [
+              [
+                  'href' => route('users.index'),
+                  'active' => request()->routeIs('users.index'),
+                  'name' => 'User List',
+                  'icon' => 'users',
+              ],
+              [
+                  'href' => route('users.create'),
+                  'active' => request()->routeIs('users.create'),
+                  'name' => 'Add User',
+                  'icon' => 'plus',
+              ],
+          ],
+      ],
+      [
           'id' => 'departments',
           'label' => 'Departments',
           'menus' => [

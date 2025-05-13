@@ -31,7 +31,7 @@
     <div class="w-full field">
       <x-ui.label for="requirements" value="Requirements" />
 
-      <div class="grid gap-4 xl:grid-cols-2" x-show="requirements.length > 0">
+      <div class="form xl:grid-cols-2" x-show="requirements.length > 0">
         <template x-for="(req, index) in requirements" x-bind:key="index">
           <div class="flex items-center w-full gap-2">
             <x-ui.input x-model="requirements[index]" x-bind:name="'requirements[' + index + ']'"

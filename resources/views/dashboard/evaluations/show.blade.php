@@ -10,7 +10,7 @@
       <h5>Evaluation Details</h5>
     </x-slot:header>
 
-    <div class="grid gap-4 xl:grid-cols-2">
+    <div class="form xl:grid-cols-2">
       <dl>
         <dt class="text-sm font-medium text-base-500">Name</dt>
         <dd>{{ $evaluation->name }}</dd>

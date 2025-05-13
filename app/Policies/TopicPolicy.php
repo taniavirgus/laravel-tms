@@ -9,11 +9,20 @@ use App\Models\User;
 class TopicPolicy
 {
   /**
+   * List of allowed roles for viewing evaluations.
+   */
+  private const ALLOWED_ROLES = [
+    RoleType::MANAGER,
+    RoleType::SUPERVISOR,
+    RoleType::PD,
+  ];
+
+  /**
    * Determine whether the user can view any models.
    */
   public function viewAny(User $user): bool
   {
-    return true;
+    return in_array($user->role, self::ALLOWED_ROLES);
   }
 
   /**
@@ -21,7 +30,7 @@ class TopicPolicy
    */
   public function view(User $user, Topic $topic): bool
   {
-    return true;
+    return in_array($user->role, self::ALLOWED_ROLES);
   }
 
   /**

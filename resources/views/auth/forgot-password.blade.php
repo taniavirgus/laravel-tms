@@ -5,7 +5,7 @@
       will allow you to choose a new one.</x-slot:description>
   </x-ui.heading>
 
-  <form method="POST" action="{{ route('password.email') }}" class="grid gap-4">
+  <form method="POST" action="{{ route('password.email') }}" class="form">
     @csrf
 
     <div class="field">

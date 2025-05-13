@@ -98,6 +98,10 @@
           <td>{{ $employee->position->name }}</td>
           <td>
             <div class="flex items-center gap-4">
+              <a href="{{ route('employees.show', $employee) }}" class="text-primary-500">
+                View
+              </a>
+
               @can('update', $employee)
                 <a href="{{ route('employees.edit', $employee) }}" class="text-primary-500">
                   Edit

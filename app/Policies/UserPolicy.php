@@ -3,25 +3,24 @@
 namespace App\Policies;
 
 use App\Enums\RoleType;
-use App\Models\Employee;
 use App\Models\User;
 
-class EmployeePolicy
+class UserPolicy
 {
   /**
    * Determine whether the user can view any models.
    */
   public function viewAny(User $user): bool
   {
-    return true;
+    return $user->role === RoleType::SYSADMIN;
   }
 
   /**
    * Determine whether the user can view the model.
    */
-  public function view(User $user, Employee $employee): bool
+  public function view(User $user, User $model): bool
   {
-    return true;
+    return $user->role === RoleType::SYSADMIN;
   }
 
   /**
@@ -35,7 +34,7 @@ class EmployeePolicy
   /**
    * Determine whether the user can update the model.
    */
-  public function update(User $user, Employee $employee): bool
+  public function update(User $user, User $model): bool
   {
     return $user->role === RoleType::SYSADMIN;
   }
@@ -43,15 +42,15 @@ class EmployeePolicy
   /**
    * Determine whether the user can delete the model.
    */
-  public function delete(User $user, Employee $employee): bool
+  public function delete(User $user, User $model): bool
   {
-    return $user->role === RoleType::SYSADMIN;
+    return $user->role === RoleType::SYSADMIN && $user->id !== $model->id;
   }
 
   /**
    * Determine whether the user can restore the model.
    */
-  public function restore(User $user, Employee $employee): bool
+  public function restore(User $user, User $model): bool
   {
     return false;
   }
@@ -59,7 +58,7 @@ class EmployeePolicy
   /**
    * Determine whether the user can permanently delete the model.
    */
-  public function forceDelete(User $user, Employee $employee): bool
+  public function forceDelete(User $user, User $model): bool
   {
     return false;
   }
