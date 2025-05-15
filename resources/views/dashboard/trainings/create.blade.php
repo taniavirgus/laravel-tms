@@ -1,22 +1,22 @@
 <x-dashboard-layout>
   <x-dashboard.heading>
-    <x-slot:title>Add Employee</x-slot:title>
-    <x-slot:description>Create a new employee in {{ config('app.name') }}</x-slot:description>
+    <x-slot:title>Add Training</x-slot:title>
+    <x-slot:description>Create a new training in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
-  <x-ui.card as="form" method="post" action="{{ route('employees.store') }}">
+  <x-ui.card as="form" method="post" action="{{ route('trainings.store') }}">
     <x-slot:header>
-      <i data-lucide="user-plus" class="size-5 text-primary-500"></i>
-      <h5>Employee Information</h5>
+      <i data-lucide="book-open" class="size-5 text-primary-500"></i>
+      <h5>Training Information</h5>
     </x-slot:header>
 
     @csrf
-    @include('dashboard.employees.form', [
-        'employee' => new App\Models\Employee(),
+    @include('dashboard.trainings.form', [
+        'training' => new App\Models\Training(),
     ])
 
     <x-slot:footer class="justify-end">
-      <a href="{{ route('employees.index') }}">
+      <a href="{{ route('trainings.index') }}">
         <x-ui.button variant="outline" type="button">
           <span>Cancel</span>
         </x-ui.button>

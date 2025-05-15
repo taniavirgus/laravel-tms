@@ -10,6 +10,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TopicController;
+use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -59,6 +60,7 @@ Route::middleware('auth', MiddlewareRule::role(
       Route::delete('evaluations/{evaluation}/unassign/{employee}', 'unassign')->name('evaluations.unassign');
     });
 
+    Route::resource('trainings', TrainingController::class);
     Route::resource('evaluations', EvaluationController::class);
     Route::resource('employees.feedback', FeedbackController::class)->shallow()->only('create', 'store', 'destroy');
   });

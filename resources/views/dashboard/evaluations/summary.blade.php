@@ -74,14 +74,14 @@
         <x-ui.select name="department_id" onchange="this.form.submit()">
           <option value="">All Departments</option>
           @foreach ($departments as $department)
-            <option value="{{ $department->id }}" @selected(request('department_id') == $department->id)>{{ $department->name }}</option>
+            <option value="{{ $department->id }}" @selected(request()->get('department_id') == $department->id)>{{ $department->name }}</option>
           @endforeach
         </x-ui.select>
 
         <x-ui.select name="topic_id" onchange="this.form.submit()">
           <option value="">All Topics</option>
           @foreach ($topics as $topic)
-            <option value="{{ $topic->id }}" @selected(request('topic_id') == $topic->id)>{{ $topic->name }}</option>
+            <option value="{{ $topic->id }}" @selected(request()->get('topic_id') == $topic->id)>{{ $topic->name }}</option>
           @endforeach
         </x-ui.select>
       </form>

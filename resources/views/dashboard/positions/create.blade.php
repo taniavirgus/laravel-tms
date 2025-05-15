@@ -1,6 +1,6 @@
 <x-dashboard-layout>
   <x-dashboard.heading>
-    <x-slot:title>Create Position</x-slot:title>
+    <x-slot:title>Add Position</x-slot:title>
     <x-slot:description>Create a new position in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
@@ -10,12 +10,13 @@
       <h4>Position Information</h4>
     </x-slot:header>
 
+    @csrf
     @include('dashboard.positions.form', [
-        'position' => null,
+        'position' => new App\Models\Position(),
     ])
 
     <x-slot:footer class="justify-end">
-      <a href="{{ route('departments.index') }}">
+      <a href="{{ route('positions.index') }}">
         <x-ui.button variant="outline" type="button">
           <span>Cancel</span>
         </x-ui.button>

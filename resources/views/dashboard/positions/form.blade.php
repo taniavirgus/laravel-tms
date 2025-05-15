@@ -1,9 +1,7 @@
-@csrf
 <div class="grid-cols-2 form">
   <div class="field">
-    <x-ui.label for="name" value="Position Name" />
-    <x-ui.input id="name" name="name" type="text" value="{{ $position->name ?? old('name') }}" required
-      autofocus />
+    <x-ui.label for="name" value="Position Name" /> <x-ui.input id="name" name="name" type="text"
+      value="{{ old('name', $position->name ?? '') }}" required autofocus />
     <x-ui.errors :messages="$errors->get('name')" />
   </div>
 
@@ -12,7 +10,7 @@
     <x-ui.select id="level" name="level">
       <option value="">Select level</option>
       @foreach ($levels as $level)
-        <option value="{{ $level->value }}" @selected((isset($position) && $position->level === $level) || old('level') == $level->value)>
+        <option value="{{ $level->value }}" @selected(old('level', $position->level->value ?? '') == $level->value)>
           {{ $level->label() }}
         </option>
       @endforeach
@@ -21,9 +19,8 @@
   </div>
 
   <div class="field col-span-full">
-    <x-ui.label for="description" value="Description" />
-    <x-ui.textarea id="description" name="description"
-      rows="4">{{ $position->description ?? old('description') }}</x-ui.textarea>
+    <x-ui.label for="description" value="Description" /> <x-ui.textarea id="description" name="description"
+      rows="4">{{ old('description', $position->description ?? '') }}</x-ui.textarea>
     <x-ui.errors :messages="$errors->get('description')" />
   </div>
 
@@ -67,7 +64,7 @@
   <script>
     document.addEventListener('alpine:init', () => {
       Alpine.data('multiple', () => ({
-        requirements: @json(isset($position) ? $position->requirements : old('requirements', [])),
+        requirements: @json(old('requirements', $position->requirements ?? [])),
         append() {
           this.requirements.push('');
         },

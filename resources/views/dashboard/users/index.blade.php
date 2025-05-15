@@ -12,7 +12,7 @@
 
     <x-slot:action class="justify-between">
       <form action="{{ route('users.index') }}" method="GET" class="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <x-ui.input name="search" value="{{ request('search') }}" placeholder="Search by name or email">
+        <x-ui.input name="search" value="{{ request()->get('search') }}" placeholder="Search by name or email">
           <x-slot:left>
             <i data-lucide="search" class="text-base-500 size-5"></i>
           </x-slot:left>
@@ -21,7 +21,7 @@
         <x-ui.select name="role" onchange="this.form.submit()">
           <option value="">All Roles</option>
           @foreach ($roles as $role)
-            <option value="{{ $role->value }}" @selected(request('role') == $role->value)>{{ $role->label() }}</option>
+            <option value="{{ $role->value }}" @selected(request()->get('role') == $role->value)>{{ $role->label() }}</option>
           @endforeach
         </x-ui.select>
       </form>

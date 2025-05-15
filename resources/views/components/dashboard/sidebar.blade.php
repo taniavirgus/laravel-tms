@@ -118,8 +118,8 @@
           'label' => 'Training',
           'menus' => [
               [
-                  'href' => '#',
-                  'active' => false,
+                  'href' => route('trainings.index'),
+                  'active' => request()->routeIs('trainings.index'),
                   'name' => 'Training List',
                   'icon' => 'graduation-cap',
               ],

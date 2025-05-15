@@ -1,16 +1,13 @@
-@csrf
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 form">
   <div class="field col-span-full">
-    <x-ui.label for="name" value="Evaluation Name" />
-    <x-ui.input id="name" name="name" type="text" value="{{ $evaluation->name ?? old('name') }}" required
-      autofocus />
+    <x-ui.label for="name" value="Evaluation Name" /> <x-ui.input id="name" name="name" type="text"
+      value="{{ old('name', $evaluation->name ?? '') }}" required autofocus />
     <x-ui.errors :messages="$errors->get('name')" />
   </div>
 
   <div class="field col-span-full">
-    <x-ui.label for="description" value="Description" />
-    <x-ui.textarea id="description" name="description"
-      rows="4">{{ $evaluation->description ?? old('description') }}</x-ui.textarea>
+    <x-ui.label for="description" value="Description" /> <x-ui.textarea id="description" name="description"
+      rows="4">{{ old('description', $evaluation->description ?? '') }}</x-ui.textarea>
     <x-ui.errors :messages="$errors->get('description')" />
   </div>
 
@@ -19,7 +16,7 @@
     <x-ui.select id="department_id" name="department_id" class="w-full" required>
       <option value="">Select Department</option>
       @foreach ($departments as $department)
-        <option value="{{ $department->id }}" @selected((isset($evaluation) && $evaluation->department_id == $department->id) || old('department_id') == $department->id)>
+        <option value="{{ $department->id }}" @selected(old('department_id', $evaluation->department_id ?? '') == $department->id)>
           {{ $department->name }}
         </option>
       @endforeach
@@ -33,7 +30,7 @@
       <x-ui.select id="topic_id" name="topic_id" class="w-full" required>
         <option value="">Select Topic</option>
         @foreach ($topics as $topic)
-          <option value="{{ $topic->id }}" @selected((isset($evaluation) && $evaluation->topic_id == $topic->id) || old('topic_id') == $topic->id)>
+          <option value="{{ $topic->id }}" @selected(old('topic_id', $evaluation->topic_id ?? '') == $topic->id)>
             {{ $topic->name }}
           </option>
         @endforeach
@@ -49,23 +46,20 @@
 
   <div class="form xl:grid-cols-3 col-span-full">
     <div class="field">
-      <x-ui.label for="point" value="Point" />
-      <x-ui.input id="point" name="point" type="number" min="0" step="1"
-        value="{{ $evaluation->point ?? (old('point') ?? 0) }}" required />
+      <x-ui.label for="point" value="Point" /> <x-ui.input id="point" name="point" type="number"
+        min="0" step="1" value="{{ old('point', $evaluation->point ?? 0) }}" required />
       <x-ui.errors :messages="$errors->get('point')" />
     </div>
 
     <div class="field">
-      <x-ui.label for="target" value="Target" />
-      <x-ui.input id="target" name="target" type="number" min="0" step="1"
-        value="{{ $evaluation->target ?? (old('target') ?? 0) }}" required />
+      <x-ui.label for="target" value="Target" /> <x-ui.input id="target" name="target" type="number"
+        min="0" step="1" value="{{ old('target', $evaluation->target ?? 0) }}" required />
       <x-ui.errors :messages="$errors->get('target')" />
     </div>
 
     <div class="field">
-      <x-ui.label for="weight" value="Weight (%)" />
-      <x-ui.input id="weight" name="weight" type="number" min="0" max="100" step="1"
-        value="{{ $evaluation->weight ?? (old('weight') ?? 0) }}" required />
+      <x-ui.label for="weight" value="Weight (%)" /> <x-ui.input id="weight" name="weight" type="number"
+        min="0" max="100" step="1" value="{{ old('weight', $evaluation->weight ?? 0) }}" required />
       <x-ui.errors :messages="$errors->get('weight')" />
     </div>
   </div>

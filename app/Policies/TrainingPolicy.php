@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Enums\RoleType;
-use App\Models\Topic;
+use App\Models\Training;
 use App\Models\User;
 
-class TopicPolicy
+class TrainingPolicy
 {
   /**
    * List of allowed roles for viewing evaluations.
@@ -28,7 +28,7 @@ class TopicPolicy
   /**
    * Determine whether the user can view the model.
    */
-  public function view(User $user, Topic $topic): bool
+  public function view(User $user, Training $training): bool
   {
     return in_array($user->role, self::ALLOWED_ROLES);
   }
@@ -44,7 +44,7 @@ class TopicPolicy
   /**
    * Determine whether the user can update the model.
    */
-  public function update(User $user, Topic $topic): bool
+  public function update(User $user, Training $training): bool
   {
     return $user->role === RoleType::PD;
   }
@@ -52,7 +52,7 @@ class TopicPolicy
   /**
    * Determine whether the user can delete the model.
    */
-  public function delete(User $user, Topic $topic): bool
+  public function delete(User $user, Training $training): bool
   {
     return $user->role === RoleType::PD;
   }
@@ -60,7 +60,7 @@ class TopicPolicy
   /**
    * Determine whether the user can restore the model.
    */
-  public function restore(User $user, Topic $topic): bool
+  public function restore(User $user, Training $training): bool
   {
     return false;
   }
@@ -68,7 +68,7 @@ class TopicPolicy
   /**
    * Determine whether the user can permanently delete the model.
    */
-  public function forceDelete(User $user, Topic $topic): bool
+  public function forceDelete(User $user, Training $training): bool
   {
     return false;
   }

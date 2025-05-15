@@ -12,7 +12,7 @@
 
     <x-slot:action class="justify-between">
       <form action="{{ route('departments.index') }}" method="GET" class="w-full max-w-sm">
-        <x-ui.input name="search" value="{{ request('search') }}" placeholder="Search by name or description">
+        <x-ui.input name="search" value="{{ request()->get('search') }}" placeholder="Search by name or description">
           <x-slot:left>
             <i data-lucide="search" class="text-base-500 size-5"></i>
           </x-slot:left>

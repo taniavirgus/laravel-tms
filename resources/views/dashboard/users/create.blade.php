@@ -10,7 +10,10 @@
       <h5>User Information</h5>
     </x-slot:header>
 
-    @include('dashboard.users.form')
+    @csrf
+    @include('dashboard.users.form', [
+        'user' => new App\Models\User(),
+    ])
 
     <x-slot:footer class="justify-end">
       <a href="{{ route('users.index') }}">

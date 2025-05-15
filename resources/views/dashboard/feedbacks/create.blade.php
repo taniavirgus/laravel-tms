@@ -1,6 +1,6 @@
 <x-dashboard-layout>
   <x-dashboard.heading>
-    <x-slot:title>Employee Feedback</x-slot:title>
+    <x-slot:title>Add Feedback</x-slot:title>
     <x-slot:description>Create feedback for employee {{ $employee->name }}</x-slot:description>
   </x-dashboard.heading>
 
@@ -10,6 +10,7 @@
       <h5>Feedback Form</h5>
     </x-slot:header>
 
+    @csrf
     @include('dashboard.feedbacks.form', [
         'feedback' => $employee->feedback,
     ])

@@ -12,7 +12,7 @@
 
     <x-slot:action class="justify-between">
       <form action="{{ route('employees.index') }}" method="GET" class="flex flex-col gap-2 xl:flex-row xl:items-center">
-        <x-ui.input name="search" value="{{ request('search') }}" placeholder="Search by name or email">
+        <x-ui.input name="search" value="{{ request()->get('search') }}" placeholder="Search by name or email">
           <x-slot:left>
             <i data-lucide="search" class="text-base-500 size-5"></i>
           </x-slot:left>
@@ -21,21 +21,21 @@
         <x-ui.select name="department_id" onchange="this.form.submit()">
           <option value="">All Departments</option>
           @foreach ($departments as $department)
-            <option value="{{ $department->id }}" @selected(request('department_id') == $department->id)>{{ $department->name }}</option>
+            <option value="{{ $department->id }}" @selected(request()->get('department_id') == $department->id)>{{ $department->name }}</option>
           @endforeach
         </x-ui.select>
 
         <x-ui.select name="position_id" placeholder="Position" onchange="this.form.submit()">
           <option value="">Select Position</option>
           @foreach ($positions as $position)
-            <option value="{{ $position->id }}" @selected(request('position_id') == $position->id)>{{ $position->name }}</option>
+            <option value="{{ $position->id }}" @selected(request()->get('position_id') == $position->id)>{{ $position->name }}</option>
           @endforeach
         </x-ui.select>
 
         <x-ui.select name="status" placeholder="Status" onchange="this.form.submit()">
           <option value="">Select Status</option>
           @foreach ($statuses as $status)
-            <option value="{{ $status->value }}" @selected(request('status') == $status->value)>{{ $status->label() }}</option>
+            <option value="{{ $status->value }}" @selected(request()->get('status') == $status->value)>{{ $status->label() }}</option>
           @endforeach
         </x-ui.select>
       </form>

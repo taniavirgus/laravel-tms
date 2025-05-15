@@ -10,7 +10,10 @@
       <h5>Evaluation Information</h5>
     </x-slot:header>
 
-    @include('dashboard.evaluations.form')
+    @csrf
+    @include('dashboard.evaluations.form', [
+        'evaluation' => new App\Models\Evaluation(),
+    ])
 
     <x-slot:footer class="justify-end">
       <a href="{{ route('evaluations.index') }}">

@@ -1,36 +1,34 @@
-@csrf
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 form">
   <div class="field">
-    <x-ui.label for="name" value="Employee Name" />
-    <x-ui.input id="name" name="name" type="text" value="{{ $employee->name ?? old('name') }}" required
-      autofocus />
+    <x-ui.label for="name" value="Employee Name" /> <x-ui.input id="name" name="name" type="text"
+      value="{{ old('name', $employee->name ?? '') }}" required autofocus />
     <x-ui.errors :messages="$errors->get('name')" />
   </div>
 
   <div class="field">
-    <x-ui.label for="email" value="Email Address" />
-    <x-ui.input id="email" name="email" type="email" value="{{ $employee->email ?? old('name') }}" required />
+    <x-ui.label for="email" value="Email Address" /> <x-ui.input id="email" name="email" type="email"
+      value="{{ old('email', $employee->email ?? '') }}" required />
     <x-ui.errors :messages="$errors->get('email')" />
   </div>
 
   <div class="field">
-    <x-ui.label for="phone" value="Phone Number" />
-    <x-ui.input id="phone" name="phone" type="text" value="{{ $employee->phone ?? old('name') }}" required />
+    <x-ui.label for="phone" value="Phone Number" /> <x-ui.input id="phone" name="phone" type="text"
+      value="{{ old('phone', $employee->phone ?? '') }}" required />
     <x-ui.errors :messages="$errors->get('phone')" />
   </div>
 
   <div class="field">
-    <x-ui.label for="birthdate" value="Birthdate" />
-    <x-ui.input id="birthdate" name="birthdate" type="date"
-      value="{{ isset($employee) ? $employee->birthdate->format('Y-m-d') : old('birthdate') }}" required />
+    <x-ui.label for="birthdate" value="Birthdate" /> <x-ui.input id="birthdate" name="birthdate" type="date"
+      value="{{ old('birthdate', $employee->birthdate?->format('Y-m-d') ?? '') }}" required />
     <x-ui.errors :messages="$errors->get('birthdate')" />
   </div>
 
   <div class="field">
     <x-ui.label for="gender" value="Gender" />
     <x-ui.select id="gender" name="gender">
+      <option value="">Select Gender</option>
       @foreach ($genders as $gender)
-        <option value="{{ $gender->value }}" @selected((isset($employee) && $employee->gender === $gender) || old('gender') === $gender->value)>
+        <option value="{{ $gender->value }}" @selected(old('gender', $employee->gender->value ?? '') == $gender->value)>
           {{ $gender->label() }}
         </option>
       @endforeach
@@ -41,8 +39,9 @@
   <div class="field">
     <x-ui.label for="religion" value="Religion" />
     <x-ui.select id="religion" name="religion">
+      <option value="">Select Religion</option>
       @foreach ($religions as $religion)
-        <option value="{{ $religion->value }}" @selected((isset($employee) && $employee->religion === $religion) || old('religion') === $religion->value)>
+        <option value="{{ $religion->value }}" @selected(old('religion', $employee->religion->value ?? '') == $religion->value)>
           {{ $religion->label() }}
         </option>
       @endforeach
@@ -56,7 +55,7 @@
       <x-ui.select id="department_id" name="department_id" class="w-full">
         <option value="">Select Department</option>
         @foreach ($departments as $department)
-          <option value="{{ $department->id }}" @selected((isset($employee) && $employee->department_id == $department->id) || old('department_id') == $department->id)>
+          <option value="{{ $department->id }}" @selected(old('department_id', $employee->department_id ?? '') == $department->id)>
             {{ $department->name }}
           </option>
         @endforeach
@@ -76,7 +75,7 @@
       <x-ui.select id="position_id" name="position_id" class="w-full">
         <option value="">Select Position</option>
         @foreach ($positions as $position)
-          <option value="{{ $position->id }}" @selected((isset($employee) && $employee->position_id == $position->id) || old('position_id') == $position->id)>
+          <option value="{{ $position->id }}" @selected(old('position_id', $employee->position_id ?? '') == $position->id)>
             {{ $position->name }}
           </option>
         @endforeach
@@ -94,7 +93,7 @@
     <x-ui.label for="status" value="Status" />
     <x-ui.select id="status" name="status">
       @foreach ($statuses as $status)
-        <option value="{{ $status->value }}" @selected((isset($employee) && $employee->status === $status) || old('status') === $status->value)>
+        <option value="{{ $status->value }}" @selected(old('status', $employee->value ?? '') === $status->value)>
           {{ $status->label() }}
         </option>
       @endforeach
@@ -103,9 +102,8 @@
   </div>
 
   <div class="field col-span-full">
-    <x-ui.label for="address" value="Address" />
-    <x-ui.textarea id="address" name="address"
-      rows="3">{{ $employee->address ?? old('address') }}</x-ui.textarea>
+    <x-ui.label for="address" value="Address" /> <x-ui.textarea id="address" name="address"
+      rows="3">{{ old('address', $employee->address ?? '') }}</x-ui.textarea>
     <x-ui.errors :messages="$errors->get('address')" />
   </div>
 </div>

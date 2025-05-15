@@ -193,8 +193,8 @@ class EvaluationController extends Controller
   public function create(): View
   {
     return view('dashboard.evaluations.create', [
-      'departments' => Department::all(),
-      'topics' => Topic::all(),
+      'departments' => Department::select(['name', 'id'])->get(),
+      'topics' => Topic::select(['name', 'id'])->get(),
     ]);
   }
 
@@ -207,7 +207,7 @@ class EvaluationController extends Controller
     $evaluation = Evaluation::create($validated);
 
     return redirect()
-      ->route('evaluations.show', $evaluation->id)
+      ->route('evaluations.show', $evaluation)
       ->with('success', 'Evaluation created successfully!');
   }
 
@@ -261,7 +261,7 @@ class EvaluationController extends Controller
     if ($department->id != $evaluation->department_id) $evaluation->employees()->detach();
 
     return redirect()
-      ->route('evaluations.show', $evaluation->id)
+      ->route('evaluations.show', $evaluation)
       ->with('success', 'Evaluation updated successfully!');
   }
 

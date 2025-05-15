@@ -1,14 +1,13 @@
-@csrf
 <div class="xl:grid-cols-2 form">
   <div class="field col-span-full">
-    <x-ui.label for="name" value="Full Name" />
-    <x-ui.input id="name" name="name" type="text" value="{{ $user->name ?? old('name') }}" required autofocus />
+    <x-ui.label for="name" value="Full Name" /> <x-ui.input id="name" name="name" type="text"
+      value="{{ old('name', $user->name ?? '') }}" required autofocus />
     <x-ui.errors :messages="$errors->get('name')" />
   </div>
 
   <div class="field col-span-full">
-    <x-ui.label for="email" value="Email Address" />
-    <x-ui.input id="email" name="email" type="email" value="{{ $user->email ?? old('email') }}" required />
+    <x-ui.label for="email" value="Email Address" /> <x-ui.input id="email" name="email" type="email"
+      value="{{ old('email', $user->email ?? '') }}" required />
     <x-ui.errors :messages="$errors->get('email')" />
   </div>
 
@@ -41,7 +40,7 @@
     <x-ui.select id="role" name="role" required>
       <option value="">Select Role</option>
       @foreach ($roles as $role)
-        <option value="{{ $role->value }}" @selected((isset($user->role) && $user->role === $role) || old('role') === $role->value)>
+        <option value="{{ $role->value }}" @selected(old('role', $user->role->value ?? '') === $role->value)>
           {{ $role->label() }}
         </option>
       @endforeach

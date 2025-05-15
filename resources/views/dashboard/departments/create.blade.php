@@ -10,7 +10,10 @@
       <h5>Department Information</h5>
     </x-slot:header>
 
-    @include('dashboard.departments.form')
+    @csrf
+    @include('dashboard.departments.form', [
+        'department' => new \App\Models\Department(),
+    ])
 
     <x-slot:footer class="justify-end">
       <a href="{{ route('departments.index') }}">

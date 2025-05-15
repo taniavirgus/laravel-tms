@@ -12,7 +12,7 @@
 
     <x-slot:action class="justify-between">
       <form action="{{ route('topics.index') }}" method="GET" class="flex flex-col gap-2 xl:flex-row xl:items-center">
-        <x-ui.input name="search" value="{{ request('search') }}" placeholder="Search by name or description">
+        <x-ui.input name="search" value="{{ request()->get('search') }}" placeholder="Search by name or description">
           <x-slot:left>
             <i data-lucide="search" class="text-base-500 size-5"></i>
           </x-slot:left>
@@ -53,9 +53,7 @@
           <td class="w-10">{{ $topic->id }}</td>
           <td>{{ $topic->name }}</td>
           <td>
-            <p class="truncate">
-              {{ $topic->description }}
-            </p>
+            <p class="truncate">{{ $topic->description }}</p>
           </td>
           <td>
             <div class="flex items-center gap-4">

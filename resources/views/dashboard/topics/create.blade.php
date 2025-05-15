@@ -10,7 +10,10 @@
       <h5>Topic Information</h5>
     </x-slot:header>
 
-    @include('dashboard.topics.form')
+    @csrf
+    @include('dashboard.topics.form', [
+        'topic' => new \App\Models\Topic(),
+    ])
 
     <x-slot:footer class="justify-end">
       <a href="{{ route('topics.index') }}">

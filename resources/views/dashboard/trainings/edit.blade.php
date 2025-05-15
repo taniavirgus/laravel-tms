@@ -1,23 +1,23 @@
 <x-dashboard-layout>
   <x-dashboard.heading>
-    <x-slot:title>Edit Position</x-slot:title>
-    <x-slot:description>Update position information in {{ config('app.name') }}</x-slot:description>
+    <x-slot:title>Edit Training</x-slot:title>
+    <x-slot:description>Update training information in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
-  <x-ui.card as="form" method="POST" action="{{ route('positions.update', $position) }}">
+  <x-ui.card as="form" method="post" action="{{ route('trainings.update', $training) }}">
     <x-slot:header>
-      <i data-lucide="briefcase" class="size-5 text-primary-500"></i>
-      <h4>Position Information</h4>
+      <i data-lucide="book-open" class="size-5 text-primary-500"></i>
+      <h5>Training Information</h5>
     </x-slot:header>
 
     @csrf
     @method('PUT')
-    @include('dashboard.positions.form', [
-        'position' => $position,
+    @include('dashboard.trainings.form', [
+        'training' => $training,
     ])
 
     <x-slot:footer class="justify-end">
-      <a href="{{ route('positions.index') }}">
+      <a href="{{ route('trainings.index') }}">
         <x-ui.button variant="outline" type="button">
           <span>Cancel</span>
         </x-ui.button>

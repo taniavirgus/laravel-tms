@@ -5,13 +5,16 @@
   </x-dashboard.heading>
 
   <x-ui.card as="form" method="post" action="{{ route('evaluations.update', $evaluation) }}" id="evaluation-form">
-    @method('PUT')
     <x-slot:header>
       <i data-lucide="check-circle" class="size-5 text-primary-500"></i>
       <h5>Evaluation Information</h5>
     </x-slot:header>
 
-    @include('dashboard.evaluations.form')
+    @csrf
+    @method('PUT')
+    @include('dashboard.evaluations.form', [
+        'evaluation' => $evaluation,
+    ])
 
     <x-slot:footer class="justify-end">
       <a href="{{ route('evaluations.index') }}">

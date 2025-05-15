@@ -11,8 +11,10 @@
     </x-slot:header>
 
     @csrf
-    @method('put')
-    @include('dashboard.employees.form')
+    @method('PUT')
+    @include('dashboard.employees.form', [
+        'employee' => $employee,
+    ])
 
     <x-slot:footer class="justify-end">
       <a href="{{ route('employees.index') }}">

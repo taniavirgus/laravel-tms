@@ -11,7 +11,7 @@
       </x-slot:header>
 
       @csrf
-      @method('patch')
+      @method('PATCH')
       @include('profile.partials.update')
 
       <x-slot:footer>
@@ -28,7 +28,7 @@
       </x-slot:header>
 
       @csrf
-      @method('put')
+      @method('PUT')
       @include('profile.partials.password')
 
       <x-slot:footer>

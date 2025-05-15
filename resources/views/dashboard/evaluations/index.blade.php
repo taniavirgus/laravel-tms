@@ -13,7 +13,7 @@
     <x-slot:action class="justify-between">
       <form action="{{ route('evaluations.index') }}" method="GET"
         class="flex flex-col gap-2 xl:flex-row xl:items-center">
-        <x-ui.input name="search" value="{{ request('search') }}" placeholder="Search by name or description">
+        <x-ui.input name="search" value="{{ request()->get('search') }}" placeholder="Search by name or description">
           <x-slot:left>
             <i data-lucide="search" class="text-base-500 size-5"></i>
           </x-slot:left>
@@ -22,14 +22,14 @@
         <x-ui.select name="department_id" onchange="this.form.submit()">
           <option value="">All Departments</option>
           @foreach ($departments as $department)
-            <option value="{{ $department->id }}" @selected(request('department_id') == $department->id)>{{ $department->name }}</option>
+            <option value="{{ $department->id }}" @selected(request()->get('department_id') == $department->id)>{{ $department->name }}</option>
           @endforeach
         </x-ui.select>
 
         <x-ui.select name="topic_id" onchange="this.form.submit()">
           <option value="">All Topics</option>
           @foreach ($topics as $topic)
-            <option value="{{ $topic->id }}" @selected(request('topic_id') == $topic->id)>{{ $topic->name }}</option>
+            <option value="{{ $topic->id }}" @selected(request()->get('topic_id') == $topic->id)>{{ $topic->name }}</option>
           @endforeach
         </x-ui.select>
       </form>
