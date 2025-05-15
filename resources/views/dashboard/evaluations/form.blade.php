@@ -1,13 +1,13 @@
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 form">
   <div class="field col-span-full">
     <x-ui.label for="name" value="Evaluation Name" /> <x-ui.input id="name" name="name" type="text"
-      value="{{ old('name', $evaluation->name ?? '') }}" required autofocus />
+      value="{{ old('name', $evaluation->name) }}" required autofocus />
     <x-ui.errors :messages="$errors->get('name')" />
   </div>
 
   <div class="field col-span-full">
     <x-ui.label for="description" value="Description" /> <x-ui.textarea id="description" name="description"
-      rows="4">{{ old('description', $evaluation->description ?? '') }}</x-ui.textarea>
+      rows="4">{{ old('description', $evaluation->description) }}</x-ui.textarea>
     <x-ui.errors :messages="$errors->get('description')" />
   </div>
 
@@ -16,7 +16,7 @@
     <x-ui.select id="department_id" name="department_id" class="w-full" required>
       <option value="">Select Department</option>
       @foreach ($departments as $department)
-        <option value="{{ $department->id }}" @selected(old('department_id', $evaluation->department_id ?? '') == $department->id)>
+        <option value="{{ $department->id }}" @selected(old('department_id', $evaluation->department_id) == $department->id)>
           {{ $department->name }}
         </option>
       @endforeach
@@ -30,7 +30,7 @@
       <x-ui.select id="topic_id" name="topic_id" class="w-full" required>
         <option value="">Select Topic</option>
         @foreach ($topics as $topic)
-          <option value="{{ $topic->id }}" @selected(old('topic_id', $evaluation->topic_id ?? '') == $topic->id)>
+          <option value="{{ $topic->id }}" @selected(old('topic_id', $evaluation->topic_id) == $topic->id)>
             {{ $topic->name }}
           </option>
         @endforeach

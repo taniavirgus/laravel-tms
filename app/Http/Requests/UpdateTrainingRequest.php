@@ -25,7 +25,7 @@ class UpdateTrainingRequest extends FormRequest
       'name' => ['required', 'string', 'max:255'],
       'description' => ['required', 'string'],
       'department_id' => ['required', 'integer', 'exists:departments,id'],
-      'evaluation_id' => ['required', 'integer', 'exists:evaluations,id'],
+      'evaluation_id' => ['nullable', 'integer', 'exists:evaluations,id'],
       'start_date' => ['required', 'date'],
       'end_date' => ['required', 'date', 'after:start_date'],
       'duration' => ['required', 'integer', 'min:0'],

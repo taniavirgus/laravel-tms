@@ -29,6 +29,7 @@ class TrainingController extends Controller
     $department_id = $request->input('department_id');
 
     $trainings = Training::query()
+      ->with(['department', 'evaluation'])
       ->when($search, function ($q) use ($search) {
         $q->where('name', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%');
       })

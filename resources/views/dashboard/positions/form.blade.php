@@ -1,7 +1,7 @@
 <div class="grid-cols-2 form">
   <div class="field">
     <x-ui.label for="name" value="Position Name" /> <x-ui.input id="name" name="name" type="text"
-      value="{{ old('name', $position->name ?? '') }}" required autofocus />
+      value="{{ old('name', $position->name) }}" required autofocus />
     <x-ui.errors :messages="$errors->get('name')" />
   </div>
 
@@ -10,7 +10,7 @@
     <x-ui.select id="level" name="level">
       <option value="">Select level</option>
       @foreach ($levels as $level)
-        <option value="{{ $level->value }}" @selected(old('level', $position->level->value ?? '') == $level->value)>
+        <option value="{{ $level->value }}" @selected(old('level', $position->level?->value) == $level->value)>
           {{ $level->label() }}
         </option>
       @endforeach
@@ -20,7 +20,7 @@
 
   <div class="field col-span-full">
     <x-ui.label for="description" value="Description" /> <x-ui.textarea id="description" name="description"
-      rows="4">{{ old('description', $position->description ?? '') }}</x-ui.textarea>
+      rows="4">{{ old('description', $position->description) }}</x-ui.textarea>
     <x-ui.errors :messages="$errors->get('description')" />
   </div>
 

@@ -50,6 +50,9 @@ class Training extends Model
    */
   public function evaluation(): BelongsTo
   {
-    return $this->belongsTo(Evaluation::class);
+    return $this->belongsTo(Evaluation::class)
+      ->withDefault([
+        'name' => 'No evaluation assigned',
+      ]);
   }
 }

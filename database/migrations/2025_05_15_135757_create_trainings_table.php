@@ -23,7 +23,7 @@ return new class extends Migration
       $table->integer('duration')->default(0)->comment('Duration in hours');
       $table->integer('capacity')->default(0)->comment('Maximum number of participants');
       $table->foreignIdFor(Department::class)->constrained()->onDelete('cascade');
-      $table->foreignIdFor(Evaluation::class)->constrained()->onDelete('cascade');
+      $table->foreignIdFor(Evaluation::class)->nullable()->constrained();
     });
   }
 

@@ -6,6 +6,7 @@ use App\Enums\ApprovalType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Evaluation extends Model
 {
@@ -67,5 +68,15 @@ class Evaluation extends Model
     return $this->belongsToMany(Employee::class, 'employee_evaluations')
       ->withPivot('score')
       ->withTimestamps();
+  }
+
+  /**
+   * The trainings that belong to the evaluation.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function trainings(): HasMany
+  {
+    return $this->hasMany(Training::class);
   }
 }
