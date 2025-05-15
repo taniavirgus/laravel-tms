@@ -16,21 +16,14 @@
 
   <div class="field">
     <x-ui.label for="department_id" value="Department" />
-    <div class="flex items-center gap-2">
-      <x-ui.select id="department_id" name="department_id" class="w-full" required>
-        <option value="">Select Department</option>
-        @foreach ($departments as $department)
-          <option value="{{ $department->id }}" @selected((isset($evaluation) && $evaluation->department_id == $department->id) || old('department_id') == $department->id)>
-            {{ $department->name }}
-          </option>
-        @endforeach
-      </x-ui.select>
-      <a href="{{ route('departments.create') }}">
-        <x-ui.button size="icon" type="button" tooltip="Add Department">
-          <i data-lucide="plus" class="size-5"></i>
-        </x-ui.button>
-      </a>
-    </div>
+    <x-ui.select id="department_id" name="department_id" class="w-full" required>
+      <option value="">Select Department</option>
+      @foreach ($departments as $department)
+        <option value="{{ $department->id }}" @selected((isset($evaluation) && $evaluation->department_id == $department->id) || old('department_id') == $department->id)>
+          {{ $department->name }}
+        </option>
+      @endforeach
+    </x-ui.select>
     <x-ui.errors :messages="$errors->get('department_id')" />
   </div>
 
