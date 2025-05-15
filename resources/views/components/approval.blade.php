@@ -37,8 +37,11 @@
         </x-slot:header>
 
         <p class="mb-4 text-zinc-600 text-wrap">
-          Select the new status for this evaluation. This action will affect whether employees can be assigned or
-          unassigned from this evaluation.
+          <span>
+            Select the new status for this evaluation. This action will affect whether employees can be assigned or
+            unassigned from this evaluation.
+          </span>
+          <span class="block text-red-500">Be careful, changing the status will reset the employee assignments.</span>
         </p>
 
         <div class="field">

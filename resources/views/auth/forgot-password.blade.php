@@ -23,5 +23,9 @@
       <span>Email Password Reset Link</span>
       <i data-lucide="arrow-up-right" class="size-5"></i>
     </x-ui.button>
+
+    <p class="text-center">
+      <a href="{{ route('login') }}" class="text-primary-500">Back to login page</a>
+    </p>
   </form>
 </x-guest-layout>

@@ -35,7 +35,7 @@
     </x-ui.button>
 
     <p class="text-center">
-      Don't have an account? <a href="{{ route('register') }}" class="text-primary-500">Register</a>
+      Cant access your account? <a href="{{ route('password.request') }}" class="text-primary-500">Reset Password</a>
     </p>
   </form>
 </x-guest-layout>

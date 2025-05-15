@@ -40,13 +40,13 @@
           'menus' => [
               [
                   'href' => route('departments.index'),
-                  'active' => request()->routeIs('sysadmin.departments.index'),
+                  'active' => request()->routeIs('departments.index'),
                   'name' => 'Department List',
                   'icon' => 'house',
               ],
               [
                   'href' => route('departments.create'),
-                  'active' => request()->routeIs('sysadmin.departments.create'),
+                  'active' => request()->routeIs('departments.create'),
                   'name' => 'Add Department',
                   'icon' => 'plus',
               ],
@@ -58,13 +58,13 @@
           'menus' => [
               [
                   'href' => route('positions.index'),
-                  'active' => request()->routeIs('sysadmin.positions.index'),
+                  'active' => request()->routeIs('positions.index'),
                   'name' => 'Position List',
                   'icon' => 'briefcase',
               ],
               [
                   'href' => route('positions.create'),
-                  'active' => request()->routeIs('sysadmin.positions.create'),
+                  'active' => request()->routeIs('positions.create'),
                   'name' => 'Add Position',
                   'icon' => 'plus',
               ],
@@ -76,13 +76,13 @@
           'menus' => [
               [
                   'href' => route('employees.index'),
-                  'active' => request()->routeIs('sysadmin.employees.index'),
+                  'active' => request()->routeIs('employees.index'),
                   'name' => 'Employee List',
                   'icon' => 'users',
               ],
               [
                   'href' => route('employees.create'),
-                  'active' => request()->routeIs('sysadmin.employees.create'),
+                  'active' => request()->routeIs('employees.create'),
                   'name' => 'Add Employee',
                   'icon' => 'plus',
                   'show' => Auth::user()->can('create', App\Models\Employee::class),
@@ -95,19 +95,19 @@
           'menus' => [
               [
                   'href' => route('topics.index'),
-                  'active' => false,
+                  'active' => request()->routeIs('topics.*'),
                   'name' => 'Evaluation Topic',
                   'icon' => 'clipboard-list',
               ],
               [
                   'href' => route('evaluations.index'),
-                  'active' => false,
+                  'active' => request()->routeIs('evaluations.index'),
                   'name' => 'Evaluation List',
                   'icon' => 'chart-pie',
               ],
               [
                   'href' => route('evaluations.summary'),
-                  'active' => false,
+                  'active' => request()->routeIs('evaluations.summary'),
                   'name' => 'Performance Summary',
                   'icon' => 'chart-bar',
               ],

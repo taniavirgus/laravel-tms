@@ -14,9 +14,9 @@
             <i data-lucide="{{ $widget->icon }}" class="flex-none text-primary-500 size-5"></i>
           </div>
 
-          <div class="flex flex-col">
-            <h5 class="text-sm font-medium">{{ $widget->label }}</h5>
-            <p class="text-xs truncate text-base-400">{{ $widget->description }}</p>
+          <div class="flex flex-col text-sm">
+            <h5 class="font-medium">{{ $widget->label }}</h5>
+            <p class="truncate text-base-400">{{ $widget->description }}</p>
           </div>
         </div>
       </div>
