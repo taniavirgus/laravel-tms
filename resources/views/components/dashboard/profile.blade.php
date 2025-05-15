@@ -70,7 +70,15 @@
         <a href="{{ route('development.migrate') }}"
           class="flex items-center gap-2 px-4 py-2 hover:bg-base-100 hover:text-red-500">
           <i data-lucide="database" class="size-4"></i>
-          Reset migration
+          Reseed migration
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ route('development.reset') }}"
+          class="flex items-center gap-2 px-4 py-2 hover:bg-base-100 hover:text-red-500">
+          <i data-lucide="database" class="size-4"></i>
+          Reset database
         </a>
       </li>
     @enddevelopment
