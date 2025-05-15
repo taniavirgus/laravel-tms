@@ -28,9 +28,7 @@
 
       <dl>
         <dt class="text-sm font-medium text-base-500">Status</dt>
-        <dd>
-          <x-ui.badge :value="$evaluation->status" />
-        </dd>
+        <dd><x-ui.badge :value="$evaluation->status" /></dd>
       </dl>
 
       <dl>

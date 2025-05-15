@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EvaluationController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TopicController;
@@ -58,6 +59,7 @@ Route::middleware('auth', MiddlewareRule::role(
     });
 
     Route::resource('evaluations', EvaluationController::class);
+    Route::resource('employees.feedback', FeedbackController::class)->shallow()->only('create', 'store', 'destroy');
   });
 
 require __DIR__ . '/auth.php';

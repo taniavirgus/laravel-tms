@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
@@ -77,5 +78,24 @@ class Employee extends Model
     return $this->belongsToMany(Evaluation::class, 'employee_evaluations')
       ->withPivot('score')
       ->withTimestamps();
+  }
+
+  /**
+   * The feedback that belong to the employee.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\HasOne
+   */
+  public function feedback(): HasOne
+  {
+    return $this->hasOne(Feedback::class)
+      ->withDefault([
+        'teamwork' => 0,
+        'communication' => 0,
+        'initiative' => 0,
+        'problem_solving' => 0,
+        'adaptability' => 0,
+        'leadership' => 0,
+        'description' => 'No feedback available',
+      ]);
   }
 }

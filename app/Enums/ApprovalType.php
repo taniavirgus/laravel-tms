@@ -40,9 +40,9 @@ enum ApprovalType: string
   public function color(): string
   {
     return match ($this) {
-      self::DRAFT => 'base',
-      self::APPROVED => 'green',
-      self::REJECTED => 'red',
+      self::DRAFT => 'bg-base-500',
+      self::APPROVED => 'bg-green-500',
+      self::REJECTED => 'bg-red-500',
     };
   }
 }

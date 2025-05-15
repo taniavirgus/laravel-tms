@@ -16,7 +16,7 @@
 
   * {
     scrollbar-width: none;
-    -ms-overflow-style: none; 
+    -ms-overflow-style: none;
   }
 
   [x-cloak] {
@@ -24,18 +24,18 @@
   }
 
   table {
-    @apply w-full table-auto text-sm caption-bottom;
+    @apply w-full text-sm table-auto caption-bottom;
 
     & tr {
-      @apply border-b transition-colors hover:bg-zinc-100;
-    } 
+      @apply transition-colors border-b hover:bg-zinc-100;
+    }
 
     & th {
-      @apply p-4 whitespace-nowrap text-left align-middle font-semibold;
+      @apply p-4 font-semibold text-left align-middle whitespace-nowrap;
     }
 
     & td {
-      @apply truncate p-4 max-w-56 align-middle;
+      @apply p-4 truncate align-middle max-w-56;
     }
 
     & th:first-child,
@@ -67,7 +67,7 @@
     }
 
     & tfoot {
-      @apply border-t bg-zinc-200/50 font-medium;
+      @apply font-medium border-t bg-zinc-200/50;
 
       & tr:last {
         @apply border-b-0;
@@ -78,10 +78,19 @@
 
 @layer components {
   .form {
-    @apply grid gap-4 items-start;
+    @apply grid items-start gap-4;
   }
-  
+
   .field {
     @apply grid gap-1;
+  }
+
+  .range-thumb,
+  .range-thumb::-webkit-slider-runnable-track {
+    @apply appearance-none cursor-pointer pointer-events-auto bg-zinc-200;
+  }
+
+  .range-thumb::-webkit-slider-thumb {
+    @apply appearance-none cursor-pointer pointer-events-auto bg-zinc-200;
   }
 }

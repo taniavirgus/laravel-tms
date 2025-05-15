@@ -92,7 +92,7 @@
       <th>Name</th>
       <th>Department</th>
       <th>Position</th>
-      <th>Average Score</th>
+      <th>Overall score</th>
       <th>Total Evaluations</th>
     </x-slot:head>
 
@@ -108,9 +108,7 @@
           </td>
           <td>{{ $employee->department->name }}</td>
           <td>{{ $employee->position->name }}</td>
-          <td>
-            <x-ui.progrses :value="$employee->average_score" />
-          </td>
+          <td class="font-semibold">{{ round($employee->average_score) }}%</td>
           <td>{{ $employee->evaluations_count }}</td>
         </tr>
       @empty

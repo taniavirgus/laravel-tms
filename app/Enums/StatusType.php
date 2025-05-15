@@ -37,8 +37,8 @@ enum StatusType: string
   public function color(): string
   {
     return match ($this) {
-      self::ACTIVE => 'green',
-      self::INACTIVE => 'red',
+      self::ACTIVE => 'bg-green-500',
+      self::INACTIVE => 'bg-red-500',
     };
   }
 }

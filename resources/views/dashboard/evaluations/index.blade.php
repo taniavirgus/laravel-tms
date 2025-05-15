@@ -61,9 +61,6 @@
       <th>Department</th>
       <th>Topic</th>
       <th>Status</th>
-      <th>Point</th>
-      <th>Target</th>
-      <th>Weight</th>
       <th>Actions</th>
     </x-slot:head>
 
@@ -74,12 +71,7 @@
           <td>{{ $evaluation->name }}</td>
           <td>{{ $evaluation->department->name }}</td>
           <td>{{ $evaluation->topic->name }}</td>
-          <td>
-            <x-ui.badge :value="$evaluation->status" />
-          </td>
-          <td>{{ $evaluation->point }}</td>
-          <td>{{ $evaluation->target }}</td>
-          <td>{{ $evaluation->weight }}%</td>
+          <td><x-ui.badge :value="$evaluation->status" /></td>
           <td>
             <div class="flex items-center gap-4">
               <a href="{{ route('evaluations.show', $evaluation) }}" class="text-primary-500">

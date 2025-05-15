@@ -36,6 +36,7 @@ class EmployeeController extends Controller
     $status = $request->input('status');
 
     $employees = Employee::query()
+      ->withCount('evaluations')
       ->with(['position', 'department'])
       ->when($search, function ($q) use ($search) {
         $q->where(function ($query) use ($search) {
@@ -96,7 +97,7 @@ class EmployeeController extends Controller
     $evaluations = $employee->evaluations()->with(['topic', 'department'])->get();
 
     return view('dashboard.employees.show', [
-      'employee' => $employee->load(['position', 'department']),
+      'employee' => $employee->load(['position', 'department', 'feedback']),
       'evaluations' => $evaluations
     ]);
   }

@@ -3,13 +3,17 @@
 ])
 
 @php
-  $color = $value->color();
-  $class = 'text-white bg-' . $color . '-500';
-  $props = $attributes->class([$class])->merge([
-      'class' => 'px-4 py-1 text-xs font-medium rounded-full',
-  ]);
+  if ($value instanceof \UnitEnum) {
+      $color = $value->color();
+      $label = $value->label();
+  } else {
+      $color = 'bg-primary-500';
+      $label = $value;
+  }
+
+  $props = $attributes->class(['px-2 py-1 text-white text-xs font-medium rounded-full', $color]);
 @endphp
 
 <span {{ $props }}>
-  {{ $value->label() }}
+  {{ $label }}
 </span>

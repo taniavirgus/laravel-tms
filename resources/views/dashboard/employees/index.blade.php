@@ -83,18 +83,7 @@
           </td>
           <td>{{ $employee->email }}</td>
           <td>{{ $employee->department->name }}</td>
-          <td>
-            <div class="flex">
-              @php
-                $color = $employee->status->color();
-                $class = 'text-white bg-' . $color . '-500';
-              @endphp
-
-              <span class="px-3 py-1 text-xs font-medium rounded-full {{ $class }}">
-                {{ $employee->status->label() }}
-              </span>
-            </div>
-          </td>
+          <td><x-ui.badge :value="$employee->status" /></td>
           <td>{{ $employee->position->name }}</td>
           <td>
             <div class="flex items-center gap-4">
