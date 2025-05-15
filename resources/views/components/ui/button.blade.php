@@ -22,12 +22,11 @@
       ->merge([
           'type' => 'submit',
           'disabled' => $disabled,
-          'data-tooltip-target' => $id,
           'class' => 'rounded-lg text-sm font-medium focus:outline-none border',
       ]);
 @endphp
 
-<button {{ $props }}>
+<button {{ $props }} @if ($size === 'icon') data-tooltip-target="{{ $id }}" @endif>
   {{ $slot }}
 </button>
 

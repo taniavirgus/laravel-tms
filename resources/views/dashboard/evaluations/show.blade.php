@@ -88,66 +88,84 @@
   </x-ui.card>
 
   <div class="mt-6">
-    <x-ui.table>
-      <x-slot:title>
-        <i data-lucide="user-check" class="size-5 text-primary-500"></i>
-        <h4>Assigned Employees</h4>
-      </x-slot:title>
 
-      <x-slot:head>
-        <th>No</th>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Department</th>
-        <th>Position</th>
-        <th>Score</th>
-        <th>Actions</th>
-      </x-slot:head>
+    @can('score', $evaluation)
+      <form action="{{ route('evaluations.score', $evaluation) }}" method="POST" id="form">
+        @csrf
+        @method('PATCH')
+      @endcan
 
-      <x-slot:body>
-        @forelse ($assigned as $employee)
-          <tr>
-            <td class="w-10">{{ $employee->id }}</td>
-            <td>
-              <div class="flex items-center gap-2">
-                <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
-                <span>{{ $employee->name }}</span>
-              </div>
-            </td>
-            <td>
-              <div class="flex">
-                @php
-                  $color = $employee->status->color();
-                  $class = 'text-white bg-' . $color . '-500';
-                @endphp
+      <x-ui.table>
+        <x-slot:title>
+          <i data-lucide="user-check" class="size-5 text-primary-500"></i>
+          <h4>Assigned Employees</h4>
+        </x-slot:title>
 
-                <span class="px-3 py-1 text-xs font-medium rounded-full {{ $class }}">
-                  {{ $employee->status->label() }}
-                </span>
-              </div>
-            </td>
-            <td>{{ $employee->department->name }}</td>
-            <td>{{ $employee->position->name }}</td>
-            <td>{{ $employee->pivot->score }}</td>
-            <td>
-              <div class="flex items-center gap-4">
-                @can('unassign', $evaluation)
-                  <form action="{{ route('evaluations.unassign', [$evaluation, $employee]) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="text-red-500">
-                      Remove
-                    </button>
-                  </form>
-                @endcan
-              </div>
-            </td>
-          </tr>
-        @empty
-          <x-ui.empty colspan="7" />
-        @endforelse
-      </x-slot:body>
-    </x-ui.table>
+        <x-slot:head>
+          <th>No</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Department</th>
+          <th>Position</th>
+          <th>Score</th>
+          <th>Actions</th>
+        </x-slot:head>
+
+        <x-slot:body>
+          @forelse ($assigned as $employee)
+            <tr>
+              <td class="w-10">{{ $employee->id }}</td>
+              <td>
+                <a href="{{ route('employees.show', $employee) }}" class="flex items-center gap-2">
+                  <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
+                  <span>{{ $employee->name }}</span>
+                </a>
+              </td>
+              <td><x-ui.badge :value="$employee->status" /></td>
+              <td>{{ $employee->department->name }}</td>
+              <td>{{ $employee->position->name }}</td>
+              @can('score', $evaluation)
+                <td>
+                  <div class="w-40">
+                    <x-ui.range name="scores[{{ $employee->id }}]" id="scores[{{ $employee->id }}]" step="1"
+                      max="{{ $evaluation->target }}" value="{{ $employee->pivot->score }}" :tooltip="false" />
+                  </div>
+                </td>
+              @else
+                <td>{{ $employee->pivot->score }} / {{ $evaluation->target }}</td>
+              @endcan
+              <td>
+                <div class="flex items-center gap-4">
+                  @can('unassign', $evaluation)
+                    <form action="{{ route('evaluations.unassign', [$evaluation, $employee]) }}" method="POST">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="text-red-500">
+                        Remove
+                      </button>
+                    </form>
+                  @endcan
+                </div>
+              </td>
+            </tr>
+          @empty
+            <x-ui.empty colspan="7" />
+          @endforelse
+        </x-slot:body>
+
+        @can('score', $evaluation)
+          <x-slot:footer class="justify-end">
+            <x-ui.button type="submit">
+              <span>Update</span>
+              <i data-lucide="arrow-up-right" class="size-5"></i>
+            </x-ui.button>
+          </x-slot:footer>
+        @endcan
+      </x-ui.table>
+
+      @can('score', $evaluation)
+      </form>
+    @endcan
   </div>
 
   <div class="mt-6">
@@ -176,18 +194,7 @@
                 <span>{{ $employee->name }}</span>
               </div>
             </td>
-            <td>
-              <div class="flex">
-                @php
-                  $color = $employee->status->color();
-                  $class = 'text-white bg-' . $color . '-500';
-                @endphp
-
-                <span class="px-3 py-1 text-xs font-medium rounded-full {{ $class }}">
-                  {{ $employee->status->label() }}
-                </span>
-              </div>
-            </td>
+            <td><x-ui.badge :value="$employee->status" /></td>
             <td>{{ $employee->department->name }}</td>
             <td>{{ $employee->position->name }}</td>
             <td>

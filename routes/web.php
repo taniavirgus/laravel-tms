@@ -54,6 +54,7 @@ Route::middleware('auth', MiddlewareRule::role(
     Route::controller(EvaluationController::class)->group(function () {
       Route::get('evaluations/summary', 'summary')->name('evaluations.summary');
       Route::post('evaluations/{evaluation}/assign', 'assign')->name('evaluations.assign');
+      Route::patch('evaluations/{evaluation}/score', 'score')->name('evaluations.score');
       Route::patch('evaluations/{evaluation}/approval', 'approval')->name('evaluations.approval');
       Route::delete('evaluations/{evaluation}/unassign/{employee}', 'unassign')->name('evaluations.unassign');
     });
@@ -63,3 +64,4 @@ Route::middleware('auth', MiddlewareRule::role(
   });
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/development.php';

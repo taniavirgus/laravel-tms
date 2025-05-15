@@ -1,0 +1,41 @@
+<?php
+
+use App\Models\User;
+use App\Enums\RoleType;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+
+if (app()->environment('local')) {
+  Route::middleware('auth')
+    ->as('development.')
+    ->prefix('development')
+    ->group(function () {
+      Route::get('migrate', function () {
+        $user = Auth::user();
+
+        Artisan::call('migrate:fresh', ['--seed' => true]);
+        Auth::loginUsingId($user->id);
+
+        return redirect()->back()->with('success', 'Database migrated and seeded successfully.');
+      })->name('migrate');
+
+      Route::get('impersonate', function () {
+        $sysadmin = User::where('role', RoleType::SYSADMIN)->first();
+        $manager = User::where('role', RoleType::MANAGER)->first();
+        $supervisor = User::where('role', RoleType::SUPERVISOR)->first();
+        $pd = User::where('role', RoleType::PD)->first();
+
+        $role = request()->get('role');
+
+        match ($role) {
+          RoleType::SYSADMIN->value => Auth::login($sysadmin),
+          RoleType::MANAGER->value => Auth::login($manager),
+          RoleType::SUPERVISOR->value => Auth::login($supervisor),
+          RoleType::PD->value => Auth::login($pd),
+        };
+
+        return redirect()->back()->with('success', 'Impersonated as ' . $role);
+      })->name('impersonate');
+    });
+}

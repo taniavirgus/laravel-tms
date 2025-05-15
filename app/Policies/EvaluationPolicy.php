@@ -97,4 +97,12 @@ class EvaluationPolicy
   {
     return $user->role === RoleType::MANAGER || $user->role === RoleType::SUPERVISOR;
   }
+
+  /**
+   * Determine whether the user can score the evaluation.
+   */
+  public function score(User $user, Evaluation $evaluation): bool
+  {
+    return $user->role === RoleType::MANAGER || $user->role === RoleType::SUPERVISOR;
+  }
 }

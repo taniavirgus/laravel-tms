@@ -5,6 +5,7 @@
     'head' => null,
     'body' => null,
     'foot' => null,
+    'footer' => null,
 ])
 
 @php
@@ -30,6 +31,10 @@
 
   $props->foot = $foot?->attributes->merge([
       'class' => 'bg-base-50',
+  ]);
+
+  $props->footer = $footer?->attributes->class(['px-8 py-4 border-t border-base-200'])->merge([
+      'class' => 'flex items-center gap-2 justify-start',
   ]);
 @endphp
 
@@ -68,4 +73,10 @@
       @endisset
     </table>
   </div>
+
+  @isset($footer)
+    <div {{ $props->footer }}>
+      {{ $footer }}
+    </div>
+  @endisset
 </div>

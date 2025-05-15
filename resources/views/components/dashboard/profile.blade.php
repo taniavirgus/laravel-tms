@@ -1,4 +1,6 @@
 @php
+  use App\Enums\RoleType;
+
   $menus = array_to_object([
       [
           'name' => 'Profile',
@@ -36,7 +38,7 @@
 </button>
 
 <div id="profile"
-  class="z-50 hidden w-56 overflow-hidden bg-white border divide-y divide-base-200 rounded-xl border-base-200">
+  class="z-50 hidden overflow-hidden bg-white border divide-y min-w-56 divide-base-200 rounded-xl border-base-200">
 
   <div class="px-4 py-3 text-sm">
     <span class="block font-semibold text-base-900">{{ Auth::user()->name }}</span>
@@ -52,6 +54,26 @@
         </a>
       </li>
     @endforeach
+
+    @development
+      @foreach (RoleType::cases() as $role)
+        <li>
+          <a href="{{ route('development.impersonate', ['role' => $role]) }}"
+            class="flex items-center gap-2 px-4 py-2 hover:bg-base-100 hover:text-indigo-500">
+            <i data-lucide="shield-alert" class="size-4"></i>
+            Login {{ $role->label() }}
+          </a>
+        </li>
+      @endforeach
+
+      <li>
+        <a href="{{ route('development.migrate') }}"
+          class="flex items-center gap-2 px-4 py-2 hover:bg-base-100 hover:text-red-500">
+          <i data-lucide="database" class="size-4"></i>
+          Reset migration
+        </a>
+      </li>
+    @enddevelopment
   </ul>
 
   <form method="POST" action="{{ route('logout') }}">

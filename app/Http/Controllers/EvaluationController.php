@@ -14,7 +14,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 
 class EvaluationController extends Controller
 {
@@ -317,7 +319,7 @@ class EvaluationController extends Controller
       'status' => [
         'required',
         'string',
-        Rule::in(array_map(fn($type) => $type->value, ApprovalType::cases())),
+        new Enum(ApprovalType::class),
       ],
     ]);
 
@@ -328,5 +330,34 @@ class EvaluationController extends Controller
     if ($status !== ApprovalType::APPROVED->value) $evaluation->employees()->detach();
 
     return back()->with('success', "Evaluation status updated successfully!");
+  }
+
+  /**
+   * Change employee score for a given evaluation.
+   */
+  public function score(Request $request, Evaluation $evaluation): RedirectResponse
+  {
+    $employee_ids = $evaluation->employees->pluck('id')->toArray();
+
+    $validated = $request->validate([
+      'scores' => ['required', 'array'],
+      'scores.*' => [
+        'required',
+        'integer',
+        'between:0,' . $evaluation->target,
+        function ($attribute, $value, $fail) use ($employee_ids) {
+          $id = Str::after($attribute, 'scores.');
+          if (!in_array($id, $employee_ids)) $fail("Employee not assigned to this evaluation!");
+        }
+      ],
+    ]);
+
+    foreach ($validated['scores'] as $id => $score) {
+      $evaluation->employees()->updateExistingPivot($id, [
+        'score' => $score
+      ]);
+    }
+
+    return back()->with('success', "Employee score updated successfully!");
   }
 }
