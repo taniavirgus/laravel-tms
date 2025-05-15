@@ -29,7 +29,16 @@ class EvaluationSeeder extends Seeder
             'weight' => 30,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 1
-          ]
+          ],
+          [
+            'name' => 'Workplace Conduct',
+            'description' => 'Assesses employee adherence to company policies, professional behavior, and collaboration within the HR department.',
+            'point' => 8,
+            'target' => 90,
+            'weight' => 25,
+            'status' => ApprovalType::APPROVED->value,
+            'topic_id' => 2
+          ],
         ]
       ],
       [
@@ -43,7 +52,16 @@ class EvaluationSeeder extends Seeder
             'weight' => 35,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 3
-          ]
+          ],
+          [
+            'name' => 'Financial Reporting Timeliness',
+            'description' => 'Evaluates the punctuality of monthly and annual financial report submissions.',
+            'point' => 7,
+            'target' => 100,
+            'weight' => 20,
+            'status' => ApprovalType::APPROVED->value,
+            'topic_id' => 5
+          ],
         ]
       ],
       [
@@ -57,6 +75,15 @@ class EvaluationSeeder extends Seeder
             'weight' => 40,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 3
+          ],
+          [
+            'name' => 'Customer Engagement Score',
+            'description' => 'Assesses the effectiveness of marketing in engaging customers through surveys and interaction metrics.',
+            'point' => 10,
+            'target' => 85,
+            'weight' => 30,
+            'status' => ApprovalType::APPROVED->value,
+            'topic_id' => 4
           ],
         ],
       ],
@@ -80,20 +107,40 @@ class EvaluationSeeder extends Seeder
             'weight' => 30,
             'status' => ApprovalType::DRAFT->value,
             'topic_id' => 5
-          ]
+          ],
+          [
+            'name' => 'Security Compliance',
+            'description' => 'Assesses adherence to IT security policies and successful completion of security audits.',
+            'point' => 9,
+            'target' => 100,
+            'weight' => 25,
+            'status' => ApprovalType::APPROVED->value,
+            'topic_id' => 2
+          ],
         ]
       ],
       [
         'department_id' => 5,
-        'evaluations' => [[
-          'name' => 'Operational Efficiency',
-          'description' => 'Measures overall operational efficiency by evaluating resource utilization, process optimization, and output quality.',
-          'point' => 15,
-          'target' => 95,
-          'weight' => 40,
-          'status' => ApprovalType::APPROVED->value,
-          'topic_id' => 5
-        ]]
+        'evaluations' => [
+          [
+            'name' => 'Operational Efficiency',
+            'description' => 'Measures overall operational efficiency by evaluating resource utilization, process optimization, and output quality.',
+            'point' => 15,
+            'target' => 95,
+            'weight' => 40,
+            'status' => ApprovalType::APPROVED->value,
+            'topic_id' => 5
+          ],
+          [
+            'name' => 'Quality Control Pass Rate',
+            'description' => 'Tracks the percentage of products or services passing quality checks on the first attempt.',
+            'point' => 10,
+            'target' => 98,
+            'weight' => 30,
+            'status' => ApprovalType::APPROVED->value,
+            'topic_id' => 3
+          ],
+        ]
       ]
     ]);
 
@@ -111,7 +158,7 @@ class EvaluationSeeder extends Seeder
           'weight' => $evaluation->weight,
           'status' => $evaluation->status,
           'topic_id' => $evaluation->topic_id,
-          'department_id' => $item->department_id,
+          'department_id' => $department->id,
         ]);
 
         if ($evaluation->status !== ApprovalType::APPROVED) continue;

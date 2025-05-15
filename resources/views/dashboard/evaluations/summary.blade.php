@@ -4,7 +4,7 @@
     <x-slot:description>View evaluation summary in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
-  <div class="grid grid-cols-2 gap-6 xl:grid-cols-4">
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-4">
     <x-ui.card>
       <div class="flex items-center justify-between gap-2 mb-2">
         <p class="text-sm font-medium">Overall Average Score</p>
@@ -101,10 +101,10 @@
         <tr>
           <td class="w-10">{{ $index + 1 }}</td>
           <td>
-            <div class="flex items-center gap-2">
+            <a href="{{ route('employees.show', $employee->id) }}" class="flex items-center gap-2">
               <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
               <span>{{ $employee->name }}</span>
-            </div>
+            </a>
           </td>
           <td>{{ $employee->department->name }}</td>
           <td>{{ $employee->position->name }}</td>
@@ -118,6 +118,8 @@
       @endforelse
     </x-slot:body>
   </x-ui.table>
+
+  {{ $top_performers->links() }}
 
   @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -152,6 +154,12 @@
             indexAxis: 'y',
             responsive: true,
             maintainAspectRatio: false,
+            scales: {
+              x: {
+                min: 0,
+                max: 100
+              }
+            },
             plugins: {
               legend: {
                 display: false
@@ -178,6 +186,12 @@
             indexAxis: 'y',
             responsive: true,
             maintainAspectRatio: false,
+            scales: {
+              x: {
+                min: 0,
+                max: 100
+              }
+            },
             plugins: {
               legend: {
                 display: false

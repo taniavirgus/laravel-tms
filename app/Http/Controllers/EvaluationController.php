@@ -99,7 +99,7 @@ class EvaluationController extends Controller
     $completion_rate = $total_employees > 0 ? round(($employees_count / $total_employees) * 100) : 0;
 
     $department_data = collect();
-    $departments = Department::take(5)->get();
+    $departments = Department::get();
 
     if ($evaluation_count > 0) {
       $evaluation_ids = $evaluations->pluck('id')->toArray();
@@ -126,7 +126,7 @@ class EvaluationController extends Controller
     $department_scores = $department_data->pluck('average_score')->toArray();
 
     $topic_data = collect();
-    $topics = Topic::take(5)->get();
+    $topics = Topic::get();
 
     if ($evaluation_count > 0) {
       $evaluation_ids = $evaluations->pluck('id')->toArray();
@@ -166,8 +166,8 @@ class EvaluationController extends Controller
       ->when($topic_id, function ($q) use ($topic_id) {
         $q->where('evaluations.topic_id', $topic_id);
       })
-      ->limit(5)
-      ->get();
+      ->paginate(5)
+      ->withQueryString();
 
     return view('dashboard.evaluations.summary', [
       'evaluations' => $evaluations,
