@@ -93,7 +93,7 @@
     <x-ui.label for="status" value="Status" />
     <x-ui.select id="status" name="status">
       @foreach ($statuses as $status)
-        <option value="{{ $status->value }}" @selected(old('status', $employee->value) === $status->value)>
+        <option value="{{ $status->value }}" @selected(old('status', $employee->value) == $status->value)>
           {{ $status->label() }}
         </option>
       @endforeach

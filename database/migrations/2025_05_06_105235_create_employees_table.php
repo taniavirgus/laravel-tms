@@ -31,8 +31,8 @@ return new class extends Migration
       $table->enum('gender', array_map(fn($gender) => $gender->value, $genders));
       $table->enum('religion', array_map(fn($religion) => $religion->value, $religions));
       $table->enum('status', array_map(fn($status) => $status->value, $statuses))->default(StatusType::ACTIVE->value);
-      $table->foreignIdFor(Department::class)->constrained()->onDelete('cascade');
-      $table->foreignIdFor(Position::class)->constrained()->onDelete('cascade');
+      $table->foreignIdFor(Department::class)->constrained()->cascadeOnDelete();
+      $table->foreignIdFor(Position::class)->constrained()->cascadeOnDelete();
     });
   }
 

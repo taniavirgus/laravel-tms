@@ -84,7 +84,7 @@
     </x-slot:footer>
   </x-ui.card>
 
-  <x-ui.card class="mt-6">
+  <x-ui.card>
     <x-slot:header>
       <i data-lucide="file-text" class="size-5 text-primary-500"></i>
       <h5>Employee Feedback</h5>
@@ -141,46 +141,44 @@
     @endcan
   </x-ui.card>
 
-  <div class="mt-6">
-    <x-ui.table>
-      <x-slot:title>
-        <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
-        <h4>Assigned Evaluations</h4>
-      </x-slot:title>
+  <x-ui.table>
+    <x-slot:title>
+      <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
+      <h4>Assigned Evaluations</h4>
+    </x-slot:title>
 
-      <x-slot:head>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Topic</th>
-        <th>Department</th>
-        <th>Weight</th>
-        <th>Point</th>
-        <th>Employee Score</th>
-        <th>Actions</th>
-      </x-slot:head>
+    <x-slot:head>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Topic</th>
+      <th>Department</th>
+      <th>Weight</th>
+      <th>Point</th>
+      <th>Employee Score</th>
+      <th>Actions</th>
+    </x-slot:head>
 
-      <x-slot:body>
-        @forelse ($evaluations as $evaluation)
-          <tr>
-            <td class="w-10">{{ $evaluation->id }}</td>
-            <td>{{ $evaluation->name }}</td>
-            <td>{{ $evaluation->topic->name }}</td>
-            <td>{{ $evaluation->department->name }}</td>
-            <td>{{ $evaluation->weight }}%</td>
-            <td>{{ $evaluation->point }}</td>
-            <td>{{ $evaluation->pivot->score }} / {{ $evaluation->target }}</td>
-            <td>
-              <div class="flex items-center gap-4">
-                <a href="{{ route('evaluations.show', $evaluation) }}" class="text-primary-500">
-                  View
-                </a>
-              </div>
-            </td>
-          </tr>
-        @empty
-          <x-ui.empty colspan="8" message="No evaluations assigned to this employee" />
-        @endforelse
-      </x-slot:body>
-    </x-ui.table>
-  </div>
+    <x-slot:body>
+      @forelse ($evaluations as $evaluation)
+        <tr>
+          <td class="w-10">{{ $evaluation->id }}</td>
+          <td>{{ $evaluation->name }}</td>
+          <td>{{ $evaluation->topic->name }}</td>
+          <td>{{ $evaluation->department->name }}</td>
+          <td>{{ $evaluation->weight }}%</td>
+          <td>{{ $evaluation->point }}</td>
+          <td>{{ $evaluation->pivot->score }} / {{ $evaluation->target }}</td>
+          <td>
+            <div class="flex items-center gap-4">
+              <a href="{{ route('evaluations.show', $evaluation) }}" class="text-primary-500">
+                View
+              </a>
+            </div>
+          </td>
+        </tr>
+      @empty
+        <x-ui.empty colspan="8" message="No evaluations assigned to this employee" />
+      @endforelse
+    </x-slot:body>
+  </x-ui.table>
 </x-dashboard-layout>

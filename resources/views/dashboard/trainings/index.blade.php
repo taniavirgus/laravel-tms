@@ -1,17 +1,3 @@
-{{-- 
-
-  protected $fillable = [
-    'name',
-    'description',
-    'start_date',
-    'end_date',
-    'duration',
-    'capacity',
-    'department_id',
-    'evaluation_id',
-  ];
-
---}}
 <x-dashboard-layout>
   <x-dashboard.heading>
     <x-slot:title>Trainings List</x-slot:title>
@@ -37,6 +23,12 @@
           @foreach ($departments as $department)
             <option value="{{ $department->id }}" @selected(request()->get('department_id') == $department->id)>{{ $department->name }}</option>
           @endforeach
+        </x-ui.select>
+
+        <x-ui.select name="status" onchange="this.form.submit()">
+          <option value="">All Statuses</option>
+          <option value="upcoming" @selected(request()->get('status') == 'upcoming')>Upcoming</option>
+          <option value="completed" @selected(request()->get('status') == 'completed')>Completed</option>
         </x-ui.select>
       </form>
 
@@ -65,9 +57,9 @@
       <th>No</th>
       <th>Training Name</th>
       <th>Department</th>
-      <th>Evaluation</th>
       <th>Start Date</th>
       <th>End Date</th>
+      <th>Status</th>
       <th>Actions</th>
     </x-slot:head>
 
@@ -77,11 +69,17 @@
           <td class="w-10">{{ $training->id }}</td>
           <td>{{ $training->name }}</td>
           <td>{{ $training->department->name }}</td>
-          <td>{{ $training->evaluation->name }}</td>
           <td>{{ $training->start_date->format('d M Y') }}</td>
           <td>{{ $training->end_date->format('d M Y') }}</td>
+          <td><x-ui.badge :value="$training->status" /></td>
           <td>
             <div class="flex items-center gap-4">
+              @can('view', $training)
+                <a href="{{ route('trainings.show', $training) }}" class="text-primary-500">
+                  View
+                </a>
+              @endcan
+
               @can('update', $training)
                 <a href="{{ route('trainings.edit', $training) }}" class="text-primary-500">
                   Edit

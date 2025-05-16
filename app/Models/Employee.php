@@ -98,4 +98,17 @@ class Employee extends Model
         'description' => 'No feedback available',
       ]);
   }
+
+  /**
+   * The trainings that belong to the employee.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+   */
+
+  public function trainings(): BelongsToMany
+  {
+    return $this->belongsToMany(Training::class, 'employee_trainings')
+      ->withPivot('score', 'email_sent')
+      ->withTimestamps();
+  }
 }

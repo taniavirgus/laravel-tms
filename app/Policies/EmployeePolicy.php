@@ -29,7 +29,7 @@ class EmployeePolicy
    */
   public function create(User $user): bool
   {
-    return $user->role === RoleType::SYSADMIN;
+    return $user->role == RoleType::SYSADMIN;
   }
 
   /**
@@ -37,7 +37,7 @@ class EmployeePolicy
    */
   public function update(User $user, Employee $employee): bool
   {
-    return $user->role === RoleType::SYSADMIN;
+    return $user->role == RoleType::SYSADMIN;
   }
 
   /**
@@ -45,7 +45,7 @@ class EmployeePolicy
    */
   public function delete(User $user, Employee $employee): bool
   {
-    return $user->role === RoleType::SYSADMIN;
+    return $user->role == RoleType::SYSADMIN;
   }
 
   /**

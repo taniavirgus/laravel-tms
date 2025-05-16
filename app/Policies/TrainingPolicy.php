@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\CompletionStatus;
 use App\Enums\RoleType;
 use App\Models\Training;
 use App\Models\User;
@@ -9,7 +10,7 @@ use App\Models\User;
 class TrainingPolicy
 {
   /**
-   * List of allowed roles for viewing evaluations.
+   * List of allowed roles for viewing training.
    */
   private const ALLOWED_ROLES = [
     RoleType::MANAGER,
@@ -38,7 +39,7 @@ class TrainingPolicy
    */
   public function create(User $user): bool
   {
-    return $user->role === RoleType::PD;
+    return $user->role == RoleType::PD;
   }
 
   /**
@@ -46,7 +47,7 @@ class TrainingPolicy
    */
   public function update(User $user, Training $training): bool
   {
-    return $user->role === RoleType::PD;
+    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
   }
 
   /**
@@ -54,7 +55,7 @@ class TrainingPolicy
    */
   public function delete(User $user, Training $training): bool
   {
-    return $user->role === RoleType::PD;
+    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
   }
 
   /**
@@ -66,10 +67,34 @@ class TrainingPolicy
   }
 
   /**
-   * Determine whether the user can permanently delete the model.
+   * Determine whether the user can assign the employee to the training.
    */
-  public function forceDelete(User $user, Training $training): bool
+  public function assign(User $user, Training $training): bool
   {
-    return false;
+    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
+  }
+
+  /**
+   * Determine whether the user can unassign the employee from the training.
+   */
+  public function unassign(User $user, Training $training): bool
+  {
+    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
+  }
+
+  /**
+   * Determine whether the user can set scores for the training.
+   */
+  public function score(User $user, Training $training): bool
+  {
+    return $user->role == RoleType::PD && $training->status == CompletionStatus::COMPLETED;
+  }
+
+  /**
+   * Determine whether the user can notify and locked the training.
+   */
+  public function notify(User $user, Training $training): bool
+  {
+    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
   }
 }

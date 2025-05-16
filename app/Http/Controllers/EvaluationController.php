@@ -216,11 +216,6 @@ class EvaluationController extends Controller
    */
   public function show(Evaluation $evaluation): View
   {
-    $evaluation->load([
-      'department',
-      'topic'
-    ]);
-
     $assigned = $evaluation->employees->load('department', 'position');
     $assigned_ids = $assigned->pluck('id')->toArray();
 

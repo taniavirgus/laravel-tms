@@ -187,7 +187,7 @@
     </div>
 
     @foreach ($navigations as $navigation)
-      @continue(Auth::user()->permitted($navigation->id) === false)
+      @continue(Auth::user()->permitted($navigation->id) == false)
 
       <div class="grid gap-2">
         <h3 class="px-6 text-sm font-medium text-base-400">{{ $navigation->label }}</h3>

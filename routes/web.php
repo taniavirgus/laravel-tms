@@ -60,9 +60,16 @@ Route::middleware('auth', MiddlewareRule::role(
       Route::delete('evaluations/{evaluation}/unassign/{employee}', 'unassign')->name('evaluations.unassign');
     });
 
-    Route::resource('trainings', TrainingController::class);
     Route::resource('evaluations', EvaluationController::class);
     Route::resource('employees.feedback', FeedbackController::class)->shallow()->only('create', 'store', 'destroy');
+
+    Route::controller(TrainingController::class)->group(function () {
+      Route::patch('trainings/{training}/score', 'score')->name('trainings.score');
+      Route::post('trainings/{training}/assign', 'assign')->name('trainings.assign');
+      Route::post('trainings/{training}/notify', 'notify')->name('trainings.notify');
+      Route::delete('trainings/{training}/unassign/{employee}', 'unassign')->name('trainings.unassign');
+    });
+    Route::resource('trainings', TrainingController::class);
   });
 
 require __DIR__ . '/auth.php';

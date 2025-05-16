@@ -6,7 +6,7 @@
 
   <div class="grid grid-cols-2 gap-6 xl:grid-cols-4">
     @foreach ($widgets as $widget)
-      @continue($widget->show === false)
+      @continue($widget->show == false)
       <div class="p-6 border rounded-xl bg-base-50 border-base-200">
         <div class="flex flex-col gap-2">
           <div class="flex items-start justify-between">

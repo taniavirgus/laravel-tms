@@ -40,7 +40,7 @@
     <x-ui.select id="role" name="role" required>
       <option value="">Select Role</option>
       @foreach ($roles as $role)
-        <option value="{{ $role->value }}" @selected(old('role', $user->role?->value) === $role->value)>
+        <option value="{{ $role->value }}" @selected(old('role', $user->role?->value) == $role->value)>
           {{ $role->label() }}
         </option>
       @endforeach

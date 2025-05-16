@@ -22,8 +22,9 @@ return new class extends Migration
       $table->date('end_date');
       $table->integer('duration')->default(0)->comment('Duration in hours');
       $table->integer('capacity')->default(0)->comment('Maximum number of participants');
-      $table->foreignIdFor(Department::class)->constrained()->onDelete('cascade');
-      $table->foreignIdFor(Evaluation::class)->nullable()->constrained();
+      $table->boolean('notified')->default(false)->comment('Indicates if the participants have been notified, thus locking the training for updates');
+      $table->foreignIdFor(Department::class)->constrained()->cascadeOnDelete();
+      $table->foreignIdFor(Evaluation::class)->nullable()->constrained()->cascadeOnDelete();
     });
   }
 

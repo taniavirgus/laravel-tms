@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\CompletionStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Training extends Model
 {
@@ -19,6 +21,7 @@ class Training extends Model
     'end_date',
     'duration',
     'capacity',
+    'locked',
     'department_id',
     'evaluation_id',
   ];
@@ -31,6 +34,7 @@ class Training extends Model
   protected $casts = [
     'start_date' => 'date',
     'end_date' => 'date',
+    'locked' => 'boolean',
   ];
 
   /**
@@ -54,5 +58,32 @@ class Training extends Model
       ->withDefault([
         'name' => 'No evaluation assigned',
       ]);
+  }
+
+  /**
+   * Get the training's status attribute.
+   *
+   * @return \App\Enums\CompletionStatus
+   */
+  public function getStatusAttribute(): CompletionStatus
+  {
+    return match (true) {
+      $this->end_date < now() => CompletionStatus::COMPLETED,
+      $this->notified == true => CompletionStatus::FINALIZED,
+      $this->start_date > now() => CompletionStatus::UPCOMING,
+      default => CompletionStatus::ONGOING,
+    };
+  }
+
+  /**
+   * The employees that are attending the training.
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+   */
+  public function employees(): BelongsToMany
+  {
+    return $this->belongsToMany(Employee::class, 'employee_trainings')
+      ->withPivot('score', 'email_sent')
+      ->withTimestamps();
   }
 }

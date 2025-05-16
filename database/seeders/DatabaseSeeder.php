@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
       EmployeeSeeder::class,
       TopicSeeder::class,
       EvaluationSeeder::class,
+      TrainingSeeder::class,
     ]);
   }
 }

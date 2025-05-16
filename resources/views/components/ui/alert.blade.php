@@ -8,10 +8,10 @@
 @php
   $props = $attributes
       ->class([
-          'border border-red-200 bg-red-50 text-red-800' => $variant === 'error',
-          'border border-blue-200 bg-blue-50 text-blue-800' => $variant === 'info',
-          'border border-green-200 bg-green-50 text-green-800' => $variant === 'success',
-          'border border-yellow-200 bg-yellow-50 text-yellow-800' => $variant === 'warning',
+          'border border-red-200 bg-red-50 text-red-800' => $variant == 'error',
+          'border border-blue-200 bg-blue-50 text-blue-800' => $variant == 'info',
+          'border border-green-200 bg-green-50 text-green-800' => $variant == 'success',
+          'border border-yellow-200 bg-yellow-50 text-yellow-800' => $variant == 'warning',
       ])
       ->merge([
           'class' => 'p-4 rounded-lg mb-4 text-sm flex items-start gap-2',

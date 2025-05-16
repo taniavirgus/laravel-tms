@@ -47,8 +47,8 @@
         <x-ui.button variant="secondary" type="button" x-on:click="$dispatch('close-modal', 'confirm-update')">
           Cancel
         </x-ui.button>
-        <x-ui.button type="button" class="ml-2" x-data
-          x-on:click="document.getElementById('evaluation-form').submit()">
+
+        <x-ui.button type="button" x-data x-on:click="document.getElementById('evaluation-form').submit()">
           Confirm Update
         </x-ui.button>
       </x-slot:footer>

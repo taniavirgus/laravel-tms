@@ -38,7 +38,7 @@ class TopicPolicy
    */
   public function create(User $user): bool
   {
-    return $user->role === RoleType::PD;
+    return $user->role == RoleType::PD;
   }
 
   /**
@@ -46,7 +46,7 @@ class TopicPolicy
    */
   public function update(User $user, Topic $topic): bool
   {
-    return $user->role === RoleType::PD;
+    return $user->role == RoleType::PD;
   }
 
   /**
@@ -54,7 +54,7 @@ class TopicPolicy
    */
   public function delete(User $user, Topic $topic): bool
   {
-    return $user->role === RoleType::PD;
+    return $user->role == RoleType::PD;
   }
 
   /**
