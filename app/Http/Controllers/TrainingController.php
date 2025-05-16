@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 
 class TrainingController extends Controller
 {
@@ -186,5 +187,34 @@ class TrainingController extends Controller
     });
 
     return back()->with('success', 'Employees notified successfully!');
+  }
+
+  /**
+   * Change employee score for a given training.
+   */
+  public function score(Request $request, Training $training): RedirectResponse
+  {
+    $employee_ids = $training->employees->pluck('id')->toArray();
+
+    $validated = $request->validate([
+      'scores' => ['required', 'array'],
+      'scores.*' => [
+        'required',
+        'integer',
+        'between:0,100',
+        function ($attribute, $value, $fail) use ($employee_ids) {
+          $id = Str::after($attribute, 'scores.');
+          if (!in_array($id, $employee_ids)) $fail("Employee not assigned to this training!");
+        }
+      ],
+    ]);
+
+    foreach ($validated['scores'] as $id => $score) {
+      $training->employees()->updateExistingPivot($id, [
+        'score' => $score
+      ]);
+    }
+
+    return back()->with('success', "Employee score updated successfully!");
   }
 }

@@ -95,7 +95,10 @@ class TrainingPolicy
    */
   public function score(User $user, Training $training): bool
   {
-    return $user->role == RoleType::PD && $training->status == CompletionStatus::COMPLETED;
+    return $user->role == RoleType::PD && in_array($training->status, [
+      CompletionStatus::FINALIZED,
+      CompletionStatus::COMPLETED,
+    ]);
   }
 
   /**
