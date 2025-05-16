@@ -143,6 +143,9 @@ class TrainingController extends Controller
    */
   public function assign(Request $request, Training $training): RedirectResponse
   {
+    $full = $training->employees->count() >= $training->capacity;
+    if ($full) return back()->with('error', 'Training capacity reached!');
+
     $validated = $request->validate([
       'employee_id' => [
         'required',

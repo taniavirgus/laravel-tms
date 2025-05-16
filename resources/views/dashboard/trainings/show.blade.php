@@ -97,8 +97,6 @@
     </x-ui.card>
   </div>
 
-
-
   @can('score', $training)
     <form action="{{ route('trainings.score', $training) }}" method="POST" id="form">
       @csrf
@@ -137,7 +135,7 @@
                 </div>
               </td>
             @else
-              <td>{{ $employee->pivot->score }}</td>
+              <td>{{ $employee->pivot->score }} / 100</td>
             @endcan
             <td><x-ui.badge :value="$employee->pivot->email_sent ? BooleanType::YES : BooleanType::NO" /></td>
             <td>
