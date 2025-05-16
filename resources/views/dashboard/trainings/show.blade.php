@@ -1,3 +1,7 @@
+@php
+  use App\Enums\BooleanType;
+@endphp
+
 <x-dashboard-layout>
   <x-dashboard.heading>
     <x-slot:title>{{ $training->name }} training</x-slot:title>
@@ -111,6 +115,7 @@
         <th>No</th>
         <th>Name</th>
         <th>Score</th>
+        <th>Email</th>
         <th>Actions</th>
       </x-slot:head>
 
@@ -134,6 +139,7 @@
             @else
               <td>{{ $employee->pivot->score }}</td>
             @endcan
+            <td><x-ui.badge :value="$employee->pivot->email_sent ? BooleanType::YES : BooleanType::NO" /></td>
             <td>
               <div class="flex items-center gap-4">
                 @can('unassign', $training)

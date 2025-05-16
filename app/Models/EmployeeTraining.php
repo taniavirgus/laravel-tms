@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BooleanType;
 use Illuminate\Database\Eloquent\Model;
 
 class EmployeeTraining extends Model

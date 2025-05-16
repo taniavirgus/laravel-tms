@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateTrainingRequest;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Evaluation;
+use App\Notifications\TrainingNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -153,6 +154,7 @@ class TrainingController extends Controller
     $id = $validated['employee_id'];
     $training->employees()->attach($id, [
       'score' => 0,
+      'email_sent' => false,
     ]);
 
     return back()->with('success', 'Employee assigned successfully!');
@@ -176,7 +178,11 @@ class TrainingController extends Controller
     $training->notified = true;
     $training->save();
 
-    // TODO: Implement notification logic
+    $training->employees->each(function ($employee) use ($training) {
+      $employee->notify(new TrainingNotification($training, $employee));
+      $employee->pivot->email_sent = true;
+      $employee->pivot->save();
+    });
 
     return back()->with('success', 'Employees notified successfully!');
   }
