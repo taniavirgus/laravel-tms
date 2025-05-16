@@ -39,7 +39,7 @@
 @endphp
 
 
-<div class="overflow-hidden border border-base-200 rounded-xl">
+<div class="w-full overflow-hidden border border-base-200 rounded-xl">
   @isset($title)
     <div {{ $props->title }}>
       {{ $title }}

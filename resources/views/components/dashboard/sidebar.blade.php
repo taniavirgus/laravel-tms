@@ -271,7 +271,7 @@
   </div>
 </aside>
 
-<x-modal name="choose-training" focusable class="max-w-2xl">
+<x-modal name="choose-training" focusable class="!max-w-3xl">
   <x-ui.table>
     <x-slot:title>
       <i data-lucide="graduation-cap" class="size-5 text-primary-500"></i>

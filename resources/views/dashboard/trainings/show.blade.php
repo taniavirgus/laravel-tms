@@ -113,7 +113,7 @@
         <th>No</th>
         <th>Name</th>
         <th>Score</th>
-        <th>Email</th>
+        <th>Notified</th>
         <th>Actions</th>
       </x-slot:head>
 

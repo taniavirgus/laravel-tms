@@ -24,7 +24,7 @@
         @method('DELETE')
 
         <x-slot:header>
-          <h5 class="text-lg font-semibold text-zinc-900">
+          <h5 class="text-lg font-semibold truncate text-zinc-900">
             Are you sure you want to delete <span class="font-bold" x-text="title"></span>?
           </h5>
         </x-slot:header>
