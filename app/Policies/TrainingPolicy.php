@@ -67,6 +67,14 @@ class TrainingPolicy
   }
 
   /**
+   * Determine whether the user can assign any training.
+   */
+  public function assignAny(User $user): bool
+  {
+    return $user->role == RoleType::PD;
+  }
+
+  /**
    * Determine whether the user can assign the employee to the training.
    */
   public function assign(User $user, Training $training): bool

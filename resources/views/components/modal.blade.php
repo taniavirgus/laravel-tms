@@ -5,7 +5,7 @@
 
 @php
   $props = $attributes->merge([
-      'class' => 'relative bg-white overflow-hidden max-w-xl rounded-xl mx-auto z-50',
+      'class' => 'relative bg-white overflow-hidden w-full max-w-xl rounded-xl mx-auto z-50',
   ]);
 @endphp
 
