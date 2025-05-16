@@ -250,10 +250,8 @@ class EvaluationController extends Controller
   public function update(UpdateEvaluationRequest $request, Evaluation $evaluation): RedirectResponse
   {
     $validated = $request->validated();
-    $department = $evaluation->department;
     $evaluation->update($validated);
-
-    if ($department->id != $evaluation->department_id) $evaluation->employees()->detach();
+    $evaluation->employees()->detach();
 
     return redirect()
       ->route('evaluations.show', $evaluation)

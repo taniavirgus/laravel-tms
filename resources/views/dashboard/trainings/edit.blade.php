@@ -40,8 +40,9 @@
     </x-slot:header>
 
     <p class="text-zinc-600 text-wrap">
-      Warning! this action will update the training information. even if the training is already in progress or
-      completed. please make sure to double check the information before proceeding.
+      Warning! this action will update the training information,
+      <span class="text-red-500">all employees attached to this training will be removed</span>
+      please make sure to double check the information before proceeding.
     </p>
 
     <x-slot:footer>

@@ -39,8 +39,9 @@
       </x-slot:header>
 
       <p class="text-zinc-600 text-wrap">
-        Warning! Updating this evaluation may remove attached employees and affect existing evaluation data.
-        Please make sure you have checked all information before proceeding.
+        Warning! this action will update the evaluation information,
+        <span class="text-red-500">all employees attached to this evaluation will be removed</span>
+        please make sure to double check the information before proceeding.
       </p>
 
       <x-slot:footer>

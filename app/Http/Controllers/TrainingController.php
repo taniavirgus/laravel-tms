@@ -118,6 +118,7 @@ class TrainingController extends Controller
   {
     $validated = $request->validated();
     $training->update($validated);
+    $training->employees()->detach();
 
     return redirect()
       ->route('trainings.show', $training)
