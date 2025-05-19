@@ -38,6 +38,7 @@ class EvaluationController extends Controller
     $search = $request->input('search');
     $department_id = $request->input('department_id');
     $topic_id = $request->input('topic_id');
+    $status = $request->input('status');
 
     $evaluations = Evaluation::query()
       ->with(['department', 'topic'])
@@ -50,6 +51,9 @@ class EvaluationController extends Controller
       ->when($topic_id, function ($q) use ($topic_id) {
         $q->where('topic_id', $topic_id);
       })
+      ->when($status, function ($q) use ($status) {
+        $q->where('status', $status);
+      })
       ->paginate(5)
       ->withQueryString();
 
@@ -57,6 +61,7 @@ class EvaluationController extends Controller
       'evaluations' => $evaluations,
       'departments' => Department::select(['name', 'id'])->get(),
       'topics' => Topic::select(['name', 'id'])->get(),
+      'statuses' => ApprovalType::cases()
     ]);
   }
 

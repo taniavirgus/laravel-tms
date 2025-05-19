@@ -32,6 +32,13 @@
             <option value="{{ $topic->id }}" @selected(request()->get('topic_id') == $topic->id)>{{ $topic->name }}</option>
           @endforeach
         </x-ui.select>
+
+        <x-ui.select name="status" placeholder="Status" onchange="this.form.submit()">
+          <option value="">Select Status</option>
+          @foreach ($statuses as $status)
+            <option value="{{ $status->value }}" @selected(request()->get('status') == $status->value)>{{ $status->label() }}</option>
+          @endforeach
+        </x-ui.select>
       </form>
 
       <div class="flex items-center gap-2">
