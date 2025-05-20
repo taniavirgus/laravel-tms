@@ -141,44 +141,73 @@
     @endcan
   </x-ui.card>
 
-  <x-ui.table>
-    <x-slot:title>
-      <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
-      <h4>Assigned Evaluations</h4>
-    </x-slot:title>
+  @can('score', $employee)
+    <form action="{{ route('employees.score', $employee) }}" method="POST" id="form">
+      @csrf
+      @method('PATCH')
+    @endcan
 
-    <x-slot:head>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Topic</th>
-      <th>Department</th>
-      <th>Weight</th>
-      <th>Point</th>
-      <th>Employee Score</th>
-      <th>Actions</th>
-    </x-slot:head>
 
-    <x-slot:body>
-      @forelse ($evaluations as $evaluation)
-        <tr>
-          <td class="w-10">{{ $evaluation->id }}</td>
-          <td>{{ $evaluation->name }}</td>
-          <td>{{ $evaluation->topic->name }}</td>
-          <td>{{ $evaluation->department->name }}</td>
-          <td>{{ $evaluation->weight }}%</td>
-          <td>{{ $evaluation->point }}</td>
-          <td>{{ $evaluation->pivot->score }} / {{ $evaluation->target }}</td>
-          <td>
-            <div class="flex items-center gap-4">
-              <a href="{{ route('evaluations.show', $evaluation) }}" class="text-primary-500">
-                View
-              </a>
-            </div>
-          </td>
-        </tr>
-      @empty
-        <x-ui.empty colspan="8" message="No evaluations assigned to this employee" />
-      @endforelse
-    </x-slot:body>
-  </x-ui.table>
+    <x-ui.table>
+      <x-slot:title>
+        <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
+        <h4>Assigned Evaluations</h4>
+      </x-slot:title>
+
+      <x-slot:head>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Topic</th>
+        <th>Department</th>
+        <th>Weight</th>
+        <th>Point</th>
+        <th>Employee Score</th>
+        <th>Actions</th>
+      </x-slot:head>
+
+      <x-slot:body>
+        @forelse ($evaluations as $evaluation)
+          <tr>
+            <td class="w-10">{{ $evaluation->id }}</td>
+            <td>{{ $evaluation->name }}</td>
+            <td>{{ $evaluation->topic->name }}</td>
+            <td>{{ $evaluation->department->name }}</td>
+            <td>{{ $evaluation->weight }}%</td>
+            <td>{{ $evaluation->point }}</td>
+            @can('score', $employee)
+              <td>
+                <div class="w-40">
+                  <x-ui.range name="scores[{{ $evaluation->id }}]" id="scores[{{ $evaluation->id }}]" step="1"
+                    max="{{ $evaluation->target }}" value="{{ $evaluation->pivot->score }}" :tooltip="false" />
+                </div>
+              </td>
+            @else
+              <td>{{ $evaluation->pivot->score }} / {{ $evaluation->target }}</td>
+            @endcan
+            <td>
+              <div class="flex items-center gap-4">
+                <a href="{{ route('evaluations.show', $evaluation) }}" class="text-primary-500">
+                  View
+                </a>
+              </div>
+            </td>
+          </tr>
+        @empty
+          <x-ui.empty colspan="8" message="No evaluations assigned to this employee" />
+        @endforelse
+      </x-slot:body>
+
+      @can('score', $evaluation)
+        <x-slot:footer class="justify-end">
+          <x-ui.button type="submit">
+            <span>Update</span>
+            <i data-lucide="arrow-up-right" class="size-5"></i>
+          </x-ui.button>
+        </x-slot:footer>
+      @endcan
+    </x-ui.table>
+
+    @can('score', $employee)
+    </form>
+  @endcan
 </x-dashboard-layout>

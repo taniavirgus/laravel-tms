@@ -63,4 +63,12 @@ class EmployeePolicy
   {
     return false;
   }
+
+  /**
+   * Determine whether the user can score the evaluation of the employee.
+   */
+  public function score(User $user, Employee $employee): bool
+  {
+    return $user->role == RoleType::MANAGER || $user->role == RoleType::SUPERVISOR;
+  }
 }

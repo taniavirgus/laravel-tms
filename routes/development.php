@@ -17,7 +17,7 @@ if (app()->environment('local')) {
         Artisan::call('migrate:fresh', ['--seed' => true]);
         Auth::loginUsingId($user->id);
 
-        return redirect()->back()->with('success', 'Database migrated and seeded successfully.');
+        return back()->with('success', 'Database migrated and seeded successfully.');
       })->name('migrate');
 
       Route::get('reset', function () {
@@ -27,7 +27,7 @@ if (app()->environment('local')) {
         Artisan::call('db:seed', ['--class' => 'UserSeeder']);
         Auth::loginUsingId($user->id);
 
-        return redirect()->back()->with('success', 'Database migrated successfully.');
+        return back()->with('success', 'Database migrated successfully.');
       })->name('reset');
 
       Route::get('impersonate', function () {
@@ -45,7 +45,7 @@ if (app()->environment('local')) {
           RoleType::PD->value => Auth::login($pd),
         };
 
-        return redirect()->back()->with('success', 'Impersonated as ' . $role);
+        return back()->with('success', 'Impersonated as ' . $role);
       })->name('impersonate');
     });
 }

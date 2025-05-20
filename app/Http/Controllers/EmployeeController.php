@@ -12,6 +12,7 @@ use App\Models\Department;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 
 class EmployeeController extends Controller
 {
@@ -140,5 +141,39 @@ class EmployeeController extends Controller
     return redirect()
       ->route('employees.index')
       ->with('success', 'Employee deleted successfully!');
+  }
+
+  /**
+   * Change employee evaluation score.
+   */
+  public function score(Request $request, Employee $employee)
+  {
+    $evaluations = $employee->evaluations;
+
+    $validated = $request->validate([
+      'scores' => ['required', 'array'],
+      'scores.*' => [
+        'required',
+        'numeric',
+        'min:0',
+        function ($attribute, $value, $fail) use ($evaluations) {
+          $id = Str::after($attribute, 'scores.');
+
+          $evalution_ids = $evaluations->pluck('id')->toArray();
+          if (!in_array($id, $evalution_ids)) $fail('The selected evaluation is invalid.');
+
+          $evaluation = $evaluations->find($id);
+          if ($value > $evaluation->target) $fail('The score must be less than or equal to the target score.');
+        },
+      ],
+    ]);
+
+    foreach ($validated['scores'] as $id => $score) {
+      $employee->evaluations()->updateExistingPivot($id, [
+        'score' => $score,
+      ]);
+    }
+
+    return back()->with('success', 'Employee score updated successfully!');
   }
 }

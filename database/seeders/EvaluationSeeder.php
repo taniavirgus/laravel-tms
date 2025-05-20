@@ -44,7 +44,7 @@ class EvaluationSeeder extends Seeder
       ],
       [
         'department_id' => 2,
-        'position_id' => 2,
+        'position_id' => 3,
         'evaluations' => [
           [
             'name' => 'Budget Accuracy',
@@ -68,7 +68,7 @@ class EvaluationSeeder extends Seeder
       ],
       [
         'department_id' => 3,
-        'position_id' => 3,
+        'position_id' => 5,
         'evaluations' => [
           [
             'name' => 'Campaign ROI',
@@ -92,7 +92,7 @@ class EvaluationSeeder extends Seeder
       ],
       [
         'department_id' => 4,
-        'position_id' => 4,
+        'position_id' => 6,
         'evaluations' => [
           [
             'name' => 'System Uptime',
@@ -125,7 +125,7 @@ class EvaluationSeeder extends Seeder
       ],
       [
         'department_id' => 5,
-        'position_id' => 5,
+        'position_id' => 8,
         'evaluations' => [
           [
             'name' => 'Operational Efficiency',

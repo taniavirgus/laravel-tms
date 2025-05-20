@@ -52,6 +52,10 @@ Route::middleware('auth', MiddlewareRule::role(
   ->group(function () {
     Route::resource('topics', TopicController::class)->except('show');
 
+    Route::controller(EmployeeController::class)->group(function () {
+      Route::patch('employees/{employee}/score', 'score')->name('employees.score');
+    });
+
     Route::controller(EvaluationController::class)->group(function () {
       Route::get('evaluations/summary', 'summary')->name('evaluations.summary');
       Route::post('evaluations/{evaluation}/assign', 'assign')->name('evaluations.assign');
@@ -69,6 +73,7 @@ Route::middleware('auth', MiddlewareRule::role(
       Route::post('trainings/{training}/notify', 'notify')->name('trainings.notify');
       Route::delete('trainings/{training}/unassign/{employee}', 'unassign')->name('trainings.unassign');
     });
+
     Route::resource('trainings', TrainingController::class);
   });
 
