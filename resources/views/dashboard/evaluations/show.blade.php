@@ -92,13 +92,14 @@
     </x-slot:footer>
   </x-ui.card>
 
-  @can('score', $evaluation)
-    <form action="{{ route('evaluations.score', $evaluation) }}" method="POST" id="form">
-      @csrf
-      @method('PATCH')
-    @endcan
 
-    <x-ui.table>
+  <x-ui.table>
+    @can('score', $evaluation)
+      <form action="{{ route('evaluations.score', $evaluation) }}" method="POST" id="form">
+        @csrf
+        @method('PATCH')
+      @endcan
+
       <x-slot:title>
         <i data-lucide="user-check" class="size-5 text-primary-500"></i>
         <h4>Assigned Employees</h4>
@@ -128,11 +129,15 @@
             <td>{{ $employee->department->name }}</td>
             <td>{{ $employee->position->name }}</td>
             @can('score', $evaluation)
-              <td>
-                <div class="w-40">
-                  <x-ui.range name="scores[{{ $employee->id }}]" id="scores[{{ $employee->id }}]" step="1"
-                    max="{{ $evaluation->target }}" value="{{ $employee->pivot->score }}" :tooltip="false" />
-                </div>
+              <td class="w-36 min-w-28">
+                <label for="scores[{{ $employee->id }}]" class="sr-only">Score</label>
+                <x-ui.input type="number" class="appearance-none" name="scores[{{ $employee->id }}]"
+                  id="scores[{{ $employee->id }}]" max="{{ $evaluation->target }}"
+                  value="{{ $employee->pivot->score }}">
+                  <x-slot:right>
+                    <span class="text-sm text-base-500">of {{ $evaluation->target }}</span>
+                  </x-slot:right>
+                </x-ui.input>
               </td>
             @else
               <td>{{ $employee->pivot->score }} / {{ $evaluation->target }}</td>
@@ -163,12 +168,10 @@
             <i data-lucide="arrow-up-right" class="size-5"></i>
           </x-ui.button>
         </x-slot:footer>
-      @endcan
-    </x-ui.table>
+      </form>
+    @endcan
+  </x-ui.table>
 
-    @can('score', $evaluation)
-    </form>
-  @endcan
 
   <x-ui.table>
     <x-slot:title>

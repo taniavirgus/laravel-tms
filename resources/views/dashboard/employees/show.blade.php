@@ -141,14 +141,14 @@
     @endcan
   </x-ui.card>
 
-  @can('score', $employee)
-    <form action="{{ route('employees.score', $employee) }}" method="POST" id="form">
-      @csrf
-      @method('PATCH')
-    @endcan
 
+  <x-ui.table>
+    @can('score', $employee)
+      <form action="{{ route('employees.score', $employee) }}" method="POST" id="form">
+        @csrf
+        @method('PATCH')
+      @endcan
 
-    <x-ui.table>
       <x-slot:title>
         <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
         <h4>Assigned Evaluations</h4>
@@ -175,11 +175,15 @@
             <td>{{ $evaluation->weight }}%</td>
             <td>{{ $evaluation->point }}</td>
             @can('score', $employee)
-              <td>
-                <div class="w-40">
-                  <x-ui.range name="scores[{{ $evaluation->id }}]" id="scores[{{ $evaluation->id }}]" step="1"
-                    max="{{ $evaluation->target }}" value="{{ $evaluation->pivot->score }}" :tooltip="false" />
-                </div>
+              <td class="w-36 min-w-28">
+                <label for="scores[{{ $evaluation->id }}]" class="sr-only">Score</label>
+                <x-ui.input type="number" class="appearance-none" name="scores[{{ $evaluation->id }}]"
+                  id="scores[{{ $evaluation->id }}]" max="{{ $evaluation->target }}"
+                  value="{{ $evaluation->pivot->score }}">
+                  <x-slot:right>
+                    <span class="text-sm text-base-500">of {{ $evaluation->target }}</span>
+                  </x-slot:right>
+                </x-ui.input>
               </td>
             @else
               <td>{{ $evaluation->pivot->score }} / {{ $evaluation->target }}</td>
@@ -204,10 +208,8 @@
             <i data-lucide="arrow-up-right" class="size-5"></i>
           </x-ui.button>
         </x-slot:footer>
-      @endcan
-    </x-ui.table>
+      </form>
+    @endcan
+  </x-ui.table>
 
-    @can('score', $employee)
-    </form>
-  @endcan
 </x-dashboard-layout>
