@@ -163,11 +163,23 @@ class EvaluationController extends Controller
     $top_performers = Employee::select('employees.*')
       ->join('employee_evaluations', 'employees.id', '=', 'employee_evaluations.employee_id')
       ->join('evaluations', 'evaluations.id', '=', 'employee_evaluations.evaluation_id')
+      ->leftJoin('feedback', 'employees.id', '=', 'feedback.employee_id')
       ->with(['department', 'position'])
       ->groupBy('employees.id')
-      ->selectRaw('AVG((CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * 100) as average_score')
       ->selectRaw('COUNT(DISTINCT evaluations.id) as evaluations_count')
-      ->orderByDesc('average_score')
+      ->selectRaw('AVG(CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL) * 100) as evaluation_score')
+      ->selectRaw('SUM(CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * CAST(evaluations.point AS REAL) as total_point')
+      ->selectRaw('
+        AVG(
+          CAST(feedback.teamwork as REAL) +
+          CAST(feedback.communication as REAL) +
+          CAST(feedback.initiative as REAL) +
+          CAST(feedback.problem_solving as REAL) +
+          CAST(feedback.adaptability as REAL) +
+          CAST(feedback.leadership as REAL)
+        ) / 6 as feedback_score
+      ')
+      ->orderByDesc('total_point')
       ->when($department_id, function ($q) use ($department_id) {
         $q->where('employees.department_id', $department_id);
       })

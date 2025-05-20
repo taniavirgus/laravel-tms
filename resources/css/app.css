@@ -48,6 +48,10 @@
       @apply pr-8;
     }
 
+    & th[data-tooltip-target] {
+      @apply underline underline-offset-4 decoration-dashed decoration-primary-500;
+    }
+
     & caption {
       @apply mt-4 text-sm text-zinc-200;
     }
@@ -75,15 +79,19 @@
     }
   }
 
-    input[type="number"].appearance-none::-webkit-inner-spin-button,
-    input[type="number"].appearance-none::-webkit-outer-spin-button {
-        -webkit-appearance: none !important;
-        margin: 0 !important;
-    }
+  input[type="number"].appearance-none::-webkit-inner-spin-button,
+  input[type="number"].appearance-none::-webkit-outer-spin-button {
+      -webkit-appearance: none !important;
+      margin: 0 !important;
+  }
 
-    input[type="number"].appearance-none {
-        -moz-appearance: textfield !important;
-    }
+  input[type="number"].appearance-none {
+      -moz-appearance: textfield !important;
+  }
+
+  *[data-tooltip-target] {
+    @apply hover:cursor-help;
+  }
 }
 
 @layer components {

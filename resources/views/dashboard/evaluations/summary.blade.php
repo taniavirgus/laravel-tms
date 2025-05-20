@@ -87,14 +87,25 @@
       </form>
     </x-slot:action>
 
+
     <x-slot:head>
+      <x-ui.tooltip id="evaluations" tooltip="Total evaluations assigned to the employee" />
+      <x-ui.tooltip id="point" tooltip="Total points received by the employee" />
+      <x-ui.tooltip id="feedback" tooltip="Average feedback score" />
+      <x-ui.tooltip id="evaluation" tooltip="Average evaluation score" />
+      <x-ui.tooltip id="average" tooltip="Average of feedback and evaluation scores" />
+
       <th>Rank</th>
       <th>Name</th>
       <th>Department</th>
       <th>Position</th>
-      <th>Overall score</th>
-      <th>Total Evaluations</th>
+      <th data-tooltip-target="evaluations">Evaluations</th>
+      <th data-tooltip-target="point">Point</th>
+      <th data-tooltip-target="feedback">Feedback</th>
+      <th data-tooltip-target="evaluation">Evaluation</th>
+      <th data-tooltip-target="average">Average</th>
     </x-slot:head>
+
 
     <x-slot:body>
       @forelse ($top_performers as $index => $employee)
@@ -108,13 +119,25 @@
           </td>
           <td>{{ $employee->department->name }}</td>
           <td>{{ $employee->position->name }}</td>
-          <td class="font-semibold">{{ round($employee->average_score) }}%</td>
-          <td>{{ $employee->evaluations_count }}</td>
+          <td class="font-semibold">{{ $employee->evaluations_count }}</td>
+          <td class="font-semibold">{{ round($employee->total_point) }}</td>
+          <td class="font-semibold">{{ round($employee->feedback_score) }}</td>
+          <td class="font-semibold">{{ round($employee->evaluation_score) }}</td>
+          <td class="font-semibold">{{ round(($employee->feedback_score + $employee->evaluation_score) / 2) }}</td>
         </tr>
       @empty
         <x-ui.empty colspan="6" />
       @endforelse
     </x-slot:body>
+
+    <x-slot:footer>
+      <div class="flex flex-col">
+        <span>Notes</span>
+        <p class="text-sm text-gray-500">
+          The top performers are calculated based on the total evaluation points.
+        </p>
+      </div>
+    </x-slot:footer>
   </x-ui.table>
 
   {{ $top_performers->links() }}
