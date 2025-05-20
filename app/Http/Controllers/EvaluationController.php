@@ -9,6 +9,7 @@ use App\Models\Evaluation;
 use App\Http\Requests\StoreEvaluationRequest;
 use App\Http\Requests\UpdateEvaluationRequest;
 use App\Models\Department;
+use App\Models\Position;
 use App\Models\Topic;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ class EvaluationController extends Controller
     $status = $request->input('status');
 
     $evaluations = Evaluation::query()
-      ->with(['department', 'topic'])
+      ->with(['department', 'topic', 'position'])
       ->when($search, function ($q) use ($search) {
         $q->where('name', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%');
       })
@@ -199,6 +200,7 @@ class EvaluationController extends Controller
   {
     return view('dashboard.evaluations.create', [
       'departments' => Department::select(['name', 'id'])->get(),
+      'positions' => Position::select(['name', 'id'])->get(),
       'topics' => Topic::select(['name', 'id'])->get(),
     ]);
   }
@@ -226,6 +228,7 @@ class EvaluationController extends Controller
 
     $employees = Employee::with(['department', 'position'])
       ->where('department_id', $evaluation->department_id)
+      ->where('position_id', $evaluation->position_id)
       ->where('status', StatusType::ACTIVE->value)
       ->whereNotIn('id', $assigned_ids)
       ->get();
@@ -244,8 +247,9 @@ class EvaluationController extends Controller
   {
     return view('dashboard.evaluations.edit', [
       'evaluation' => $evaluation->load(['department', 'topic']),
-      'departments' => Department::all(),
-      'topics' => Topic::all(),
+      'departments' => Department::select('id', 'name')->get(),
+      'positions' => Position::select('id', 'name')->get(),
+      'topics' => Topic::select('id', 'name')->get(),
     ]);
   }
 

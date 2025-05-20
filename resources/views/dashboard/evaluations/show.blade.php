@@ -22,6 +22,11 @@
       </dl>
 
       <dl>
+        <dt class="text-sm font-medium text-base-500">Position</dt>
+        <dd>{{ $evaluation->position->name }}</dd>
+      </dl>
+
+      <dl>
         <dt class="text-sm font-medium text-base-500">Topic</dt>
         <dd>{{ $evaluation->topic->name }}</dd>
       </dl>
@@ -168,7 +173,7 @@
   <x-ui.table>
     <x-slot:title>
       <i data-lucide="user-plus" class="size-5 text-primary-500"></i>
-      <h4>{{ $evaluation->department->name }} Employees</h4>
+      <h4>{{ $evaluation->position->name }} Employees in {{ $evaluation->department->name }}</h4>
     </x-slot:title>
 
     <x-slot:head>

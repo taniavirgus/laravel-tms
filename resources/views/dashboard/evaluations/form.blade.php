@@ -25,6 +25,19 @@
   </div>
 
   <div class="field">
+    <x-ui.label for="position_id" value="Department" />
+    <x-ui.select id="position_id" name="position_id" class="w-full" required>
+      <option value="">Select Department</option>
+      @foreach ($positions as $position)
+        <option value="{{ $position->id }}" @selected(old('position_id', $evaluation->position_id) == $position->id)>
+          {{ $position->name }}
+        </option>
+      @endforeach
+    </x-ui.select>
+    <x-ui.errors :messages="$errors->get('position_id')" />
+  </div>
+
+  <div class="field col-span-full">
     <x-ui.label for="topic_id" value="Topic" />
     <div class="flex items-center gap-2">
       <x-ui.select id="topic_id" name="topic_id" class="w-full" required>

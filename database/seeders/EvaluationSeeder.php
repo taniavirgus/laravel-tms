@@ -20,6 +20,7 @@ class EvaluationSeeder extends Seeder
     $data = array_to_object([
       [
         'department_id' => 1,
+        'position_id' => 1,
         'evaluations' => [
           [
             'name' => 'Employee Onboarding Effectiveness',
@@ -43,6 +44,7 @@ class EvaluationSeeder extends Seeder
       ],
       [
         'department_id' => 2,
+        'position_id' => 2,
         'evaluations' => [
           [
             'name' => 'Budget Accuracy',
@@ -66,6 +68,7 @@ class EvaluationSeeder extends Seeder
       ],
       [
         'department_id' => 3,
+        'position_id' => 3,
         'evaluations' => [
           [
             'name' => 'Campaign ROI',
@@ -89,6 +92,7 @@ class EvaluationSeeder extends Seeder
       ],
       [
         'department_id' => 4,
+        'position_id' => 4,
         'evaluations' => [
           [
             'name' => 'System Uptime',
@@ -121,6 +125,7 @@ class EvaluationSeeder extends Seeder
       ],
       [
         'department_id' => 5,
+        'position_id' => 5,
         'evaluations' => [
           [
             'name' => 'Operational Efficiency',
@@ -158,12 +163,14 @@ class EvaluationSeeder extends Seeder
           'weight' => $evaluation->weight,
           'status' => $evaluation->status,
           'topic_id' => $evaluation->topic_id,
-          'department_id' => $department->id,
+          'department_id' => $item->department_id,
+          'position_id' => $item->position_id,
         ]);
 
         if ($evaluation->status !== ApprovalType::APPROVED) continue;
 
         $employees = Employee::where('department_id', $department->id)
+          ->where('position_id', $item->position_id)
           ->where('status', StatusType::ACTIVE)
           ->get();
 

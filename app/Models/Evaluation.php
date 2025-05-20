@@ -22,8 +22,9 @@ class Evaluation extends Model
     'target',
     'weight',
     'status',
-    'department_id',
     'topic_id',
+    'department_id',
+    'position_id'
   ];
 
   /**
@@ -46,6 +47,16 @@ class Evaluation extends Model
   public function department(): BelongsTo
   {
     return $this->belongsTo(Department::class);
+  }
+
+  /**
+   * Relationship with between model and other model.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function position(): BelongsTo
+  {
+    return $this->belongsTo(Position::class);
   }
 
   /**

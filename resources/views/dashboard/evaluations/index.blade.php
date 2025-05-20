@@ -66,6 +66,7 @@
       <th>ID</th>
       <th>Name</th>
       <th>Department</th>
+      <th>Position</th>
       <th>Topic</th>
       <th>Status</th>
       <th>Actions</th>
@@ -77,6 +78,7 @@
           <td class="w-10">{{ $evaluation->id }}</td>
           <td>{{ $evaluation->name }}</td>
           <td>{{ $evaluation->department->name }}</td>
+          <td>{{ $evaluation->position->name }}</td>
           <td>{{ $evaluation->topic->name }}</td>
           <td><x-ui.badge :value="$evaluation->status" /></td>
           <td>

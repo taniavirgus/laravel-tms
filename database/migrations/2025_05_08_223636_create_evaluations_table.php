@@ -2,6 +2,7 @@
 
 use App\Enums\ApprovalType;
 use App\Models\Department;
+use App\Models\Position;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,6 +26,7 @@ return new class extends Migration
       $table->integer('weight')->default(0);
       $table->enum('status', array_map(fn($type) => $type->value, $approvals))->default(ApprovalType::DRAFT->value);
       $table->foreignIdFor(Department::class)->constrained()->cascadeOnDelete();
+      $table->foreignIdFor(Position::class)->constrained()->cascadeOnDelete();
     });
   }
 
