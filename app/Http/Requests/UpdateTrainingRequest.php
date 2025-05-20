@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TrainingType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateTrainingRequest extends FormRequest
 {
@@ -30,6 +32,7 @@ class UpdateTrainingRequest extends FormRequest
       'end_date' => ['required', 'date', 'after:start_date'],
       'duration' => ['required', 'integer', 'min:0'],
       'capacity' => ['required', 'integer', 'min:0'],
+      'type' => ['required', new Enum(TrainingType::class)],
     ];
   }
 }

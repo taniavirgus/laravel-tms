@@ -27,8 +27,16 @@
 
         <x-ui.select name="status" onchange="this.form.submit()">
           <option value="">All Statuses</option>
-          <option value="upcoming" @selected(request()->get('status') == 'upcoming')>Upcoming</option>
-          <option value="completed" @selected(request()->get('status') == 'completed')>Completed</option>
+          @foreach ($statuses as $status)
+            <option value="{{ $status->value }}" @selected(request()->get('status') == $status->value)>{{ $status->label() }}</option>
+          @endforeach
+        </x-ui.select>
+
+        <x-ui.select name="type" onchange="this.form.submit()">
+          <option value="">All Types</option>
+          @foreach ($types as $type)
+            <option value="{{ $type->value }}" @selected(request()->get('type') == $type->value)>{{ $type->label() }}</option>
+          @endforeach
         </x-ui.select>
       </form>
 
@@ -56,9 +64,9 @@
     <x-slot:head>
       <th>No</th>
       <th>Training Name</th>
+      <th>Type</th>
       <th>Department</th>
-      <th>Start Date</th>
-      <th>End Date</th>
+      <th>Date</th>
       <th>Status</th>
       <th>Actions</th>
     </x-slot:head>
@@ -69,8 +77,14 @@
           <td class="w-10">{{ $training->id }}</td>
           <td>{{ $training->name }}</td>
           <td>{{ $training->department->name }}</td>
-          <td>{{ $training->start_date->format('d M Y') }}</td>
-          <td>{{ $training->end_date->format('d M Y') }}</td>
+          <td><x-ui.badge :value="$training->type" /></td>
+          <td>
+            <div class="flex items-center gap-2">
+              <span class="whitespace-nowrap">{{ $training->start_date->format('d M Y') }}</span>
+              <hr class="w-10 bg-base-500" />
+              <span class="whitespace-nowrap">{{ $training->end_date->format('d M Y') }}</span>
+            </div>
+          </td>
           <td><x-ui.badge :value="$training->status" /></td>
           <td>
             <div class="flex items-center gap-4">

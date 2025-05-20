@@ -27,6 +27,19 @@
   </div>
 
   <div class="field">
+    <x-ui.label for="type" value="Type" />
+    <x-ui.select id="type" name="type" class="w-full" required>
+      <option value="">Select Type</option>
+      @foreach ($types as $type)
+        <option value="{{ $type->value }}" @selected(old('type', $training->type->value) == $type->value)>
+          {{ $type->label() }}
+        </option>
+      @endforeach
+    </x-ui.select>
+    <x-ui.errors :messages="$errors->get('type')" />
+  </div>
+
+  <div class="field col-span-full">
     <x-ui.label for="evaluation_id" value="Evaluation" />
     <div class="flex items-center gap-2">
       <x-ui.select id="evaluation_id" name="evaluation_id" class="w-full">

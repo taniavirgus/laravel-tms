@@ -49,8 +49,8 @@
         </div>
 
         <div>
-          <label class="text-sm font-medium text-base-500">Notified</label>
-          <span class="block">{{ $training->notified ? 'Yes' : 'No' }}</span>
+          <label class="text-sm font-medium text-base-500">Type</label>
+          <div><x-ui.badge :value="$training->type" /></div>
         </div>
 
         <div class="col-span-full">
@@ -97,79 +97,80 @@
     </x-ui.card>
   </div>
 
-  @can('score', $training)
-    <form action="{{ route('trainings.score', $training) }}" method="POST" id="form">
-      @csrf
-      @method('PATCH')
-    @endcan
 
-    <x-ui.table>
-      <x-slot:title>
-        <i data-lucide="user-check" class="size-5 text-primary-500"></i>
-        <h4>Assigned Employees</h4>
-      </x-slot:title>
+  <x-ui.table>
 
-      <x-slot:head>
-        <th>No</th>
-        <th>Name</th>
-        <th>Score</th>
-        <th>Notified</th>
-        <th>Actions</th>
-      </x-slot:head>
+    <x-slot:title>
+      <i data-lucide="user-check" class="size-5 text-primary-500"></i>
+      <h4>Assigned Employees</h4>
+    </x-slot:title>
 
-      <x-slot:body>
-        @forelse ($assigned as $employee)
-          <tr>
-            <td class="w-10">{{ $employee->id }}</td>
-            <td>
-              <a href="{{ route('employees.show', $employee) }}" class="flex items-center gap-2">
-                <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
-                <span>{{ $employee->name }}</span>
-              </a>
+    <x-slot:head>
+      <th>No</th>
+      <th>Name</th>
+      <th>Score</th>
+      <th>Notified</th>
+      <th>Actions</th>
+    </x-slot:head>
+
+    <x-slot:body>
+      @forelse ($assigned as $employee)
+        <tr>
+          <td class="w-10">{{ $employee->id }}</td>
+          <td>
+            <a href="{{ route('employees.show', $employee) }}" class="flex items-center gap-2">
+              <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
+              <span>{{ $employee->name }}</span>
+            </a>
+          </td>
+          @can('score', $training)
+            <td class="w-36 min-w-28">
+              <label for="scores[{{ $employee->id }}]" class="sr-only">Score</label>
+              <x-ui.input type="number" class="appearance-none" name="scores[{{ $employee->id }}]"
+                id="scores[{{ $employee->id }}]" value="{{ $employee->pivot->score }}">
+                <x-slot:right>
+                  <span class="text-sm text-base-500">of 100</span>
+                </x-slot:right>
+              </x-ui.input>
             </td>
-            @can('score', $training)
-              <td>
-                <div class="w-40">
-                  <x-ui.range name="scores[{{ $employee->id }}]" id="scores[{{ $employee->id }}]" step="1"
-                    value="{{ $employee->pivot->score }}" :tooltip="false" />
-                </div>
-              </td>
-            @else
-              <td>{{ $employee->pivot->score }} / 100</td>
-            @endcan
-            <td><x-ui.badge :value="$employee->pivot->email_sent ? BooleanType::YES : BooleanType::NO" /></td>
-            <td>
-              <div class="flex items-center gap-4">
-                @can('unassign', $training)
-                  <form action="{{ route('trainings.unassign', [$training, $employee]) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="text-red-500">
-                      Remove
-                    </button>
-                  </form>
-                @endcan
-              </div>
-            </td>
-          </tr>
-        @empty
-          <x-ui.empty colspan="7" />
-        @endforelse
-      </x-slot:body>
-
-      @can('score', $training)
-        <x-slot:footer class="justify-end">
-          <x-ui.button type="submit">
-            <span>Update</span>
-            <i data-lucide="arrow-up-right" class="size-5"></i>
-          </x-ui.button>
-        </x-slot:footer>
-      @endcan
-    </x-ui.table>
+          @else
+            <td>{{ $employee->pivot->score }} / 100</td>
+          @endcan
+          <td><x-ui.badge :value="$employee->pivot->email_sent ? BooleanType::YES : BooleanType::NO" /></td>
+          <td>
+            <div class="flex items-center gap-4">
+              @can('unassign', $training)
+                <form action="{{ route('trainings.unassign', [$training, $employee]) }}" method="POST">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="text-red-500">
+                    Remove
+                  </button>
+                </form>
+              @endcan
+            </div>
+          </td>
+        </tr>
+      @empty
+        <x-ui.empty colspan="7" />
+      @endforelse
+    </x-slot:body>
 
     @can('score', $training)
-    </form>
-  @endcan
+      <x-slot:form action="{{ route('trainings.score', $training) }}" method="POST" id="form">
+        @csrf
+        @method('PATCH')
+      </x-slot:form>
+
+      <x-slot:footer class="justify-end">
+        <x-ui.button type="submit" form="form">
+          <span>Update</span>
+          <i data-lucide="arrow-up-right" class="size-5"></i>
+        </x-ui.button>
+      </x-slot:footer>
+    @endcan
+  </x-ui.table>
+
 
   <x-ui.table>
     <x-slot:title>

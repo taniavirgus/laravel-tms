@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CompletionStatus;
 use App\Enums\StatusType;
+use App\Enums\TrainingType;
 use App\Models\Training;
 use App\Http\Requests\StoreTrainingRequest;
 use App\Http\Requests\UpdateTrainingRequest;
@@ -32,19 +34,23 @@ class TrainingController extends Controller
   public function index(Request $request): View
   {
     $search = $request->input('search');
-    $status = $request->input('status');
     $department_id = $request->input('department_id');
+    $status = $request->input('status');
+    $type = $request->input('type');
 
     $trainings = Training::query()
       ->with(['department', 'evaluation'])
+      ->when($status, function ($q) use ($status) {
+        $q->withStatus($status);
+      })
       ->when($search, function ($q) use ($search) {
         $q->where('name', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%');
       })
-      ->when($status, function ($q) use ($status) {
-        $q->where('status', $status);
-      })
       ->when($department_id, function ($q) use ($department_id) {
         $q->where('department_id', $department_id);
+      })
+      ->when($type, function ($q) use ($type) {
+        $q->where('type', $type);
       })
       ->paginate(5)
       ->withQueryString();
@@ -52,6 +58,8 @@ class TrainingController extends Controller
     return view('dashboard.trainings.index', [
       'trainings' => $trainings,
       'departments' => Department::select(['name', 'id'])->get(),
+      'statuses' => CompletionStatus::cases(),
+      'types' => TrainingType::cases(),
     ]);
   }
 
@@ -63,6 +71,7 @@ class TrainingController extends Controller
     return view('dashboard.trainings.create', [
       'departments' => Department::select(['name', 'id'])->get(),
       'evaluations' => Evaluation::select(['name', 'id'])->get(),
+      'types' => TrainingType::cases(),
     ]);
   }
 
@@ -109,6 +118,7 @@ class TrainingController extends Controller
       'training' => $training->load(['department', 'evaluation']),
       'departments' => Department::select(['name', 'id'])->get(),
       'evaluations' => Evaluation::select(['name', 'id'])->get(),
+      'types' => TrainingType::cases(),
     ]);
   }
 
@@ -180,6 +190,8 @@ class TrainingController extends Controller
    */
   public function notify(Training $training): RedirectResponse
   {
+    if ($training->employees->isEmpty()) return back()->with('warning', 'No employees assigned to this training yet!');
+
     $training->notified = true;
     $training->save();
 

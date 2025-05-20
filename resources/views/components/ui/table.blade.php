@@ -6,6 +6,7 @@
     'body' => null,
     'foot' => null,
     'footer' => null,
+    'form' => null,
 ])
 
 @php
@@ -52,27 +53,55 @@
     </div>
   @endisset
 
-  <div {{ $props }}>
-    <table>
-      @isset($head)
-        <thead {{ $props->head }}>
-          {{ $head }}
-        </thead>
-      @endisset
+  @if ($form)
+    <form {{ $form->attributes }}>
+      {{ $form }}
 
-      @isset($body)
-        <tbody {{ $props->body }}>
-          {{ $body }}
-        </tbody>
-      @endisset
+      <div {{ $props }}>
+        <table>
+          @isset($head)
+            <thead {{ $props->head }}>
+              {{ $head }}
+            </thead>
+          @endisset
 
-      @isset($foot)
-        <tfoot {{ $props->foot }}>
-          {{ $foot }}
-        </tfoot>
-      @endisset
-    </table>
-  </div>
+          @isset($body)
+            <tbody {{ $props->body }}>
+              {{ $body }}
+            </tbody>
+          @endisset
+
+          @isset($foot)
+            <tfoot {{ $props->foot }}>
+              {{ $foot }}
+            </tfoot>
+          @endisset
+        </table>
+      </div>
+    </form>
+  @else
+    <div {{ $props }}>
+      <table>
+        @isset($head)
+          <thead {{ $props->head }}>
+            {{ $head }}
+          </thead>
+        @endisset
+
+        @isset($body)
+          <tbody {{ $props->body }}>
+            {{ $body }}
+          </tbody>
+        @endisset
+
+        @isset($foot)
+          <tfoot {{ $props->foot }}>
+            {{ $foot }}
+          </tfoot>
+        @endisset
+      </table>
+    </div>
+  @endif
 
   @isset($footer)
     <div {{ $props->footer }}>
