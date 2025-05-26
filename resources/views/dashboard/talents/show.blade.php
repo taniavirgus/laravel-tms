@@ -13,7 +13,6 @@
     <x-slot:head>
       <th>No</th>
       <th>Name</th>
-      <th>Email</th>
       <th>Department</th>
       <th>Position</th>
       <th>Potential</th>
@@ -31,7 +30,6 @@
               <span>{{ $employee->name }}</span>
             </div>
           </td>
-          <td>{{ $employee->email }}</td>
           <td>{{ $employee->department->name }}</td>
           <td>{{ $employee->position->name }}</td>
           <td class="font-semibold">{{ round($employee->potential) }}</td>
@@ -45,10 +43,10 @@
           </td>
         </tr>
       @empty
-        <x-ui.empty colspan="8" />
+        <x-ui.empty colspan="7" />
       @endforelse
     </x-slot:body>
-    
+
     <x-slot:footer class="justify-end">
       <a href="{{ route('talents.index') }}">
         <x-ui.button variant="outline">
@@ -57,4 +55,4 @@
       </a>
     </x-slot:footer>
   </x-ui.table>
-</x-dashboard-layout> 
+</x-dashboard-layout>

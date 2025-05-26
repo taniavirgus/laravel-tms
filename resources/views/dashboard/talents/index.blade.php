@@ -5,11 +5,12 @@
   </x-dashboard.heading>
 
   <div class="grid grid-cols-3 gap-6">
-    @foreach($segments as $segment)
+    @foreach ($segments as $segment)
       <a href="{{ route('talents.show', $segment->type->value) }}">
         <x-ui.card>
-          <x-slot:header>
-              <h5 class="font-medium">{{ $segment->type->label() }}</h5>
+          <x-slot:header class="justify-between">
+            <h5 class="font-medium">{{ $segment->type->label() }}</h5>
+            <i data-lucide="trending-up" class="size-5 text-primary-500"></i>
           </x-slot:header>
 
           <div class="flex flex-col items-center justify-center gap-2">
@@ -24,4 +25,4 @@
       </a>
     @endforeach
   </div>
-</x-dashboard-layout> 
+</x-dashboard-layout>

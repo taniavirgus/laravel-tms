@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum TalentSegmentType: string
+enum SegmentType: string
 {
   case POTENTIAL_GEM = 'potential-gem';
   case HIGH_POTENTIAL = 'high-potential';
@@ -51,43 +51,25 @@ enum TalentSegmentType: string
   }
 
   /**
-   * Get the color for the talent segment.
-   * 
-   * @return string tailwind color class
-   */
-  public function color(): string
-  {
-    return match ($this) {
-      self::POTENTIAL_GEM => 'bg-yellow-500',
-      self::HIGH_POTENTIAL => 'bg-yellow-600',
-      self::STAR => 'bg-yellow-700',
-      self::INCONSISTENT_PLAYER => 'bg-blue-500',
-      self::CORE_PLAYER => 'bg-blue-600',
-      self::HIGH_PERFORMER => 'bg-blue-700',
-      self::UNDER_PERFORMER => 'bg-red-500',
-      self::AVERAGE_PERFORMER => 'bg-red-600',
-      self::SOLID_PERFORMER => 'bg-red-700',
-    };
-  }
-
-  /**
    * Get segment based on potential and performance scores
    */
   public static function getSegment(float $potential, float $performance): self
   {
-    $potentialLevel = match(true) {
+    $potential = match (true) {
       $potential >= 80 => 'high',
       $potential >= 60 => 'moderate',
       default => 'low'
     };
 
-    $performanceLevel = match(true) {
+    $performance = match (true) {
       $performance >= 80 => 'high',
       $performance >= 60 => 'moderate',
       default => 'low'
     };
 
-    return match("$potentialLevel-$performanceLevel") {
+    $combined = "$potential-$performance";
+
+    return match ($combined) {
       'high-low' => self::POTENTIAL_GEM,
       'high-moderate' => self::HIGH_POTENTIAL,
       'high-high' => self::STAR,
@@ -99,4 +81,4 @@ enum TalentSegmentType: string
       'low-high' => self::SOLID_PERFORMER,
     };
   }
-} 
+}

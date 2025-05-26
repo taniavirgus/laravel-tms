@@ -60,6 +60,6 @@
       </div>
     </div>
   @else
-    <span class="flex-none w-6 text-sm font-semibold" x-text="value + '/' + max"></span>
+    <span class="text-sm font-semibold" x-text="value + '%'"></span>
   @endif
 </div>

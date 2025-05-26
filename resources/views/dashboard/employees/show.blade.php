@@ -136,13 +136,13 @@
     </x-slot:body>
 
     @can('score', $employee)
-      <x-slot:form action="{{ route('employees.score', $employee) }}" method="POST" id="form">
+      <x-slot:form action="{{ route('employees.score', $employee) }}" method="POST" id="form-score">
         @csrf
         @method('PATCH')
       </x-slot:form>
 
       <x-slot:footer class="justify-end">
-        <x-ui.button type="submit" form="form">
+        <x-ui.button type="submit" form="form-score">
           <span>Update</span>
           <i data-lucide="arrow-up-right" class="size-5"></i>
         </x-ui.button>
@@ -156,53 +156,103 @@
       <h5>Employee Feedback</h5>
     </x-slot:header>
 
-    <div class="form xl:grid-cols-2">
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Teamwork</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->teamwork" /></dd>
-      </dl>
+    @can('create', $employee->feedback)
+      <form action="{{ route('employees.feedback.store', $employee) }}" method="POST" id="form-feedback">
+        @csrf
 
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Communication</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->communication" /></dd>
-      </dl>
+        <div class="form xl:grid-cols-2">
+          <div class="field">
+            <x-ui.label for="teamwork" value="Teamwork" />
+            <x-ui.range :tooltip="false" id="teamwork" name="teamwork" type="range" :value="old('teamwork', $employee->feedback->teamwork)" />
+            <x-ui.errors :messages="$errors->get('teamwork')" />
+          </div>
 
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Initiative</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->initiative" /></dd>
-      </dl>
+          <div class="field">
+            <x-ui.label for="communication" value="Communication" />
+            <x-ui.range :tooltip="false" id="communication" name="communication" type="range" :value="old('communication', $employee->feedback->communication)" />
+            <x-ui.errors :messages="$errors->get('communication')" />
+          </div>
 
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Problem Solving</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->problem_solving" /></dd>
-      </dl>
+          <div class="field">
+            <x-ui.label for="initiative" value="Initiative" />
+            <x-ui.range :tooltip="false" id="initiative" name="initiative" type="range" :value="old('initiative', $employee->feedback->initiative)" />
+            <x-ui.errors :messages="$errors->get('initiative')" />
+          </div>
 
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Adaptability</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->adaptability" /></dd>
-      </dl>
+          <div class="field">
+            <x-ui.label for="problem_solving" value="Problem Solving" />
+            <x-ui.range :tooltip="false" id="problem_solving" name="problem_solving" type="range"
+              :value="old('problem_solving', $employee->feedback->problem_solving)" />
+            <x-ui.errors :messages="$errors->get('problem_solving')" />
+          </div>
 
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Leadership</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->leadership" /></dd>
-      </dl>
+          <div class="field">
+            <x-ui.label for="adaptability" value="Adaptability" />
+            <x-ui.range :tooltip="false" id="adaptability" name="adaptability" type="range" :value="old('adaptability', $employee->feedback->adaptability)" />
+            <x-ui.errors :messages="$errors->get('adaptability')" />
+          </div>
 
-      <dl class="col-span-full">
-        <dt class="text-sm font-medium text-base-500">Feedback</dt>
-        <dd>
-          <p>{{ $employee->feedback->description }}</p>
-        </dd>
-      </dl>
-    </div>
+          <div class="field">
+            <x-ui.label for="leadership" value="Leadership" />
+            <x-ui.range :tooltip="false" id="leadership" name="leadership" type="range" :value="old('leadership', $employee->feedback->leadership)" />
+            <x-ui.errors :messages="$errors->get('leadership')" />
+          </div>
+
+          <div class="field col-span-full">
+            <x-ui.label for="description" value="Feedback" />
+            <x-ui.textarea id="description" name="description"
+              rows="4">{{ old('description', $employee->feedback->description) }}</x-ui.textarea>
+            <x-ui.errors :messages="$errors->get('description')" />
+          </div>
+        </div>
+      </form>
+    @else
+      <div class="form xl:grid-cols-2">
+        <dl>
+          <dt class="text-sm font-medium text-base-500">Teamwork</dt>
+          <dd><x-ui.progress class="py-3" :value="$employee->feedback->teamwork" /></dd>
+        </dl>
+
+        <dl>
+          <dt class="text-sm font-medium text-base-500">Communication</dt>
+          <dd><x-ui.progress class="py-3" :value="$employee->feedback->communication" /></dd>
+        </dl>
+
+        <dl>
+          <dt class="text-sm font-medium text-base-500">Initiative</dt>
+          <dd><x-ui.progress class="py-3" :value="$employee->feedback->initiative" /></dd>
+        </dl>
+
+        <dl>
+          <dt class="text-sm font-medium text-base-500">Problem Solving</dt>
+          <dd><x-ui.progress class="py-3" :value="$employee->feedback->problem_solving" /></dd>
+        </dl>
+
+        <dl>
+          <dt class="text-sm font-medium text-base-500">Adaptability</dt>
+          <dd><x-ui.progress class="py-3" :value="$employee->feedback->adaptability" /></dd>
+        </dl>
+
+        <dl>
+          <dt class="text-sm font-medium text-base-500">Leadership</dt>
+          <dd><x-ui.progress class="py-3" :value="$employee->feedback->leadership" /></dd>
+        </dl>
+
+        <dl class="col-span-full">
+          <dt class="text-sm font-medium text-base-500">Feedback</dt>
+          <dd>
+            <p>{{ $employee->feedback->description }}</p>
+          </dd>
+        </dl>
+      </div>
+    @endcan
 
     @can('create', $employee->feedback)
       <x-slot:footer class="justify-end">
-        <a href="{{ route('employees.feedback.create', $employee) }}">
-          <x-ui.button>
-            <span>Give Feedback</span>
-            <i data-lucide="arrow-up-right" class="size-5"></i>
-          </x-ui.button>
-        </a>
+        <x-ui.button type="submit" form="form-feedback">
+          <span>Update</span>
+          <i data-lucide="arrow-up-right" class="size-5"></i>
+        </x-ui.button>
       </x-slot:footer>
     @endcan
   </x-ui.card>
@@ -212,7 +262,7 @@
       <i data-lucide="file-text" class="size-5 text-primary-500"></i>
       <h4>Assigned Trainings</h4>
     </x-slot:title>
-   
+
     <x-slot:head>
       <th>No</th>
       <th>Title</th>

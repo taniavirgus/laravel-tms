@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\TalentSegmentType;
+use App\Enums\SegmentType;
 use App\Models\Employee;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -23,12 +23,12 @@ class TalentController extends Controller
         $feedback = $employee->feedback->average;
         $training = $employee->trainings->avg('pivot.score');
 
-        $employee->potential = ($training + $feedback) / 2;
+        $employee->potential = $training ? ($training + $feedback) / 2 : $feedback;
         $employee->performance = $employee->evaluations->map(function ($evaluation) {
           return $evaluation->pivot->score / $evaluation->target * 100;
         })->avg() ?? 0;
 
-        $employee->segment = TalentSegmentType::getSegment($employee->potential, $employee->performance);
+        $employee->segment = SegmentType::getSegment($employee->potential, $employee->performance);
       });
   }
 
@@ -39,7 +39,7 @@ class TalentController extends Controller
   {
     $employees = $this->getEmployeeMatrix();
 
-    $segments = collect(TalentSegmentType::cases())->map(function ($type) use ($employees) {
+    $segments = collect(SegmentType::cases())->map(function ($type) use ($employees) {
       return (object) [
         'type' => $type,
         'count' => $employees->filter(fn($item) => $item->segment === $type)->count(),
@@ -57,7 +57,7 @@ class TalentController extends Controller
    */
   public function show(string $segment): View
   {
-    $type = TalentSegmentType::from($segment);
+    $type = SegmentType::from($segment);
     $employees = $this->getEmployeeMatrix()->filter(fn($emp) => $emp->segment === $type);
 
     return view('dashboard.talents.show', [
