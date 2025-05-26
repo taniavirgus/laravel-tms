@@ -4,45 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Enums\SegmentType;
 use App\Models\Employee;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class TalentController extends Controller
 {
   /**
-   * Calculate the potential of an employee.
-   */
-  protected function getEmployeeMatrix(): Collection
-  {
-    return Employee::query()
-      ->with(['feedback', 'trainings', 'evaluations', 'position', 'department'])
-      ->withCount('trainings')
-      ->get()
-      ->each(function ($employee) {
-        $feedback = $employee->feedback->average;
-        $training = $employee->trainings->avg('pivot.score');
-
-        $employee->potential = $training ? ($training + $feedback) / 2 : $feedback;
-        $employee->performance = $employee->evaluations->map(function ($evaluation) {
-          return $evaluation->pivot->score / $evaluation->target * 100;
-        })->avg() ?? 0;
-
-        $employee->segment = SegmentType::getSegment($employee->potential, $employee->performance);
-      });
-  }
-
-  /**
    * Display a listing of the resource.
    */
   public function index(Request $request): View
   {
-    $employees = $this->getEmployeeMatrix();
+    $employees = Employee::with('trainings', 'evaluations', 'feedback')->get()->map(function ($employee) {
+      $employee->matrix = $employee->matrix();
+      return $employee;
+    });
 
     $segments = collect(SegmentType::cases())->map(function ($type) use ($employees) {
       return (object) [
         'type' => $type,
-        'count' => $employees->filter(fn($item) => $item->segment === $type)->count(),
+        'count' => $employees->filter(fn($employee) => $employee->matrix->segment === $type)->count(),
       ];
     })->values();
 
@@ -58,8 +38,12 @@ class TalentController extends Controller
   public function show(string $segment): View
   {
     $type = SegmentType::from($segment);
-    $employees = $this->getEmployeeMatrix()->filter(fn($emp) => $emp->segment === $type);
+    $employees = Employee::with('trainings', 'evaluations', 'feedback')->get()->map(function ($employee) {
+      $employee->matrix = $employee->matrix();
+      return $employee;
+    });
 
+    $employees = $employees->load('department', 'position')->filter(fn($employee) => $employee->matrix->segment === $type)->sortByDesc('matrix.average_score');
     return view('dashboard.talents.show', [
       'employees' => $employees,
       'segment' => $type,

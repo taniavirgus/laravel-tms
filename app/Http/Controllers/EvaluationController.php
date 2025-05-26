@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ApprovalType;
+use App\Enums\SegmentType;
 use App\Enums\StatusType;
 use App\Models\Employee;
 use App\Models\Evaluation;
@@ -11,6 +12,7 @@ use App\Http\Requests\UpdateEvaluationRequest;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\Topic;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +20,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EvaluationController extends Controller
 {
@@ -71,137 +74,86 @@ class EvaluationController extends Controller
    */
   public function summary(Request $request): View
   {
-    $department_id = $request->input('department_id');
     $topic_id = $request->input('topic_id');
+    $department_id = $request->input('department_id');
 
-    $evaluations_query = Evaluation::with(['department', 'topic', 'employees'])
-      ->when($department_id, function ($q) use ($department_id) {
-        $q->where('department_id', $department_id);
+    $topics = Topic::get();
+    $departments = Department::get();
+    $evaluations = Evaluation::with([
+      'department',
+      'topic',
+      'employees.position',
+      'employees.feedback',
+      'employees.trainings',
+      'employees.department',
+      'employees.evaluations',
+    ])
+      ->when($department_id, function ($query) use ($department_id) {
+        $query->where('department_id', $department_id);
       })
-      ->when($topic_id, function ($q) use ($topic_id) {
-        $q->where('topic_id', $topic_id);
+      ->when($topic_id, function ($query) use ($topic_id) {
+        $query->where('topic_id', $topic_id);
+      })
+      ->get()
+      ->map(function ($evaluation) {
+        $evaluation->employees->map(function ($employee) {
+          $employee->matrix = $employee->matrix();
+          return $employee;
+        });
+        return $evaluation;
       });
 
-    $evaluations = $evaluations_query->get();
-    $evaluation_count = $evaluations->count();
-    $average_score = 0;
-    $employees_count = 0;
+    $summary = $evaluations->map(function ($evaluation) {
+      $evaluation->average_potential = $evaluation->employees->avg('matrix.potential_score');
+      $evaluation->average_performance = $evaluation->employees->avg('matrix.performance_score');
+      $evaluation->average_score = $evaluation->employees->avg('matrix.average_score');
+      return $evaluation;
+    });
 
-    if ($evaluation_count > 0) {
-      $evaluation_ids = $evaluations->pluck('id')->toArray();
-      $score_data = DB::table('employee_evaluations')
-        ->join('evaluations', 'evaluations.id', '=', 'employee_evaluations.evaluation_id')
-        ->whereIn('evaluation_id', $evaluation_ids)
-        ->selectRaw('
-          AVG((CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * 100) as average_score, 
-          COUNT(DISTINCT employee_id) as unique_employees, 
-          COUNT(*) as total_records
-        ')
-        ->first();
-
-      $average_score = $score_data->average_score ?? 0;
-      $employees_count = $score_data->unique_employees ?? 0;
-    }
-
-    $total_employees = Employee::count();
-    $completion_rate = $total_employees > 0 ? round(($employees_count / $total_employees) * 100) : 0;
-
-    $department_data = collect();
-    $departments = Department::get();
-
-    if ($evaluation_count > 0) {
-      $evaluation_ids = $evaluations->pluck('id')->toArray();
-      $department_scores = DB::table('employee_evaluations')
-        ->join('evaluations', 'evaluations.id', '=', 'employee_evaluations.evaluation_id')
-        ->whereIn('evaluation_id', $evaluation_ids)
-        ->groupBy('evaluations.department_id')
-        ->select(
-          'evaluations.department_id',
-          DB::raw('AVG((CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * 100) as average_score')
-        )
-        ->get()
-        ->keyBy('department_id');
-    }
-
-    foreach ($departments as $department) {
-      $department_data->push([
-        'name' => $department->name,
-        'average_score' => $evaluation_count > 0 ? ($department_scores[$department->id]->average_score ?? 0) : 0
-      ]);
-    }
-
-    $department_names = $department_data->pluck('name')->toArray();
-    $department_scores = $department_data->pluck('average_score')->toArray();
-
-    $topic_data = collect();
-    $topics = Topic::get();
-
-    if ($evaluation_count > 0) {
-      $evaluation_ids = $evaluations->pluck('id')->toArray();
-      $topic_scores = DB::table('employee_evaluations')
-        ->join('evaluations', 'evaluations.id', '=', 'employee_evaluations.evaluation_id')
-        ->whereIn('evaluation_id', $evaluation_ids)
-        ->groupBy('evaluations.topic_id')
-        ->select(
-          'evaluations.topic_id',
-          DB::raw('AVG((CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * 100) as average_score')
-        )
-        ->get()
-        ->keyBy('topic_id');
-    }
-
-    foreach ($topics as $topic) {
-      $topic_data->push([
-        'name' => $topic->name,
-        'average_score' => $evaluation_count > 0 ? ($topic_scores[$topic->id]->average_score ?? 0) : 0
-      ]);
-    }
-
-    $topic_names = $topic_data->pluck('name')->toArray();
-    $topic_scores = $topic_data->pluck('average_score')->toArray();
-
-    $top_performers = Employee::select('employees.*')
-      ->join('employee_evaluations', 'employees.id', '=', 'employee_evaluations.employee_id')
-      ->join('evaluations', 'evaluations.id', '=', 'employee_evaluations.evaluation_id')
-      ->leftJoin('feedback', 'employees.id', '=', 'feedback.employee_id')
-      ->with(['department', 'position'])
-      ->groupBy('employees.id')
-      ->selectRaw('COUNT(DISTINCT evaluations.id) as evaluations_count')
-      ->selectRaw('AVG(CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL) * 100) as evaluation_score')
-      ->selectRaw('SUM(CAST(employee_evaluations.score AS REAL) / CAST(evaluations.target AS REAL)) * CAST(evaluations.point AS REAL) as total_point')
-      ->selectRaw('
-        AVG(
-          CAST(feedback.teamwork as REAL) +
-          CAST(feedback.communication as REAL) +
-          CAST(feedback.initiative as REAL) +
-          CAST(feedback.problem_solving as REAL) +
-          CAST(feedback.adaptability as REAL) +
-          CAST(feedback.leadership as REAL)
-        ) / 6 as feedback_score
-      ')
-      ->orderByDesc('total_point')
-      ->when($department_id, function ($q) use ($department_id) {
-        $q->where('employees.department_id', $department_id);
+    $chart = (object) [
+      'departments' => $departments->map(function ($department) use ($summary) {
+        return [
+          'label' => $department->name,
+          'average_score' => $summary->where('department_id', $department->id)->avg('average_score') ?? 0
+        ];
+      }),
+      'topics' => $topics->map(function ($topic) use ($summary) {
+        return [
+          'label' => $topic->name,
+          'average_score' => $summary->where('topic_id', $topic->id)->avg('average_score') ?? 0
+        ];
       })
-      ->when($topic_id, function ($q) use ($topic_id) {
-        $q->where('evaluations.topic_id', $topic_id);
-      })
-      ->paginate(5)
-      ->withQueryString();
+    ];
+
+
+    $page = request('page', 1);
+    $per_page = request('per_page', 5);
+
+    $employees = Employee::with(['department', 'position', 'feedback', 'trainings', 'evaluations'])
+      ->get()
+      ->map(function ($employee) {
+        $employee->matrix = $employee->matrix();
+        return $employee;
+      });
+
+    $top_performers = new LengthAwarePaginator(
+      $employees->sortByDesc('matrix.average_score')->forPage($page, $per_page),
+      $employees->count(),
+      $per_page,
+      $page,
+      ['path' => request()->url(), 'query' => request()->query()]
+    );
 
     return view('dashboard.evaluations.summary', [
       'evaluations' => $evaluations,
       'departments' => $departments,
       'topics' => $topics,
-      'average_score' => $average_score,
-      'evaluation_count' => $evaluation_count,
-      'employees_count' => $employees_count,
-      'completion_rate' => $completion_rate,
-      'department_names' => $department_names,
-      'department_scores' => $department_scores,
-      'topic_names' => $topic_names,
-      'topic_scores' => $topic_scores,
+      'chart' => $chart,
       'top_performers' => $top_performers,
+      'average_score' => $summary->avg('average_score'),
+      'average_potential' => $summary->avg('average_potential'),
+      'average_performance' => $summary->avg('average_performance'),
+      'evaluation_count' => $summary->count(),
     ]);
   }
 

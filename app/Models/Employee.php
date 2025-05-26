@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\GenderType;
 use App\Enums\ReligionType;
+use App\Enums\SegmentType;
 use App\Enums\StatusType;
 use App\Interfaces\WithPeriodPivot;
 use App\Traits\HasPeriodRelation;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
+use stdClass;
 
 class Employee extends Model implements WithPeriodPivot
 {
@@ -49,6 +51,47 @@ class Employee extends Model implements WithPeriodPivot
       'religion' => ReligionType::class,
       'gender' => GenderType::class,
     ];
+  }
+
+  /**
+   * The attributes that should be appended.
+   *
+   * @var array<string>
+   */
+  protected $appends = [
+    'training_count',
+    'evaluation_count',
+    'feedback_score',
+    'training_score',
+    'potential_score',
+    'performance_score',
+    'average_score',
+    'segment'
+  ];
+
+  /**
+   * get employee matrix data
+   * 
+   * @return object
+   */
+  public function matrix(): stdClass
+  {
+    $matrix = new stdClass;
+
+    $matrix->training_count = $this->trainings->count();
+    $matrix->evaluation_count = $this->evaluations->count();
+
+    $matrix->feedback_score = $this->feedback->average ?? 0;
+    $matrix->training_score = $this->trainings->avg('pivot.score') ?? 0;
+
+    $matrix->potential_score = $matrix->feedback_score;
+    if ($matrix->training_count > 0) $matrix->potential_score = ($matrix->training_score + $matrix->feedback_score) / 2;
+
+    $matrix->performance_score = $this->evaluations->map(fn($evaluation) => ($evaluation->pivot->score / $evaluation->target) * 100)->avg() ?? 0;
+    $matrix->average_score = ($matrix->potential_score + $matrix->performance_score) / 2;
+    $matrix->segment = SegmentType::getSegment($matrix->potential_score, $matrix->performance_score);
+
+    return $matrix;
   }
 
   /**

@@ -11,12 +11,20 @@
     </x-slot:title>
 
     <x-slot:head>
+      <x-ui.tooltip id="training" tooltip="Number of training assigned to the employee" />
+      <x-ui.tooltip id="evaluation" tooltip="Number of evaluation assigned to the employee" />
+      <x-ui.tooltip id="potential" tooltip="Average of employee feedback and training score" />
+      <x-ui.tooltip id="performance" tooltip="Average of employee evaluation score" />
+      <x-ui.tooltip id="average" tooltip="Average of potential and performance score" />
+
       <th>No</th>
       <th>Name</th>
       <th>Department</th>
-      <th>Position</th>
-      <th>Potential</th>
-      <th>Performance</th>
+      <th data-tooltip-target="training">Training</th>
+      <th data-tooltip-target="evaluation">Evaluation</th>
+      <th data-tooltip-target="potential">Potential</th>
+      <th data-tooltip-target="performance">Performance</th>
+      <th data-tooltip-target="average">Average</th>
       <th>Actions</th>
     </x-slot:head>
 
@@ -31,9 +39,11 @@
             </div>
           </td>
           <td>{{ $employee->department->name }}</td>
-          <td>{{ $employee->position->name }}</td>
-          <td class="font-semibold">{{ round($employee->potential) }}</td>
-          <td class="font-semibold">{{ round($employee->performance) }}</td>
+          <td class="font-semibold">{{ $employee->matrix->training_count }}</td>
+          <td class="font-semibold">{{ $employee->matrix->evaluation_count }}</td>
+          <td class="font-semibold">{{ round($employee->matrix->potential_score) }}</td>
+          <td class="font-semibold">{{ round($employee->matrix->performance_score) }}</td>
+          <td class="font-semibold">{{ round($employee->matrix->average_score) }}</td>
           <td>
             <div class="flex items-center gap-4">
               <a href="{{ route('employees.show', $employee) }}" class="text-primary-500">
@@ -43,7 +53,7 @@
           </td>
         </tr>
       @empty
-        <x-ui.empty colspan="7" />
+        <x-ui.empty colspan="10" />
       @endforelse
     </x-slot:body>
 

@@ -84,6 +84,50 @@
     </x-slot:footer>
   </x-ui.card>
 
+  <x-ui.card>
+    <x-slot:header>
+      <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
+      <h5>Employee Matrix</h5>
+    </x-slot:header>
+
+    <div class="grid grid-cols-2 gap-6">
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Training</dt>
+        <dd class="font-semibold">{{ $matrix->training_count }}</dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Evaluation</dt>
+        <dd class="font-semibold">{{ $matrix->evaluation_count }}</dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Feedback</dt>
+        <dd class="font-semibold">{{ number_format($matrix->feedback_score, 1) }}</dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Potential</dt>
+        <dd class="font-semibold">{{ number_format($matrix->potential_score, 1) }}</dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Performance</dt>
+        <dd class="font-semibold">{{ number_format($matrix->performance_score, 1) }}</dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Average</dt>
+        <dd class="font-semibold">{{ number_format($matrix->average_score, 1) }}</dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Segment</dt>
+        {{-- <dd><x-ui.badge :value="$matrix->segment" /></dd> --}}
+      </dl>
+    </div>
+  </x-ui.card>
+
   <x-ui.table>
     <x-slot:title>
       <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>

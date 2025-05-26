@@ -95,13 +95,21 @@ class EmployeeController extends Controller
    */
   public function show(Employee $employee): View
   {
-    $evaluations = $employee->evaluations()->with(['topic', 'department'])->get();
-    $trainings = $employee->trainings()->with(['evaluation', 'department'])->get();
+    $employee->load([
+      'position',
+      'department',
+      'feedback',
+      'evaluations.topic',
+      'evaluations.department',
+      'trainings.evaluation',
+      'trainings.department',
+    ]);
 
     return view('dashboard.employees.show', [
-      'employee' => $employee->load(['position', 'department', 'feedback']),
-      'evaluations' => $evaluations,
-      'trainings' => $trainings,
+      'employee' => $employee,
+      'evaluations' => $employee->evaluations,
+      'trainings' => $employee->trainings,
+      'matrix' => $employee->matrix(),
     ]);
   }
 

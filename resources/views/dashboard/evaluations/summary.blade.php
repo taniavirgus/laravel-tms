@@ -7,14 +7,6 @@
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-4">
     <x-ui.card>
       <div class="flex items-center justify-between gap-2 mb-2">
-        <p class="text-sm font-medium">Overall Average Score</p>
-        <i data-lucide="bar-chart-4" class="size-5 text-primary-500"></i>
-      </div>
-      <h3 class="text-4xl font-bold">{{ number_format($average_score, 1) }}</h3>
-    </x-ui.card>
-
-    <x-ui.card>
-      <div class="flex items-center justify-between gap-2 mb-2">
         <p class="text-sm font-medium">Total Evaluations</p>
         <i data-lucide="check-circle" class="size-5 text-primary-500"></i>
       </div>
@@ -23,18 +15,26 @@
 
     <x-ui.card>
       <div class="flex items-center justify-between gap-2 mb-2">
-        <p class="text-sm font-medium">Employees Evaluated</p>
+        <p class="text-sm font-medium">Average Potential</p>
         <i data-lucide="users" class="size-5 text-primary-500"></i>
       </div>
-      <h3 class="text-4xl font-bold">{{ $employees_count }}</h3>
+      <h3 class="text-4xl font-bold">{{ number_format($average_potential, 1) }}</h3>
     </x-ui.card>
 
     <x-ui.card>
       <div class="flex items-center justify-between gap-2 mb-2">
-        <p class="text-sm font-medium">Completion Rate</p>
-        <i data-lucide="percent" class="size-5 text-primary-500"></i>
+        <p class="text-sm font-medium">Average Performance</p>
+        <i data-lucide="trending-up" class="size-5 text-primary-500"></i>
       </div>
-      <h3 class="text-4xl font-bold">{{ $completion_rate }}%</h3>
+      <h3 class="text-4xl font-bold">{{ number_format($average_performance, 1) }}</h3>
+    </x-ui.card>
+
+    <x-ui.card>
+      <div class="flex items-center justify-between gap-2 mb-2">
+        <p class="text-sm font-medium">Average Score</p>
+        <i data-lucide="bar-chart-4" class="size-5 text-primary-500"></i>
+      </div>
+      <h3 class="text-4xl font-bold">{{ number_format($average_score, 1) }}</h3>
     </x-ui.card>
   </div>
 
@@ -87,30 +87,29 @@
       </form>
     </x-slot:action>
 
-
     <x-slot:head>
-      <x-ui.tooltip id="evaluations" tooltip="Total evaluations assigned to the employee" />
-      <x-ui.tooltip id="point" tooltip="Total points received by the employee" />
+      <x-ui.tooltip id="training" tooltip="Number of training assigned to the employee" />
+      <x-ui.tooltip id="evaluation" tooltip="Number of evaluation assigned to the employee" />
       <x-ui.tooltip id="feedback" tooltip="Average feedback score" />
-      <x-ui.tooltip id="evaluation" tooltip="Average evaluation score" />
-      <x-ui.tooltip id="average" tooltip="Average of feedback and evaluation scores" />
+      <x-ui.tooltip id="performance" tooltip="Average of employee evaluation score" />
+      <x-ui.tooltip id="potential" tooltip="Average of employee feedback and training score" />
+      <x-ui.tooltip id="average" tooltip="Average of potential and performance score" />
 
       <th>Rank</th>
       <th>Name</th>
       <th>Department</th>
-      <th>Position</th>
-      <th data-tooltip-target="evaluations">Evaluations</th>
-      <th data-tooltip-target="point">Point</th>
-      <th data-tooltip-target="feedback">Feedback</th>
+      <th data-tooltip-target="training">Training</th>
       <th data-tooltip-target="evaluation">Evaluation</th>
+      <th data-tooltip-target="feedback">Feedback</th>
+      <th data-tooltip-target="performance">Performance</th>
+      <th data-tooltip-target="potential">Potential</th>
       <th data-tooltip-target="average">Average</th>
     </x-slot:head>
 
-
     <x-slot:body>
-      @forelse ($top_performers as $index => $employee)
+      @forelse ($top_performers as $employee)
         <tr>
-          <td class="w-10">{{ $index + 1 }}</td>
+          <td class="w-10">{{ $top_performers->firstItem() + $loop->index }}</td>
           <td>
             <a href="{{ route('employees.show', $employee->id) }}" class="flex items-center gap-2">
               <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
@@ -118,15 +117,15 @@
             </a>
           </td>
           <td>{{ $employee->department->name }}</td>
-          <td>{{ $employee->position->name }}</td>
-          <td class="font-semibold">{{ $employee->evaluations_count }}</td>
-          <td class="font-semibold">{{ round($employee->total_point) }}</td>
-          <td class="font-semibold">{{ round($employee->feedback_score) }}</td>
-          <td class="font-semibold">{{ round($employee->evaluation_score) }}</td>
-          <td class="font-semibold">{{ round(($employee->feedback_score + $employee->evaluation_score) / 2) }}</td>
+          <td class="font-semibold">{{ $employee->matrix->training_count }}</td>
+          <td class="font-semibold">{{ $employee->matrix->evaluation_count }}</td>
+          <td class="font-semibold">{{ round($employee->matrix->feedback_score) }}</td>
+          <td class="font-semibold">{{ round($employee->matrix->performance_score) }}</td>
+          <td class="font-semibold">{{ round($employee->matrix->potential_score) }}</td>
+          <td class="font-semibold">{{ round($employee->matrix->average_score) }}</td>
         </tr>
       @empty
-        <x-ui.empty colspan="6" />
+        <x-ui.empty colspan="9" />
       @endforelse
     </x-slot:body>
 
@@ -162,10 +161,10 @@
           type: 'bar',
           indexAxis: 'y',
           data: {
-            labels: @json($department_names),
+            labels: @json($chart->departments->pluck('label')),
             datasets: [{
               label: 'Average Score',
-              data: @json($department_scores),
+              data: @json($chart->departments->pluck('average_score')),
               backgroundColor: colors.primary,
               borderWidth: 0,
               borderRadius: 4
@@ -194,10 +193,10 @@
         new Chart(topicCtx, {
           type: 'bar',
           data: {
-            labels: @json($topic_names),
+            labels: @json($chart->topics->pluck('label')),
             datasets: [{
               label: 'Average Score',
-              data: @json($topic_scores),
+              data: @json($chart->topics->pluck('average_score')),
               backgroundColor: colors.secondary,
               borderWidth: 0,
               borderRadius: 4

@@ -13,9 +13,10 @@ if (app()->environment('local')) {
     ->group(function () {
       Route::get('migrate', function () {
         $user = Auth::user();
-
         Artisan::call('migrate:fresh', ['--seed' => true]);
+
         Auth::loginUsingId($user->id);
+        session()->forget('period_id');
 
         return back()->with('success', 'Database migrated and seeded successfully.');
       })->name('migrate');
@@ -25,7 +26,10 @@ if (app()->environment('local')) {
 
         Artisan::call('migrate:fresh');
         Artisan::call('db:seed', ['--class' => 'UserSeeder']);
+
         Auth::loginUsingId($user->id);
+        session()->forget('period_id');
+
 
         return back()->with('success', 'Database migrated successfully.');
       })->name('reset');
