@@ -8,94 +8,93 @@
     <x-slot:description>{{ $training->description }}</x-slot:description>
   </x-dashboard.heading>
 
-  <div class="grid items-start gap-10 xl:grid-cols-2">
-    <x-ui.card>
-      <x-slot:header>
-        <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
-        <h5>Training Details</h5>
-      </x-slot:header>
+  <x-ui.card>
+    <x-slot:header>
+      <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
+      <h5>Training Details</h5>
+    </x-slot:header>
 
-      <div class="form">
-        <div class="flex flex-col items-start gap-2">
-          <x-ui.badge :value="$training->status" />
-          <div class="text-5xl font-bold">{{ $training->start_date->format('l  jS') }}</div>
-          <span>{{ $training->start_date->format('F Y') }}</span>
-        </div>
-
-        <div class="grid-cols-2 form">
-          <div>
-            <label class="text-sm font-medium text-base-500">Duration</label>
-            <span class="block">{{ $training->duration }} Hours</span>
-          </div>
-
-          <div>
-            <label class="text-sm font-medium text-base-500">Date End</label>
-            <span class="block">{{ $training->end_date->format('F jS, Y') }}</span>
-          </div>
+    <div class="xl:grid-cols-4 form">
+      <div class="col-span-2">
+        <label class="text-sm font-medium text-base-500">Start date</label>
+        <div class="text-4xl font-bold">
+          {{ $training->start_date->format('F jS, Y') }}
         </div>
       </div>
-    </x-ui.card>
 
-    <x-ui.card>
-      <x-slot:header>
-        <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
-        <h5>Training Details</h5>
-      </x-slot:header>
-
-      <div class="grid-cols-2 form">
-        <div>
-          <label class="text-sm font-medium text-base-500">Department</label>
-          <span class="block">{{ $training->department->name }}</span>
-        </div>
-
-        <div>
-          <label class="text-sm font-medium text-base-500">Type</label>
-          <div><x-ui.badge :value="$training->type" /></div>
-        </div>
-
-        <div class="col-span-full">
-          <label class="text-sm font-medium text-base-500">Evaluation</label>
-          <span class="block">{{ $training->evaluation->name }}</span>
-        </div>
-
-        <div>
-          <label class="text-sm font-medium text-base-500">Capacity</label>
-          <span class="block">{{ $training->capacity }} Employees</span>
-        </div>
-
-        <div>
-          <label class="text-sm font-medium text-base-500">Participants</label>
-          <span @class([
-              'block',
-              'text-red-500' => $assigned->count() == $training->capacity,
-          ])>
-            {{ $assigned->count() }} Employees
-          </span>
-        </div>
+      <div>
+        <label class="text-sm font-medium text-base-500">Type</label>
+        <div><x-ui.badge :value="$training->type" /></div>
       </div>
+
+      <div>
+        <label class="text-sm font-medium text-base-500">Status</label>
+        <div><x-ui.badge :value="$training->status" /></div>
+      </div>
+
+      <div>
+        <label class="text-sm font-medium text-base-500">Duration</label>
+        <span class="block">{{ $training->duration }} Hours</span>
+      </div>
+
+      <div>
+        <label class="text-sm font-medium text-base-500">Date End</label>
+        <span class="block">{{ $training->end_date->format('F jS, Y') }}</span>
+      </div>
+
+      <div>
+        <label class="text-sm font-medium text-base-500">Capacity</label>
+        <span class="block">{{ $training->capacity }} Employees</span>
+      </div>
+
+      <div>
+        <label class="text-sm font-medium text-base-500">Participants</label>
+        <span @class([
+            'block',
+            'text-red-500' => $assigned->count() == $training->capacity,
+        ])>
+          {{ $assigned->count() }} Employees
+        </span>
+      </div>
+
+      <div class="col-span-2">
+        <label class="text-sm font-medium text-base-500">Evaluation</label>
+        <span class="block">{{ $training->evaluation->name }}</span>
+      </div>
+
+      <div class="col-span-2">
+        <label class="text-sm font-medium text-base-500">Department</label>
+        <span class="block">{{ $training->department->name }}</span>
+      </div>
+    </div>
+
+    <x-slot:footer class="justify-end">
+      <a href="{{ route('trainings.index') }}">
+        <x-ui.button variant="outline" type="button">
+          <span>Back</span>
+        </x-ui.button>
+      </a>
 
       @can('update', $training)
-        <x-slot:footer class="justify-end">
-          <a href="{{ route('trainings.edit', $training) }}">
-            <x-ui.button>
-              <span>Edit</span>
-              <i data-lucide="arrow-up-right" class="size-5"></i>
-            </x-ui.button>
-          </a>
-
-          @can('notify', $training)
-            <form method="POST" action="{{ route('trainings.notify', $training) }}">
-              @csrf
-              <x-ui.button>
-                <span>Notify</span>
-                <i data-lucide="mail" class="size-5"></i>
-              </x-ui.button>
-            </form>
-          @endcan
-        </x-slot:footer>
+        <a href="{{ route('trainings.edit', $training) }}">
+          <x-ui.button>
+            <span>Edit</span>
+            <i data-lucide="arrow-up-right" class="size-5"></i>
+          </x-ui.button>
+        </a>
       @endcan
-    </x-ui.card>
-  </div>
+
+      @can('notify', $training)
+        <form method="POST" action="{{ route('trainings.notify', $training) }}">
+          @csrf
+          <x-ui.button>
+            <span>Notify</span>
+            <i data-lucide="mail" class="size-5"></i>
+          </x-ui.button>
+        </form>
+      @endcan
+    </x-slot:footer>
+  </x-ui.card>
 
 
   <x-ui.table>
@@ -108,6 +107,8 @@
     <x-slot:head>
       <th>No</th>
       <th>Name</th>
+      <th>Department</th>
+      <th>Position</th>
       <th>Score</th>
       <th>Notified</th>
       <th>Actions</th>
@@ -118,11 +119,13 @@
         <tr>
           <td class="w-10">{{ $employee->id }}</td>
           <td>
-            <a href="{{ route('employees.show', $employee) }}" class="flex items-center gap-2">
+            <div class="flex items-center gap-2">
               <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
               <span>{{ $employee->name }}</span>
-            </a>
+            </div>
           </td>
+          <td>{{ $employee->department->name }}</td>
+          <td>{{ $employee->position->name }}</td>
           @can('score', $training)
             <td class="w-36 min-w-28">
               <label for="scores[{{ $employee->id }}]" class="sr-only">Score</label>
@@ -184,6 +187,8 @@
     <x-slot:head>
       <th>No</th>
       <th>Name</th>
+      <th>Department</th>
+      <th>Position</th>
       <th>Actions</th>
     </x-slot:head>
 
@@ -197,6 +202,8 @@
               <span>{{ $employee->name }}</span>
             </div>
           </td>
+          <td>{{ $employee->department->name }}</td>
+          <td>{{ $employee->position->name }}</td>
           <td>
             <div class="flex items-center gap-4">
               <a href="{{ route('employees.show', $employee) }}" class="text-primary-500">
