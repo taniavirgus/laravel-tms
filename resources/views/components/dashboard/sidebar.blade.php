@@ -280,7 +280,7 @@
 
     <x-slot:head>
       <th>No</th>
-      <th>Training Name</th>
+      <th>Title</th>
       <th>Status</th>
       <th>Start Date</th>
       <th>Actions</th>

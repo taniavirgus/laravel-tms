@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 form">
   <div class="field col-span-full">
-    <x-ui.label for="name" value="Training Name" />
+    <x-ui.label for="name" value="Title" />
     <x-ui.input id="name" name="name" type="text" value="{{ old('name', $training->name) }}" required
       autofocus />
     <x-ui.errors :messages="$errors->get('name')" />

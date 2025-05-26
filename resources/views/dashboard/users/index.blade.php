@@ -46,7 +46,7 @@
     </x-slot:action>
 
     <x-slot:head>
-      <th>ID</th>
+      <th>No</th>
       <th>Name</th>
       <th>Email</th>
       <th>Role</th>

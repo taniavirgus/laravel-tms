@@ -91,7 +91,7 @@
     </x-slot:title>
 
     <x-slot:head>
-      <th>ID</th>
+      <th>No</th>
       <th>Name</th>
       <th>Topic</th>
       <th>Department</th>
