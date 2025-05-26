@@ -31,7 +31,7 @@
     <x-ui.select id="type" name="type" class="w-full" required>
       <option value="">Select Type</option>
       @foreach ($types as $type)
-        <option value="{{ $type->value }}" @selected(old('type', $training->type->value) == $type->value)>
+        <option value="{{ $type->value }}" @selected(old('type', $training->type?->value) == $type->value)>
           {{ $type->label() }}
         </option>
       @endforeach

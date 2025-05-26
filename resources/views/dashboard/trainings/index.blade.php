@@ -64,8 +64,8 @@
     <x-slot:head>
       <th>No</th>
       <th>Training Name</th>
-      <th>Type</th>
       <th>Department</th>
+      <th>Type</th>
       <th>Date</th>
       <th>Status</th>
       <th>Actions</th>
