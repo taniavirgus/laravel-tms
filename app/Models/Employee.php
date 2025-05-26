@@ -76,20 +76,24 @@ class Employee extends Model implements WithPeriodPivot
    */
   public function matrix(): stdClass
   {
+    $DEFAULT = 0;
     $matrix = new stdClass;
 
     $matrix->training_count = $this->trainings->count();
     $matrix->evaluation_count = $this->evaluations->count();
 
-    $matrix->feedback_score = $this->feedback->average ?? 0;
-    $matrix->training_score = $this->trainings->avg('pivot.score') ?? 0;
+    $matrix->feedback_score = $this->feedback->average ?? $DEFAULT;
+    $matrix->training_score = $this->trainings->avg('pivot.score');
+    $matrix->evaluation_score = $this->evaluations->map(fn($evaluation) => ($evaluation->pivot->score / $evaluation->target) * 100)->avg() ?? $DEFAULT;
 
-    $matrix->potential_score = $matrix->feedback_score;
-    if ($matrix->training_count > 0) $matrix->potential_score = ($matrix->training_score + $matrix->feedback_score) / 2;
+    $matrix->performance_score = collect([$matrix->evaluation_score])->filter(fn($score) => $score !== null)->avg();
+    $matrix->potential_score = collect([$matrix->feedback_score, $matrix->training_score])->filter(fn($score) => $score !== null)->avg();
+    $matrix->average_score = collect([$matrix->potential_score, $matrix->performance_score])->filter(fn($score) => $score !== null)->avg();
 
-    $matrix->performance_score = $this->evaluations->map(fn($evaluation) => ($evaluation->pivot->score / $evaluation->target) * 100)->avg() ?? 0;
-    $matrix->average_score = ($matrix->potential_score + $matrix->performance_score) / 2;
-    $matrix->segment = SegmentType::getSegment($matrix->potential_score, $matrix->performance_score);
+    $matrix->segment = SegmentType::getSegment(
+      $matrix->potential_score,
+      $matrix->performance_score
+    );
 
     return $matrix;
   }

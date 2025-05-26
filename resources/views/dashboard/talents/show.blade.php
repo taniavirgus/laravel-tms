@@ -13,6 +13,7 @@
     <x-slot:head>
       <x-ui.tooltip id="training" tooltip="Number of training assigned to the employee" />
       <x-ui.tooltip id="evaluation" tooltip="Number of evaluation assigned to the employee" />
+      <x-ui.tooltip id="feedback" tooltip="Number of feedback assigned to the employee" />
       <x-ui.tooltip id="potential" tooltip="Average of employee feedback and training score" />
       <x-ui.tooltip id="performance" tooltip="Average of employee evaluation score" />
       <x-ui.tooltip id="average" tooltip="Average of potential and performance score" />
@@ -22,6 +23,7 @@
       <th>Department</th>
       <th data-tooltip-target="training">Training</th>
       <th data-tooltip-target="evaluation">Evaluation</th>
+      <th data-tooltip-target="feedback">Feedback</th>
       <th data-tooltip-target="potential">Potential</th>
       <th data-tooltip-target="performance">Performance</th>
       <th data-tooltip-target="average">Average</th>
@@ -41,6 +43,7 @@
           <td>{{ $employee->department->name }}</td>
           <td class="font-semibold">{{ $employee->matrix->training_count }}</td>
           <td class="font-semibold">{{ $employee->matrix->evaluation_count }}</td>
+          <td class="font-semibold">{{ $employee->matrix->feedback_score }}</td>
           <td class="font-semibold">{{ round($employee->matrix->potential_score) }}</td>
           <td class="font-semibold">{{ round($employee->matrix->performance_score) }}</td>
           <td class="font-semibold">{{ round($employee->matrix->average_score) }}</td>
