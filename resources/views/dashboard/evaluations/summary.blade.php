@@ -104,6 +104,7 @@
       <th data-tooltip-target="performance">Performance</th>
       <th data-tooltip-target="potential">Potential</th>
       <th data-tooltip-target="average">Average</th>
+      <th>Actions</th>
     </x-slot:head>
 
     <x-slot:body>
@@ -111,10 +112,10 @@
         <tr>
           <td class="w-10">{{ $top_performers->firstItem() + $loop->index }}</td>
           <td>
-            <a href="{{ route('employees.show', $employee->id) }}" class="flex items-center gap-2">
+            <div class="flex items-center gap-2">
               <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
               <span>{{ $employee->name }}</span>
-            </a>
+            </div>
           </td>
           <td>{{ $employee->department->name }}</td>
           <td class="font-semibold">{{ $employee->matrix->training_count }}</td>
@@ -123,9 +124,14 @@
           <td class="font-semibold">{{ round($employee->matrix->performance_score) }}</td>
           <td class="font-semibold">{{ round($employee->matrix->potential_score) }}</td>
           <td class="font-semibold">{{ round($employee->matrix->average_score) }}</td>
+          <td>
+            <a href="{{ route('employees.show', $employee->id) }}" class="text-primary-500">
+              View
+            </a>
+          </td>
         </tr>
       @empty
-        <x-ui.empty colspan="9" />
+        <x-ui.empty colspan="10" />
       @endforelse
     </x-slot:body>
 
@@ -133,7 +139,7 @@
       <div class="flex flex-col">
         <span>Notes</span>
         <p class="text-sm text-gray-500">
-          The top performers are calculated based on the total evaluation points.
+          The top performers are calculated based on the average score of potential and performance.
         </p>
       </div>
     </x-slot:footer>
