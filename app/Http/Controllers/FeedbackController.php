@@ -35,8 +35,9 @@ class FeedbackController extends Controller
   {
     $validated = $request->validated();
 
-    $feedback = Feedback::updateOrInsert([
+    Feedback::updateOrInsert([
       'employee_id' => $employee->id,
+      'period_id' => session('period_id')
     ], $validated);
 
     return redirect()

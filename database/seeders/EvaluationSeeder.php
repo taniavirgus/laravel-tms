@@ -9,6 +9,7 @@ use App\Models\Evaluation;
 use App\Models\Employee;
 use App\Enums\ApprovalType;
 use App\Enums\StatusType;
+use App\Models\Period;
 
 class EvaluationSeeder extends Seeder
 {
@@ -162,18 +163,18 @@ class EvaluationSeeder extends Seeder
           ->where('status', StatusType::ACTIVE)
           ->get();
 
+        $period = Period::latest()->first();
+
         if ($employees->isEmpty()) continue;
 
         foreach ($employees as $employee) {
           $min = (int)($evaluation->target * 0.6);
           $max = $evaluation->target;
-
           $score = rand($min, $max);
 
           $evaluation->employees()->attach($employee->id, [
             'score' => $score,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'period_id' => $period->id,
           ]);
         }
       }

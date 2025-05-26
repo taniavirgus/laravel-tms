@@ -308,7 +308,8 @@ class EvaluationController extends Controller
 
     $id = $validated['employee_id'];
     $evaluation->employees()->attach($id, [
-      'score' => 0
+      'score' => 0,
+      'period_id' => session('period_id')
     ]);
 
     return back()->with('success', 'Employee assigned successfully!');

@@ -4,12 +4,16 @@ namespace App\Models;
 
 use App\Enums\CompletionStatus;
 use App\Enums\TrainingType;
+use App\Interfaces\WithPeriodPivot;
+use App\Traits\HasPeriodRelation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Training extends Model
+class Training extends Model implements WithPeriodPivot
 {
+  use HasPeriodRelation;
+
   /**
    * The attributes that are mass assignable.
    *
@@ -107,8 +111,7 @@ class Training extends Model
    */
   public function employees(): BelongsToMany
   {
-    return $this->belongsToMany(Employee::class, 'employee_trainings')
-      ->withPivot('score', 'email_sent')
-      ->withTimestamps();
+    return $this->belongsToManyWithPeriod(Employee::class, 'employee_trainings')
+      ->withPivot('score', 'email_sent');
   }
 }

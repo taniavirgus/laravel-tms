@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\HasPeriod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Feedback extends Model
 {
+  use HasPeriod;
+
   /**
    * The attributes that are mass assignable.
    *
@@ -22,6 +25,8 @@ class Feedback extends Model
     'leadership',
     'description',
     'employee_id',
+    'period_id',
+    'content'
   ];
 
   /**

@@ -4,9 +4,9 @@
 <x-head />
 
 <body class="font-sans antialiased">
-  <div class="grid xl:grid-cols-3">
-    <div class="relative items-center hidden col-span-2 xl:grid bg-gradient-to-t from-primary-900 to-primary-600">
-      <div class="relative flex flex-col w-full max-w-4xl gap-2 mx-auto text-white">
+  <div class="grid lg:grid-cols-2 xl:grid-cols-3">
+    <div class="relative items-center hidden xl:col-span-2 lg:grid bg-gradient-to-t from-primary-900 to-primary-600">
+      <div class="container relative flex flex-col w-full max-w-4xl gap-2 mx-auto text-white">
         <h1 class="text-5xl font-bold">PT <span class="text-yellow-400">MNC</span> Tbk.</h1>
         <span class="text-2xl"> Talent Management System</span>
       </div>

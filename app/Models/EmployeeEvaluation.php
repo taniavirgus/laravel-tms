@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasPeriod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EmployeeEvaluation extends Model
 {
+  use HasPeriod;
+
   /**
    * The attributes that are mass assignable.
    *
@@ -15,7 +18,8 @@ class EmployeeEvaluation extends Model
   protected $fillable = [
     'employee_id',
     'evaluation_id',
-    'score',
+    'period_id',
+    'score'
   ];
 
   /**

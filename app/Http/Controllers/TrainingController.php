@@ -170,6 +170,7 @@ class TrainingController extends Controller
     $training->employees()->attach($id, [
       'score' => 0,
       'email_sent' => false,
+      'period_id' => session('period_id')
     ]);
 
     return back()->with('success', 'Employee assigned successfully!');

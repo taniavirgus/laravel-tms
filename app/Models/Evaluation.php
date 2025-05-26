@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use App\Enums\ApprovalType;
+use App\Interfaces\WithPeriodPivot;
+use App\Traits\HasPeriodRelation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Evaluation extends Model
+class Evaluation extends Model implements WithPeriodPivot
 {
+  use HasPeriodRelation;
+
   /**
    * The attributes that are mass assignable.
    *
@@ -75,9 +79,8 @@ class Evaluation extends Model
    */
   public function employees(): BelongsToMany
   {
-    return $this->belongsToMany(Employee::class, 'employee_evaluations')
-      ->withPivot('score')
-      ->withTimestamps();
+    return $this->belongsToManyWithPeriod(Employee::class, 'employee_evaluations')
+      ->withPivot('score');
   }
 
   /**

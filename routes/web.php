@@ -13,6 +13,7 @@ use App\Http\Controllers\TalentController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PeriodController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
@@ -54,6 +55,10 @@ Route::middleware('auth', MiddlewareRule::role(
     Route::resource('topics', TopicController::class)->except('show');
     Route::resource('talents', TalentController::class)->only(['index', 'show']);
 
+    Route::controller(PeriodController::class)->group(function () {
+      Route::post('periods/switch', 'switch')->name('periods.switch');
+    });
+
     Route::controller(EmployeeController::class)->group(function () {
       Route::patch('employees/{employee}/score', 'score')->name('employees.score');
     });
@@ -78,6 +83,7 @@ Route::middleware('auth', MiddlewareRule::role(
 
     Route::resource('trainings', TrainingController::class);
   });
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/development.php';

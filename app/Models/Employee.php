@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\GenderType;
 use App\Enums\ReligionType;
 use App\Enums\StatusType;
+use App\Interfaces\WithPeriodPivot;
+use App\Traits\HasPeriodRelation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,9 +14,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 
-class Employee extends Model
+class Employee extends Model implements WithPeriodPivot
 {
-  use HasFactory, Notifiable;
+  use HasFactory, Notifiable, HasPeriodRelation;
 
   /**
    * The attributes that are mass assignable.
@@ -76,9 +78,8 @@ class Employee extends Model
    */
   public function evaluations(): BelongsToMany
   {
-    return $this->belongsToMany(Evaluation::class, 'employee_evaluations')
-      ->withPivot('score')
-      ->withTimestamps();
+    return $this->belongsToManyWithPeriod(Evaluation::class, 'employee_evaluations')
+      ->withPivot('score');
   }
 
   /**
@@ -105,11 +106,9 @@ class Employee extends Model
    * 
    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
    */
-
   public function trainings(): BelongsToMany
   {
-    return $this->belongsToMany(Training::class, 'employee_trainings')
-      ->withPivot('score', 'email_sent')
-      ->withTimestamps();
+    return $this->belongsToManyWithPeriod(Training::class, 'employee_trainings')
+      ->withPivot('score', 'email_sent');
   }
 }

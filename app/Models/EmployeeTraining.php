@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
-use App\Enums\BooleanType;
+use App\Traits\HasPeriod;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EmployeeTraining extends Model
 {
+  use HasPeriod;
+
   /**
    * The attributes that are mass assignable.
    *
@@ -15,8 +18,8 @@ class EmployeeTraining extends Model
   protected $fillable = [
     'employee_id',
     'training_id',
-    'email_sent',
-    'score',
+    'period_id',
+    'score'
   ];
 
   /**
@@ -24,7 +27,7 @@ class EmployeeTraining extends Model
    *
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function employee()
+  public function employee(): BelongsTo
   {
     return $this->belongsTo(Employee::class);
   }
@@ -34,7 +37,7 @@ class EmployeeTraining extends Model
    *
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function training()
+  public function training(): BelongsTo
   {
     return $this->belongsTo(Training::class);
   }
