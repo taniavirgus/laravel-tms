@@ -84,65 +84,6 @@
     </x-slot:footer>
   </x-ui.card>
 
-  <x-ui.card>
-    <x-slot:header>
-      <i data-lucide="file-text" class="size-5 text-primary-500"></i>
-      <h5>Employee Feedback</h5>
-    </x-slot:header>
-
-    <div class="form xl:grid-cols-2">
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Teamwork</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->teamwork" /></dd>
-      </dl>
-
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Communication</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->communication" /></dd>
-      </dl>
-
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Initiative</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->initiative" /></dd>
-      </dl>
-
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Problem Solving</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->problem_solving" /></dd>
-      </dl>
-
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Adaptability</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->adaptability" /></dd>
-      </dl>
-
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Leadership</dt>
-        <dd><x-ui.progress class="py-3" :value="$employee->feedback->leadership" /></dd>
-      </dl>
-
-      <dl class="col-span-full">
-        <dt class="text-sm font-medium text-base-500">Feedback</dt>
-        <dd>
-          <p>{{ $employee->feedback->description }}</p>
-        </dd>
-      </dl>
-    </div>
-
-    @can('create', $employee->feedback)
-      <x-slot:footer class="justify-end">
-        <a href="{{ route('employees.feedback.create', $employee) }}">
-          <x-ui.button>
-            <span>Give Feedback</span>
-            <i data-lucide="arrow-up-right" class="size-5"></i>
-          </x-ui.button>
-        </a>
-      </x-slot:footer>
-    @endcan
-  </x-ui.card>
-
-
-
   <x-ui.table>
     <x-slot:title>
       <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
@@ -211,5 +152,60 @@
     @endcan
   </x-ui.table>
 
+  <x-ui.card>
+    <x-slot:header>
+      <i data-lucide="file-text" class="size-5 text-primary-500"></i>
+      <h5>Employee Feedback</h5>
+    </x-slot:header>
 
+    <div class="form xl:grid-cols-2">
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Teamwork</dt>
+        <dd><x-ui.progress class="py-3" :value="$employee->feedback->teamwork" /></dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Communication</dt>
+        <dd><x-ui.progress class="py-3" :value="$employee->feedback->communication" /></dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Initiative</dt>
+        <dd><x-ui.progress class="py-3" :value="$employee->feedback->initiative" /></dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Problem Solving</dt>
+        <dd><x-ui.progress class="py-3" :value="$employee->feedback->problem_solving" /></dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Adaptability</dt>
+        <dd><x-ui.progress class="py-3" :value="$employee->feedback->adaptability" /></dd>
+      </dl>
+
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Leadership</dt>
+        <dd><x-ui.progress class="py-3" :value="$employee->feedback->leadership" /></dd>
+      </dl>
+
+      <dl class="col-span-full">
+        <dt class="text-sm font-medium text-base-500">Feedback</dt>
+        <dd>
+          <p>{{ $employee->feedback->description }}</p>
+        </dd>
+      </dl>
+    </div>
+
+    @can('create', $employee->feedback)
+      <x-slot:footer class="justify-end">
+        <a href="{{ route('employees.feedback.create', $employee) }}">
+          <x-ui.button>
+            <span>Give Feedback</span>
+            <i data-lucide="arrow-up-right" class="size-5"></i>
+          </x-ui.button>
+        </a>
+      </x-slot:footer>
+    @endcan
+  </x-ui.card>
 </x-dashboard-layout>

@@ -139,6 +139,9 @@
           <td><x-ui.badge :value="$employee->pivot->email_sent ? BooleanType::YES : BooleanType::NO" /></td>
           <td>
             <div class="flex items-center gap-4">
+              <a href="{{ route('employees.show', $employee) }}" class="text-primary-500">
+                View
+              </a>
               @can('unassign', $training)
                 <form action="{{ route('trainings.unassign', [$training, $employee]) }}" method="POST">
                   @csrf
@@ -196,6 +199,9 @@
           </td>
           <td>
             <div class="flex items-center gap-4">
+              <a href="{{ route('employees.show', $employee) }}" class="text-primary-500">
+                View
+              </a>
               @can('assign', $training)
                 <form action="{{ route('trainings.assign', $training) }}" method="POST">
                   @csrf

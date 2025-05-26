@@ -137,6 +137,9 @@
           @endcan
           <td>
             <div class="flex items-center gap-4">
+              <a href="{{ route('employees.show', $employee) }}" class="text-primary-500">
+                View
+              </a>
               @can('unassign', $evaluation)
                 <form action="{{ route('evaluations.unassign', [$evaluation, $employee]) }}" method="POST">
                   @csrf
@@ -200,6 +203,9 @@
           <td>{{ $employee->position->name }}</td>
           <td>
             <div class="flex items-center gap-4">
+              <a href="{{ route('employees.show', $employee) }}" class="text-primary-500">
+                View
+              </a>
               @can('assign', $evaluation)
                 <form action="{{ route('evaluations.assign', $evaluation) }}" method="POST">
                   @csrf
