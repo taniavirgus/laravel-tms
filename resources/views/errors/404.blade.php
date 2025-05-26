@@ -6,8 +6,8 @@
 <body class="font-sans antialiased">
   <div class="container grid h-screen max-w-7xl place-items-center">
     <div class="flex flex-col justify-center gap-6 text-center">
-      <h1 class="text-6xl font-bold truncate text-zinc-900">
-        {{ $exception->getMessage() }}
+      <h1 class="text-6xl font-bold mx-auto max-w-2xl text-zinc-900">
+        404 Page Not Found
       </h1>
 
       <p class="text-zinc-600 text-wrap">

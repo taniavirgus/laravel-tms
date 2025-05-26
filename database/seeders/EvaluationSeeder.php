@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Evaluation;
 use App\Models\Employee;
 use App\Enums\ApprovalType;
+use App\Enums\SemesterType;
 use App\Enums\StatusType;
 use App\Models\Period;
 
@@ -163,7 +164,10 @@ class EvaluationSeeder extends Seeder
           ->where('status', StatusType::ACTIVE)
           ->get();
 
-        $period = Period::latest()->first();
+        $period = Period::firstOrCreate([
+          'year' => now()->year,
+          'semester' => now()->month > 6 ? SemesterType::ODD : SemesterType::EVEN
+        ]);
 
         if ($employees->isEmpty()) continue;
 

@@ -15,13 +15,8 @@ class PeriodSeeder extends Seeder
   public function run(): void
   {
     Period::create([
-      'year' => 2025,
-      'semester' => SemesterType::ODD
-    ]);
-
-    Period::create([
-      'year' => 2025,
-      'semester' => SemesterType::EVEN
+      'year' => now()->year,
+      'semester' => now()->month > 6 ? SemesterType::ODD : SemesterType::EVEN
     ]);
   }
 }
