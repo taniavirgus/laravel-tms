@@ -159,18 +159,10 @@
           'menus' => [
               [
                   'type' => 'link',
-                  'href' => '#',
-                  'active' => false,
+                  'href' => route('talents.index'),
+                  'active' => request()->routeIs('talents.index'),
                   'name' => 'Talent Pool List',
                   'icon' => 'building2',
-              ],
-              [
-                  'type' => 'link',
-                  'href' => '#',
-                  'active' => false,
-                  'name' => 'Assign Employee',
-                  'icon' => 'user-plus',
-                  'count' => 3,
               ],
           ],
       ],

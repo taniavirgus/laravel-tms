@@ -95,7 +95,6 @@
       <th>Name</th>
       <th>Topic</th>
       <th>Department</th>
-      <th>Weight</th>
       <th>Point</th>
       <th>Employee Score</th>
       <th>Actions</th>
@@ -108,7 +107,6 @@
           <td>{{ $evaluation->name }}</td>
           <td>{{ $evaluation->topic->name }}</td>
           <td>{{ $evaluation->department->name }}</td>
-          <td>{{ $evaluation->weight }}%</td>
           <td>{{ $evaluation->point }}</td>
           @can('score', $employee)
             <td class="w-36 min-w-28">
@@ -208,4 +206,49 @@
       </x-slot:footer>
     @endcan
   </x-ui.card>
+
+  <x-ui.table>
+    <x-slot:title>
+      <i data-lucide="file-text" class="size-5 text-primary-500"></i>
+      <h4>Assigned Trainings</h4>
+    </x-slot:title>
+   
+    <x-slot:head>
+      <th>No</th>
+      <th>Title</th>
+      <th>Department</th>
+      <th>Type</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </x-slot:head>
+
+    <x-slot:body>
+      @forelse ($trainings as $training)
+        <tr>
+          <td class="w-10">{{ $training->id }}</td>
+          <td>{{ $training->name }}</td>
+          <td>{{ $training->department->name }}</td>
+          <td><x-ui.badge :value="$training->type" /></td>
+          <td>
+            <div class="flex items-center gap-2">
+              <span class="whitespace-nowrap">{{ $training->start_date->format('d M Y') }}</span>
+              <hr class="w-10 bg-base-500" />
+              <span class="whitespace-nowrap">{{ $training->end_date->format('d M Y') }}</span>
+            </div>
+          </td>
+          <td><x-ui.badge :value="$training->status" /></td>
+          <td>
+            <div class="flex items-center gap-4">
+              <a href="{{ route('trainings.show', $training) }}" class="text-primary-500">
+                View
+              </a>
+            </div>
+          </td>
+        </tr>
+      @empty
+        <x-ui.empty colspan="8" message="No trainings assigned to this employee" />
+      @endforelse
+    </x-slot:body>
+  </x-ui.table>
 </x-dashboard-layout>

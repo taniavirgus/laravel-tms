@@ -9,6 +9,7 @@ use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TalentController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
@@ -51,6 +52,7 @@ Route::middleware('auth', MiddlewareRule::role(
 ))
   ->group(function () {
     Route::resource('topics', TopicController::class)->except('show');
+    Route::resource('talents', TalentController::class)->only(['index', 'show']);
 
     Route::controller(EmployeeController::class)->group(function () {
       Route::patch('employees/{employee}/score', 'score')->name('employees.score');

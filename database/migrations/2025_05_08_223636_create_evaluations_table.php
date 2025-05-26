@@ -23,7 +23,6 @@ return new class extends Migration
       $table->text('description');
       $table->integer('point')->default(0);
       $table->integer('target')->default(0);
-      $table->integer('weight')->default(0);
       $table->enum('status', array_map(fn($type) => $type->value, $approvals))->default(ApprovalType::DRAFT->value);
       $table->foreignIdFor(Department::class)->constrained()->cascadeOnDelete();
       $table->foreignIdFor(Position::class)->constrained()->cascadeOnDelete();

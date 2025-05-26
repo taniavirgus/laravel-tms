@@ -27,7 +27,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Measures the effectiveness of onboarding new employees by assessing their productivity, engagement, and retention within the first 90 days.',
             'point' => 10,
             'target' => 100,
-            'weight' => 30,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 1
           ],
@@ -36,7 +35,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Assesses employee adherence to company policies, professional behavior, and collaboration within the HR department.',
             'point' => 8,
             'target' => 90,
-            'weight' => 25,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 2
           ],
@@ -51,7 +49,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Measures accuracy of budget forecasts vs actual spending by comparing planned budgets to actual expenditures over a fiscal period.',
             'point' => 10,
             'target' => 95,
-            'weight' => 35,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 3
           ],
@@ -60,7 +57,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Evaluates the punctuality of monthly and annual financial report submissions.',
             'point' => 7,
             'target' => 100,
-            'weight' => 20,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 5
           ],
@@ -75,7 +71,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Measures return on investment for marketing campaigns by calculating the ratio of net profit to the cost of the campaign.',
             'point' => 12,
             'target' => 120,
-            'weight' => 40,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 3
           ],
@@ -84,7 +79,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Assesses the effectiveness of marketing in engaging customers through surveys and interaction metrics.',
             'point' => 10,
             'target' => 85,
-            'weight' => 30,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 4
           ],
@@ -99,7 +93,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Measures percentage of time systems are operational by tracking system availability and downtime over a specific period.',
             'point' => 10,
             'target' => 99,
-            'weight' => 35,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 3
           ],
@@ -108,7 +101,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Evaluates average time to resolve support tickets by analyzing the time taken from ticket creation to resolution.',
             'point' => 8,
             'target' => 85,
-            'weight' => 30,
             'status' => ApprovalType::DRAFT->value,
             'topic_id' => 5
           ],
@@ -117,7 +109,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Assesses adherence to IT security policies and successful completion of security audits.',
             'point' => 9,
             'target' => 100,
-            'weight' => 25,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 2
           ],
@@ -132,7 +123,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Measures overall operational efficiency by evaluating resource utilization, process optimization, and output quality.',
             'point' => 15,
             'target' => 95,
-            'weight' => 40,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 5
           ],
@@ -141,7 +131,6 @@ class EvaluationSeeder extends Seeder
             'description' => 'Tracks the percentage of products or services passing quality checks on the first attempt.',
             'point' => 10,
             'target' => 98,
-            'weight' => 30,
             'status' => ApprovalType::APPROVED->value,
             'topic_id' => 3
           ],
@@ -160,7 +149,6 @@ class EvaluationSeeder extends Seeder
           'description' => $evaluation->description,
           'point' => $evaluation->point,
           'target' => $evaluation->target,
-          'weight' => $evaluation->weight,
           'status' => $evaluation->status,
           'topic_id' => $evaluation->topic_id,
           'department_id' => $item->department_id,

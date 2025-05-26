@@ -26,7 +26,6 @@ class StoreEvaluationRequest extends FormRequest
       'description' => ['nullable', 'string'],
       'point' => ['required', 'integer', 'min:0'],
       'target' => ['required', 'integer', 'min:0'],
-      'weight' => ['required', 'integer', 'min:0', 'max:100'],
       'topic_id' => ['required', 'exists:topics,id'],
       'department_id' => ['required', 'exists:departments,id'],
       'position_id' => ['required', 'exists:positions,id'],

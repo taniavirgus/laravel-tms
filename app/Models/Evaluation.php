@@ -20,7 +20,6 @@ class Evaluation extends Model
     'description',
     'point',
     'target',
-    'weight',
     'status',
     'topic_id',
     'department_id',

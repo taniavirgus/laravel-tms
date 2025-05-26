@@ -52,14 +52,6 @@
         </dd>
       </dl>
 
-      <dl>
-        <dt class="text-sm font-medium text-base-500">Weight</dt>
-        <dd class="flex items-center gap-2">
-          <i data-lucide="chart-no-axes-column" class="size-4"></i>
-          {{ $evaluation->weight }}%
-        </dd>
-      </dl>
-
       <dl class="col-span-full">
         <dt class="text-sm font-medium text-base-500">Description</dt>
         <dd>

@@ -57,23 +57,15 @@
     <x-ui.errors :messages="$errors->get('topic_id')" />
   </div>
 
-  <div class="form xl:grid-cols-3 col-span-full">
-    <div class="field">
-      <x-ui.label for="point" value="Point" /> <x-ui.input id="point" name="point" type="number"
-        min="0" step="1" value="{{ old('point', $evaluation->point ?? 0) }}" required />
-      <x-ui.errors :messages="$errors->get('point')" />
-    </div>
+  <div class="field">
+    <x-ui.label for="point" value="Point" /> <x-ui.input id="point" name="point" type="number"
+      min="0" step="1" value="{{ old('point', $evaluation->point ?? 0) }}" required />
+    <x-ui.errors :messages="$errors->get('point')" />
+  </div>
 
-    <div class="field">
-      <x-ui.label for="target" value="Target" /> <x-ui.input id="target" name="target" type="number"
-        min="0" step="1" value="{{ old('target', $evaluation->target ?? 0) }}" required />
-      <x-ui.errors :messages="$errors->get('target')" />
-    </div>
-
-    <div class="field">
-      <x-ui.label for="weight" value="Weight (%)" /> <x-ui.input id="weight" name="weight" type="number"
-        min="0" max="100" step="1" value="{{ old('weight', $evaluation->weight ?? 0) }}" required />
-      <x-ui.errors :messages="$errors->get('weight')" />
-    </div>
+  <div class="field">
+    <x-ui.label for="target" value="Target" /> <x-ui.input id="target" name="target" type="number"
+      min="0" step="1" value="{{ old('target', $evaluation->target ?? 0) }}" required />
+    <x-ui.errors :messages="$errors->get('target')" />
   </div>
 </div>
