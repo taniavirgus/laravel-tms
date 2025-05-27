@@ -17,7 +17,7 @@ class EmployeeSeeder extends Seeder
     $departments = Department::all();
     $positions = Position::all();
 
-    foreach (range(1, 100) as $i) {
+    foreach (range(1, 50) as $i) {
       Employee::factory()->create([
         'department_id' => $departments->random()->id,
         'position_id' => $positions->random()->id,

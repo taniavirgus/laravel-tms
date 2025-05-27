@@ -168,7 +168,7 @@
   <x-ui.table>
     <x-slot:title>
       <i data-lucide="user-plus" class="size-5 text-primary-500"></i>
-      <h4>{{ $evaluation->position->name }} Employees in {{ $evaluation->department->name }}</h4>
+      <h4>Available Employees</h4>
     </x-slot:title>
 
     <x-slot:head>

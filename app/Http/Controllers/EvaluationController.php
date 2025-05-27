@@ -21,6 +21,7 @@ use Illuminate\Validation\Rules\Enum;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
+use stdClass;
 
 class EvaluationController extends Controller
 {
@@ -74,40 +75,33 @@ class EvaluationController extends Controller
    */
   public function summary(Request $request): View
   {
+    $page = $request->get('page', 1);
+    $per_page = $request->get('per_page', 5);
     $topic_id = $request->input('topic_id');
     $department_id = $request->input('department_id');
 
     $topics = Topic::get();
     $departments = Department::get();
-    $evaluations = Evaluation::with([
-      'department',
-      'topic',
-      'employees.position',
-      'employees.feedback',
-      'employees.trainings',
-      'employees.department',
-      'employees.evaluations',
-    ])
-      ->when($department_id, function ($query) use ($department_id) {
-        $query->where('department_id', $department_id);
+    $employees = Employee::with(['department', 'position', 'feedback', 'trainings', 'evaluations'])
+      ->when($department_id, function ($q) use ($department_id) {
+        $q->where('department_id', $department_id);
       })
-      ->when($topic_id, function ($query) use ($topic_id) {
-        $query->where('topic_id', $topic_id);
+      ->when($topic_id, function ($q) use ($topic_id) {
+        $q->whereHas('evaluations', function ($q) use ($topic_id) {
+          $q->where('topic_id', $topic_id);
+        });
       })
       ->get()
-      ->map(function ($evaluation) {
-        $evaluation->employees->map(function ($employee) {
-          $employee->matrix = $employee->matrix();
-          return $employee;
-        });
-        return $evaluation;
+      ->map(function ($employee) {
+        $employee->matrix = $employee->matrix();
+        return $employee;
       });
 
-    $summary = $evaluations->map(function ($evaluation) {
-      $evaluation->average_potential = $evaluation->employees->avg('matrix.potential_score');
-      $evaluation->average_performance = $evaluation->employees->avg('matrix.performance_score');
-      $evaluation->average_score = $evaluation->employees->avg('matrix.average_score');
-      return $evaluation;
+    $summary = $employees->map(function ($employee) {
+      $employee->average_score = $employee->matrix->average_score;
+      $employee->average_potential = $employee->matrix->potential_score;
+      $employee->average_performance = $employee->matrix->performance_score;
+      return $employee;
     });
 
     $chart = (object) [
@@ -125,17 +119,6 @@ class EvaluationController extends Controller
       })
     ];
 
-
-    $page = request('page', 1);
-    $per_page = request('per_page', 5);
-
-    $employees = Employee::with(['department', 'position', 'feedback', 'trainings', 'evaluations'])
-      ->get()
-      ->map(function ($employee) {
-        $employee->matrix = $employee->matrix();
-        return $employee;
-      });
-
     $top_performers = new LengthAwarePaginator(
       $employees->sortByDesc('matrix.average_score')->forPage($page, $per_page),
       $employees->count(),
@@ -145,7 +128,6 @@ class EvaluationController extends Controller
     );
 
     return view('dashboard.evaluations.summary', [
-      'evaluations' => $evaluations,
       'departments' => $departments,
       'topics' => $topics,
       'chart' => $chart,
