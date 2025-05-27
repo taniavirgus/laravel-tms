@@ -43,7 +43,7 @@
           <td>{{ $employee->department->name }}</td>
           <td class="font-semibold">{{ $employee->matrix->training_count }}</td>
           <td class="font-semibold">{{ $employee->matrix->evaluation_count }}</td>
-          <td class="font-semibold">{{ $employee->matrix->feedback_score }}</td>
+          <td class="font-semibold">{{ round($employee->matrix->feedback_score) }}</td>
           <td class="font-semibold">{{ round($employee->matrix->potential_score) }}</td>
           <td class="font-semibold">{{ round($employee->matrix->performance_score) }}</td>
           <td class="font-semibold">{{ round($employee->matrix->average_score) }}</td>
