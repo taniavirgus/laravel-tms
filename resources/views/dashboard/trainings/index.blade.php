@@ -1,3 +1,7 @@
+@php
+  use App\Enums\AssignmentType;
+@endphp
+
 <x-dashboard-layout>
   <x-dashboard.heading>
     <x-slot:title>Trainings List</x-slot:title>
@@ -18,10 +22,10 @@
           </x-slot:left>
         </x-ui.input>
 
-        <x-ui.select name="department_id" onchange="this.form.submit()">
-          <option value="">All Departments</option>
-          @foreach ($departments as $department)
-            <option value="{{ $department->id }}" @selected(request()->get('department_id') == $department->id)>{{ $department->name }}</option>
+        <x-ui.select name="assignment" onchange="this.form.submit()">
+          <option value="">All Assignments</option>
+          @foreach ($assignments as $assignment)
+            <option value="{{ $assignment->value }}" @selected(request()->get('assignment') == $assignment->value)>{{ $assignment->label() }}</option>
           @endforeach
         </x-ui.select>
 
@@ -64,9 +68,9 @@
     <x-slot:head>
       <th>No</th>
       <th>Title</th>
-      <th>Department</th>
       <th>Type</th>
       <th>Date</th>
+      <th>Assignment Type</th>
       <th>Status</th>
       <th>Actions</th>
     </x-slot:head>
@@ -76,7 +80,6 @@
         <tr>
           <td class="w-10">{{ $training->id }}</td>
           <td>{{ $training->name }}</td>
-          <td>{{ $training->department->name }}</td>
           <td><x-ui.badge :value="$training->type" /></td>
           <td>
             <div class="flex items-center gap-2">
@@ -85,6 +88,7 @@
               <span class="whitespace-nowrap">{{ $training->end_date->format('d M Y') }}</span>
             </div>
           </td>
+          <td><x-ui.badge :value="$training->assignment" /></td>
           <td><x-ui.badge :value="$training->status" /></td>
           <td>
             <div class="flex items-center gap-4">

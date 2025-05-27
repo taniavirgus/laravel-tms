@@ -1,5 +1,6 @@
 @php
   use App\Enums\BooleanType;
+  use App\Enums\AssignmentType;
 @endphp
 
 <x-dashboard-layout>
@@ -62,10 +63,19 @@
         <span class="block">{{ $training->evaluation->name }}</span>
       </div>
 
-      <div class="col-span-2">
-        <label class="text-sm font-medium text-base-500">Department</label>
-        <span class="block">{{ $training->department->name }}</span>
+      <div>
+        <label class="text-sm font-medium text-base-500">Department Assignment</label>
+        <div><x-ui.badge :value="$training->assignment" /></div>
       </div>
+
+      @if ($training->assignment === AssignmentType::CLOSED)
+        <div class="col-span-full">
+          <label class="text-sm font-medium text-base-500">Assigned Departments</label>
+          <span class="block mt-1">
+            {{ $training->departments->count() == 0 ? 'No departments assigned' : $training->departments->pluck('name')->join(', ') }}
+          </span>
+        </div>
+      @endif
     </div>
 
     <x-slot:footer class="justify-end">
@@ -96,9 +106,7 @@
     </x-slot:footer>
   </x-ui.card>
 
-
   <x-ui.table>
-
     <x-slot:title>
       <i data-lucide="user-check" class="size-5 text-primary-500"></i>
       <h4>Assigned Employees</h4>
@@ -177,11 +185,10 @@
     @endcan
   </x-ui.table>
 
-
   <x-ui.table>
     <x-slot:title>
       <i data-lucide="user-plus" class="size-5 text-primary-500"></i>
-      <h4>{{ $training->department->name }} Employees</h4>
+      <h4>Available Employees</h4>
     </x-slot:title>
 
     <x-slot:head>
@@ -222,7 +229,7 @@
           </td>
         </tr>
       @empty
-        <x-ui.empty colspan="7" message="No available employees in this department" />
+        <x-ui.empty colspan="7" message="No available employees" />
       @endforelse
     </x-slot:body>
   </x-ui.table>

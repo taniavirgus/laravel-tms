@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\TrainingType;
+use App\Enums\AssignmentType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -26,13 +27,15 @@ class StoreTrainingRequest extends FormRequest
     return [
       'name' => ['required', 'string', 'max:255'],
       'description' => ['required', 'string'],
-      'department_id' => ['required', 'integer', 'exists:departments,id'],
+      'department_ids' => ['required_if:assignment,multiple', 'array'],
+      'department_ids.*' => ['exists:departments,id'],
       'evaluation_id' => ['nullable', 'integer', 'exists:evaluations,id'],
       'start_date' => ['required', 'date', 'after_or_equal:today'],
       'end_date' => ['required', 'date', 'after:start_date'],
       'duration' => ['required', 'integer', 'min:0'],
       'capacity' => ['required', 'integer', 'min:0'],
       'type' => ['required', new Enum(TrainingType::class)],
+      'assignment' => ['required', new Enum(AssignmentType::class)],
     ];
   }
 }

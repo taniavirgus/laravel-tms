@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\CompletionStatus;
 use App\Enums\StatusType;
 use App\Enums\TrainingType;
+use App\Enums\AssignmentType;
 use App\Models\Training;
 use App\Http\Requests\StoreTrainingRequest;
 use App\Http\Requests\UpdateTrainingRequest;
@@ -34,32 +35,32 @@ class TrainingController extends Controller
   public function index(Request $request): View
   {
     $search = $request->input('search');
-    $department_id = $request->input('department_id');
+    $assignment = $request->input('assignment');
     $status = $request->input('status');
     $type = $request->input('type');
 
     $trainings = Training::query()
-      ->with(['department', 'evaluation'])
-      ->when($status, function ($q) use ($status) {
-        $q->withStatus($status);
-      })
+      ->with(['departments', 'evaluation'])
       ->when($search, function ($q) use ($search) {
         $q->where('name', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%');
       })
-      ->when($department_id, function ($q) use ($department_id) {
-        $q->where('department_id', $department_id);
-      })
       ->when($type, function ($q) use ($type) {
         $q->where('type', $type);
+      })
+      ->when($status, function ($q) use ($status) {
+        $q->withStatus($status);
+      })
+      ->when($assignment, function ($q) use ($assignment) {
+        $q->where('assignment', $assignment);
       })
       ->paginate(5)
       ->withQueryString();
 
     return view('dashboard.trainings.index', [
       'trainings' => $trainings,
-      'departments' => Department::select(['name', 'id'])->get(),
-      'statuses' => CompletionStatus::cases(),
       'types' => TrainingType::cases(),
+      'statuses' => CompletionStatus::cases(),
+      'assignments' => AssignmentType::cases(),
     ]);
   }
 
@@ -72,6 +73,7 @@ class TrainingController extends Controller
       'departments' => Department::select(['name', 'id'])->get(),
       'evaluations' => Evaluation::select(['name', 'id'])->get(),
       'types' => TrainingType::cases(),
+      'assignments' => AssignmentType::cases(),
     ]);
   }
 
@@ -81,7 +83,11 @@ class TrainingController extends Controller
   public function store(StoreTrainingRequest $request)
   {
     $validated = $request->validated();
+    $department_ids = $validated['department_ids'] ?? [];
+    unset($validated['department_ids']);
+
     $training = Training::create($validated);
+    if ($training->assignment === AssignmentType::CLOSED) $training->departments()->attach($department_ids);
 
     return redirect()
       ->route('trainings.show', $training)
@@ -93,17 +99,27 @@ class TrainingController extends Controller
    */
   public function show(Training $training)
   {
-    $assigned = $training->employees->load('department', 'position');
-    $assigned_ids = $assigned->pluck('id')->toArray();
+    $assigned = collect();
+    $employees = collect();
 
-    $employees = Employee::with(['department', 'position'])
-      ->where('department_id', $training->department_id)
-      ->where('status', StatusType::ACTIVE->value)
-      ->whereNotIn('id', $assigned_ids)
-      ->get();
+    if ($training->assignment === AssignmentType::OPEN) {
+      $employees = Employee::with(['department', 'position'])
+        ->where('status', StatusType::ACTIVE->value)
+        ->get();
+    } else {
+      $departments = $training->departments;
+      $assigned = $training->employees->load('department', 'position');
+      $assigned_ids = $assigned->pluck('id')->toArray();
+
+      $employees = Employee::with(['department', 'position'])
+        ->whereIn('department_id', $departments->pluck('id'))
+        ->where('status', StatusType::ACTIVE->value)
+        ->whereNotIn('id', $assigned_ids)
+        ->get();
+    }
 
     return view('dashboard.trainings.show', [
-      'training' => $training,
+      'training' => $training->load('departments'),
       'assigned' => $assigned,
       'employees' => $employees,
     ]);
@@ -115,10 +131,11 @@ class TrainingController extends Controller
   public function edit(Training $training)
   {
     return view('dashboard.trainings.edit', [
-      'training' => $training->load(['department', 'evaluation']),
+      'training' => $training->load(['departments', 'evaluation']),
       'departments' => Department::select(['name', 'id'])->get(),
       'evaluations' => Evaluation::select(['name', 'id'])->get(),
       'types' => TrainingType::cases(),
+      'assignments' => AssignmentType::cases(),
     ]);
   }
 
@@ -128,8 +145,11 @@ class TrainingController extends Controller
   public function update(UpdateTrainingRequest $request, Training $training)
   {
     $validated = $request->validated();
+    $department_ids = $validated['department_ids'] ?? [];
+    unset($validated['department_ids']);
+
     $training->update($validated);
-    $training->employees()->detach();
+    if ($training->assignment === AssignmentType::CLOSED) $training->departments()->sync($department_ids);
 
     return redirect()
       ->route('trainings.show', $training)
@@ -182,7 +202,6 @@ class TrainingController extends Controller
   public function unassign(Training $training, Employee $employee): RedirectResponse
   {
     $training->employees()->detach($employee->id);
-
     return back()->with('success', 'Employee unassigned successfully!');
   }
 

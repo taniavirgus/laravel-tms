@@ -164,12 +164,11 @@ class EvaluationSeeder extends Seeder
           ->where('status', StatusType::ACTIVE)
           ->get();
 
+        if ($employees->isEmpty()) continue;
         $period = Period::firstOrCreate([
           'year' => now()->year,
           'semester' => now()->month > 6 ? SemesterType::ODD : SemesterType::EVEN
         ]);
-
-        if ($employees->isEmpty()) continue;
 
         foreach ($employees as $employee) {
           $min = (int)($evaluation->target * 0.6);

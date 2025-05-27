@@ -9,6 +9,7 @@ use App\Traits\HasPeriodRelation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Enums\AssignmentType;
 
 class Training extends Model implements WithPeriodPivot
 {
@@ -25,10 +26,10 @@ class Training extends Model implements WithPeriodPivot
     'start_date',
     'end_date',
     'type',
+    'assignment',
     'duration',
     'capacity',
     'notified',
-    'department_id',
     'evaluation_id',
   ];
 
@@ -44,6 +45,7 @@ class Training extends Model implements WithPeriodPivot
       'end_date' => 'date',
       'notified' => 'boolean',
       'type' => TrainingType::class,
+      'assignment' => AssignmentType::class,
     ];
   }
 
@@ -113,5 +115,15 @@ class Training extends Model implements WithPeriodPivot
   {
     return $this->belongsToManyWithPeriod(Employee::class, 'employee_trainings')
       ->withPivot('score', 'email_sent');
+  }
+
+  /**
+   * Relationship with the Department model.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+   */
+  public function departments(): BelongsToMany
+  {
+    return $this->belongsToMany(Department::class);
   }
 }

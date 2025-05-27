@@ -14,19 +14,6 @@
   </div>
 
   <div class="field">
-    <x-ui.label for="department_id" value="Department" />
-    <x-ui.select id="department_id" name="department_id" class="w-full" required>
-      <option value="">Select Department</option>
-      @foreach ($departments as $department)
-        <option value="{{ $department->id }}" @selected(old('department_id', $training->department_id) == $department->id)>
-          {{ $department->name }}
-        </option>
-      @endforeach
-    </x-ui.select>
-    <x-ui.errors :messages="$errors->get('department_id')" />
-  </div>
-
-  <div class="field">
     <x-ui.label for="type" value="Type" />
     <x-ui.select id="type" name="type" class="w-full" required>
       <option value="">Select Type</option>
@@ -86,4 +73,61 @@
       min="1" required />
     <x-ui.errors :messages="$errors->get('capacity')" />
   </div>
+
+  <div x-data="departments()" class="flex flex-col items-start gap-4 col-span-full">
+    <div class="w-full field">
+      <x-ui.label for="assignment" value="Department Assignment" />
+      <x-ui.select id="assignment" name="assignment" class="w-full" required x-model="assignment">
+        <option value="">Select Assignment Type</option>
+        @foreach ($assignments as $assignment)
+          <option value="{{ $assignment->value }}" @selected(old('assignment', $training->assignment?->value) == $assignment->value)>
+            {{ $assignment->label() }}
+          </option>
+        @endforeach
+      </x-ui.select>
+      <x-ui.errors :messages="$errors->get('assignment')" />
+    </div>
+
+    <div class="w-full form xl:grid-cols-2" x-show="assignment === 'closed'" x-cloak>
+      <template x-for="(dept, index) in selected" :key="index">
+        <div class="flex items-center w-full gap-2">
+          <x-ui.select x-model="selected[index]" :name="'department_ids[]'" class="w-full">
+            <option value="">Select Department</option>
+            @foreach ($departments as $department)
+              <option value="{{ $department->id }}">{{ $department->name }}</option>
+            @endforeach
+          </x-ui.select>
+          <button type="button" @click="remove(index)" class="text-base-500">
+            <i data-lucide="x" class="size-5"></i>
+            <span class="sr-only">Remove</span>
+          </button>
+        </div>
+      </template>
+
+      <x-ui.errors :messages="$errors->get('department_ids')" />
+      <x-ui.errors :messages="$errors->get('department_ids.*')" />
+    </div>
+
+    <x-ui.button type="button" @click="append()" x-show="assignment === 'closed'" x-cloak>
+      <i data-lucide="plus" class="size-5"></i>
+      <span>Add Department</span>
+    </x-ui.button>
+  </div>
 </div>
+
+@push('scripts')
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('departments', () => ({
+        assignment: @json(old('assignment', $training->assignment?->value)),
+        selected: @json(old('department_ids', $training->departments->pluck('id')->toArray() ?? [])),
+        append() {
+          this.selected.push('');
+        },
+        remove(index) {
+          this.selected.splice(index, 1);
+        }
+      }));
+    });
+  </script>
+@endpush

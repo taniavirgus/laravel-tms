@@ -21,8 +21,6 @@ class TrainingSeeder extends Seeder
         'end_date' => '2025-07-03',
         'duration' => 3,
         'capacity' => 25,
-        'department_id' => 1,
-        'evaluation_id' => null,
       ],
       [
         'name' => 'Advanced Financial Analysis',
@@ -31,8 +29,6 @@ class TrainingSeeder extends Seeder
         'end_date' => '2025-07-12',
         'duration' => 3,
         'capacity' => 20,
-        'department_id' => 2,
-        'evaluation_id' => null,
       ],
       [
         'name' => 'Digital Marketing Strategies',
@@ -41,8 +37,6 @@ class TrainingSeeder extends Seeder
         'end_date' => '2025-07-17',
         'duration' => 3,
         'capacity' => 30,
-        'department_id' => 3,
-        'evaluation_id' => null,
       ],
       [
         'name' => 'Cybersecurity Essentials',
@@ -51,8 +45,6 @@ class TrainingSeeder extends Seeder
         'end_date' => '2025-07-22',
         'duration' => 3,
         'capacity' => 15,
-        'department_id' => 4,
-        'evaluation_id' => null,
       ],
       [
         'name' => 'Lean Operations Management',
@@ -61,8 +53,6 @@ class TrainingSeeder extends Seeder
         'end_date' => '2025-07-27',
         'duration' => 3,
         'capacity' => 18,
-        'department_id' => 5,
-        'evaluation_id' => null,
       ],
     ];
 
