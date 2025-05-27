@@ -19,6 +19,7 @@ return new class extends Migration
       $table->year('year');
       $table->enum('semester', array_map(fn($semester) => $semester->value, $semesters));
       $table->timestamps();
+      $table->unique(['year', 'semester']);
     });
   }
 

@@ -33,6 +33,9 @@ Route::middleware('auth', MiddlewareRule::role(
 ))
   ->group(function () {
     Route::resource('employees', EmployeeController::class);
+    Route::controller(PeriodController::class)->group(function () {
+      Route::post('periods/switch', 'switch')->name('periods.switch');
+    });
   });
 
 Route::middleware('auth', MiddlewareRule::role(
@@ -40,6 +43,7 @@ Route::middleware('auth', MiddlewareRule::role(
   RoleType::SYSADMIN
 ))
   ->group(function () {
+    Route::resource('periods', PeriodController::class);
     Route::resource('users', UserController::class)->except('show');
     Route::resource('positions', PositionController::class)->except('show');
     Route::resource('departments', DepartmentController::class)->except('show');
@@ -54,10 +58,6 @@ Route::middleware('auth', MiddlewareRule::role(
   ->group(function () {
     Route::resource('topics', TopicController::class)->except('show');
     Route::resource('talents', TalentController::class)->only(['index', 'show']);
-
-    Route::controller(PeriodController::class)->group(function () {
-      Route::post('periods/switch', 'switch')->name('periods.switch');
-    });
 
     Route::controller(EmployeeController::class)->group(function () {
       Route::patch('employees/{employee}/score', 'score')->name('employees.score');

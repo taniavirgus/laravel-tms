@@ -81,6 +81,7 @@ enum RoleType: string
           'employees',
           'positions',
           'departments',
+          'periods',
         ]);
 
       case self::MANAGER:

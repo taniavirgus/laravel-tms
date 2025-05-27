@@ -24,6 +24,19 @@
 
   $navigations = array_to_object([
       [
+          'id' => 'periods',
+          'label' => 'Period',
+          'menus' => [
+              [
+                  'type' => 'link',
+                  'href' => route('periods.index'),
+                  'active' => request()->routeIs('periods.index'),
+                  'name' => 'Period',
+                  'icon' => 'calendar',
+              ],
+          ],
+      ],
+      [
           'id' => 'users',
           'label' => 'Users',
           'menus' => [
@@ -176,13 +189,6 @@
                   'active' => request()->routeIs('profile.edit'),
                   'name' => 'Profile',
                   'icon' => 'user2',
-              ],
-              [
-                  'type' => 'link',
-                  'href' => '#',
-                  'active' => false,
-                  'name' => 'Settings',
-                  'icon' => 'settings',
               ],
               [
                   'type' => 'link',
