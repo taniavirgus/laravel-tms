@@ -86,7 +86,7 @@ class DashboardController extends Controller
         'icon' => 'user-check',
         'label' => 'Employee evaluated',
         'description' => 'Number of employees evaluated',
-        'value' => EmployeeEvaluation::count(),
+        'value' => EmployeeEvaluation::with('period')->count(),
         'show' => in_array(Auth::user()->role, [
           RoleType::PD,
           RoleType::MANAGER,

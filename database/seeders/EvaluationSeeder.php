@@ -165,6 +165,7 @@ class EvaluationSeeder extends Seeder
           ->get();
 
         if ($employees->isEmpty()) continue;
+
         $period = Period::firstOrCreate([
           'year' => now()->year,
           'semester' => now()->month > 6 ? SemesterType::ODD : SemesterType::EVEN

@@ -25,9 +25,9 @@
   </div>
 
   <div class="field">
-    <x-ui.label for="position_id" value="Department" />
+    <x-ui.label for="position_id" value="Position" />
     <x-ui.select id="position_id" name="position_id" class="w-full" required>
-      <option value="">Select Department</option>
+      <option value="">Select position</option>
       @foreach ($positions as $position)
         <option value="{{ $position->id }}" @selected(old('position_id', $evaluation->position_id) == $position->id)>
           {{ $position->name }}
@@ -58,14 +58,14 @@
   </div>
 
   <div class="field">
-    <x-ui.label for="point" value="Point" /> <x-ui.input id="point" name="point" type="number"
-      min="0" step="1" value="{{ old('point', $evaluation->point ?? 0) }}" required />
+    <x-ui.label for="point" value="Point" /> <x-ui.input id="point" name="point" type="number" min="0"
+      step="1" value="{{ old('point', $evaluation->point ?? 0) }}" required />
     <x-ui.errors :messages="$errors->get('point')" />
   </div>
 
   <div class="field">
-    <x-ui.label for="target" value="Target" /> <x-ui.input id="target" name="target" type="number"
-      min="0" step="1" value="{{ old('target', $evaluation->target ?? 0) }}" required />
+    <x-ui.label for="target" value="Target" /> <x-ui.input id="target" name="target" type="number" min="0"
+      step="1" value="{{ old('target', $evaluation->target ?? 0) }}" required />
     <x-ui.errors :messages="$errors->get('target')" />
   </div>
 </div>

@@ -23,7 +23,7 @@ class StoreEvaluationRequest extends FormRequest
   {
     return [
       'name' => ['required', 'string', 'max:255'],
-      'description' => ['nullable', 'string'],
+      'description' => ['required', 'string'],
       'point' => ['required', 'integer', 'min:0'],
       'target' => ['required', 'integer', 'min:0'],
       'topic_id' => ['required', 'exists:topics,id'],

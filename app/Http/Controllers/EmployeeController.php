@@ -37,7 +37,6 @@ class EmployeeController extends Controller
     $status = $request->input('status');
 
     $employees = Employee::query()
-      ->withCount('evaluations')
       ->with(['position', 'department'])
       ->when($search, function ($q) use ($search) {
         $q->where(function ($query) use ($search) {
@@ -90,25 +89,16 @@ class EmployeeController extends Controller
       ->route('employees.index')
       ->with('success', 'Employee created successfully!');
   }
+
   /**
    * Display the specified resource.
    */
   public function show(Employee $employee): View
   {
-    $employee->load([
-      'position',
-      'department',
-      'feedback',
-      'evaluations.topic',
-      'evaluations.department',
-      'trainings.evaluation',
-      'trainings.department',
-    ]);
-
     return view('dashboard.employees.show', [
       'employee' => $employee,
-      'evaluations' => $employee->evaluations,
-      'trainings' => $employee->trainings,
+      'evaluations' => $employee->evaluations()->with('department', 'topic')->get(),
+      'trainings' => $employee->trainings()->get(),
       'matrix' => $employee->matrix(),
     ]);
   }

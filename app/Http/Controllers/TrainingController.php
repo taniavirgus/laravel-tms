@@ -102,21 +102,17 @@ class TrainingController extends Controller
     $assigned = collect();
     $employees = collect();
 
-    if ($training->assignment === AssignmentType::OPEN) {
-      $employees = Employee::with(['department', 'position'])
-        ->where('status', StatusType::ACTIVE->value)
-        ->get();
-    } else {
-      $departments = $training->departments;
-      $assigned = $training->employees->load('department', 'position');
-      $assigned_ids = $assigned->pluck('id')->toArray();
+    $assigned = $training->employees()
+      ->with(['department', 'position'])
+      ->get();
 
-      $employees = Employee::with(['department', 'position'])
-        ->whereIn('department_id', $departments->pluck('id'))
-        ->where('status', StatusType::ACTIVE->value)
-        ->whereNotIn('id', $assigned_ids)
-        ->get();
-    }
+    $employees = Employee::with(['department', 'position'])
+      ->when($training->assignment === AssignmentType::CLOSED, function ($q) use ($training) {
+        $q->whereIn('department_id', $training->departments->pluck('id'));
+      })
+      ->where('status', StatusType::ACTIVE->value)
+      ->whereNotIn('id', $assigned->pluck('id'))
+      ->get();
 
     return view('dashboard.trainings.show', [
       'training' => $training->load('departments'),
@@ -181,7 +177,7 @@ class TrainingController extends Controller
         'required',
         'exists:employees,id',
         Rule::unique('employee_trainings')->where(function ($query) use ($training) {
-          return $query->where('training_id', $training->id);
+          return $query->where('training_id', $training->id)->where('period_id', session('period_id'));
         }),
       ],
     ]);

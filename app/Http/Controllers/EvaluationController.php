@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ApprovalType;
-use App\Enums\SegmentType;
 use App\Enums\StatusType;
 use App\Models\Employee;
 use App\Models\Evaluation;
@@ -12,16 +11,13 @@ use App\Http\Requests\UpdateEvaluationRequest;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\Topic;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
-use stdClass;
 
 class EvaluationController extends Controller
 {
@@ -169,7 +165,10 @@ class EvaluationController extends Controller
    */
   public function show(Evaluation $evaluation): View
   {
-    $assigned = $evaluation->employees->load('department', 'position');
+    $assigned = $evaluation->employees()
+      ->with(['department', 'position'])
+      ->get();
+
     $assigned_ids = $assigned->pluck('id')->toArray();
 
     $employees = Employee::with(['department', 'position'])

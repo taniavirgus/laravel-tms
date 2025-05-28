@@ -90,7 +90,7 @@
       <h5>Employee Matrix</h5>
     </x-slot:header>
 
-    <div class="grid grid-cols-2 gap-6">
+    <div class="grid grid-cols-2 xl:grid-cols-4 gap-6">
       <dl>
         <dt class="text-sm font-medium text-base-500">Training</dt>
         <dd class="font-semibold">{{ $matrix->training_count }}</dd>
@@ -123,7 +123,7 @@
 
       <dl>
         <dt class="text-sm font-medium text-base-500">Segment</dt>
-        {{-- <dd><x-ui.badge :value="$matrix->segment" /></dd> --}}
+        <dd><x-ui.badge :value="$matrix->segment" /></dd>
       </dl>
     </div>
   </x-ui.card>
@@ -310,9 +310,9 @@
     <x-slot:head>
       <th>No</th>
       <th>Title</th>
-      <th>Department</th>
       <th>Type</th>
       <th>Date</th>
+      <th>Assignment Type</th>
       <th>Status</th>
       <th>Actions</th>
     </x-slot:head>
@@ -322,7 +322,6 @@
         <tr>
           <td class="w-10">{{ $training->id }}</td>
           <td>{{ $training->name }}</td>
-          <td>{{ $training->department->name }}</td>
           <td><x-ui.badge :value="$training->type" /></td>
           <td>
             <div class="flex items-center gap-2">
@@ -331,6 +330,7 @@
               <span class="whitespace-nowrap">{{ $training->end_date->format('d M Y') }}</span>
             </div>
           </td>
+          <td><x-ui.badge :value="$training->assignment" /></td>
           <td><x-ui.badge :value="$training->status" /></td>
           <td>
             <div class="flex items-center gap-4">
