@@ -30,10 +30,10 @@ class UpdatePositionRequest extends FormRequest
         'max:255',
         Rule::unique('positions')->ignore($this->position)
       ],
-      'description' => 'nullable|string|max:1000',
+      'description' => ['required', 'string', 'max:320'],
       'level' => ['required', Rule::enum(LevelType::class)],
-      'requirements' => 'nullable|array',
-      'requirements.*' => 'string|max:255',
+      'requirements' => ['required', 'array'],
+      'requirements.*' => ['string', 'max:255'],
     ];
   }
 }

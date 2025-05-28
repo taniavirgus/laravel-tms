@@ -29,7 +29,7 @@ class UpdateDepartmentRequest extends FormRequest
         'max:255',
         Rule::unique('departments')->ignore($this->department)
       ],
-      'description' => ['nullable', 'string', 'max:320'],
+      'description' => ['required', 'string', 'max:320'],
     ];
   }
 }

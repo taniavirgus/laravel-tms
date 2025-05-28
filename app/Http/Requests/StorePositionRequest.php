@@ -25,9 +25,9 @@ class StorePositionRequest extends FormRequest
   {
     return [
       'name' => ['required', 'string', 'max:255', 'unique:positions'],
-      'description' => ['nullable', 'string', 'max:1000'],
+      'description' => ['required', 'string', 'max:320'],
       'level' => ['required', Rule::enum(LevelType::class)],
-      'requirements' => ['nullable', 'array'],
+      'requirements' => ['required', 'array'],
       'requirements.*' => ['string', 'max:255'],
     ];
   }
