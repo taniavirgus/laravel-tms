@@ -33,8 +33,7 @@ class PeriodController extends Controller
     $periods = Period::query()
       ->withCount(['evaluations', 'trainings', 'feedback'])
       ->when($search, function ($q) use ($search) {
-        $q->where('year', 'like', '%' . $search . '%')
-          ->orWhere('semester', 'like', '%' . $search . '%');
+        $q->where('year', 'like', '%' . $search . '%')->orWhere('semester', 'like', '%' . $search . '%');
       })
       ->paginate(5)
       ->withQueryString();

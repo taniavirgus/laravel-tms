@@ -17,9 +17,11 @@ trait HasPeriodRelation
    */
   public function belongsToManyWithPeriod($related, $table = null, $foreignPivotKey = null, $relatedPivotKey = null): BelongsToMany
   {
+    $period = session('period_id');
+
     return $this->belongsToMany($related, $table, $foreignPivotKey, $relatedPivotKey)
       ->withPivot('period_id')
       ->withTimestamps()
-      ->wherePivot('period_id', session('period_id'));
+      ->wherePivot('period_id', $period);
   }
 }

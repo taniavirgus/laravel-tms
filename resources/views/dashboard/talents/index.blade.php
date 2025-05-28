@@ -6,11 +6,16 @@
 
   <div class="grid grid-cols-3 gap-6">
     @foreach ($segments as $segment)
+      @php
+        $color = $segment->type->color();
+        $color = str_replace('bg-', 'text-', $color);
+      @endphp
+
       <a href="{{ route('talents.show', $segment->type->value) }}">
         <x-ui.card>
           <x-slot:header class="justify-between">
             <h5 class="font-medium">{{ $segment->type->label() }}</h5>
-            <i data-lucide="trending-up" class="size-5 text-primary-500"></i>
+            <i data-lucide="trending-up" class="size-5 {{ $color }}"></i>
           </x-slot:header>
 
           <div class="flex flex-col items-center justify-center gap-2">

@@ -10,17 +10,23 @@ use Illuminate\Database\Seeder;
 class EmployeeSeeder extends Seeder
 {
   /**
-   * Run the database seeds.
+   * run the database seeds
    */
   public function run(): void
   {
-    $departments = Department::all();
-    $positions = Position::all();
+    for ($i = 0; $i < 100; $i++) {
+      $department = rand(1, 5);
+      $position = match ($department) {
+        1 => rand(1, 2),
+        2 => rand(3, 4),
+        3 => rand(5, 6),
+        4 => rand(7, 8),
+        5 => rand(9, 10),
+      };
 
-    foreach (range(1, 50) as $i) {
       Employee::factory()->create([
-        'department_id' => $departments->random()->id,
-        'position_id' => $positions->random()->id,
+        'department_id' => $department,
+        'position_id' => $position,
       ]);
     }
   }

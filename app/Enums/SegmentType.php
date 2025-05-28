@@ -67,18 +67,42 @@ enum SegmentType: string
       default => 'low'
     };
 
-    $combined = "$potential-$performance";
+    $segments = [
+      'low' => [
+        'low' => self::UNDER_PERFORMER,
+        'moderate' => self::AVERAGE_PERFORMER,
+        'high' => self::SOLID_PERFORMER
+      ],
+      'moderate' => [
+        'low' => self::INCONSISTENT_PLAYER,
+        'moderate' => self::CORE_PLAYER,
+        'high' => self::HIGH_PERFORMER
+      ],
+      'high' => [
+        'low' => self::POTENTIAL_GEM,
+        'moderate' => self::HIGH_POTENTIAL,
+        'high' => self::STAR
+      ],
+    ];
 
-    return match ($combined) {
-      'high-low' => self::POTENTIAL_GEM,
-      'high-moderate' => self::HIGH_POTENTIAL,
-      'high-high' => self::STAR,
-      'moderate-low' => self::INCONSISTENT_PLAYER,
-      'moderate-moderate' => self::CORE_PLAYER,
-      'moderate-high' => self::HIGH_PERFORMER,
-      'low-low' => self::UNDER_PERFORMER,
-      'low-moderate' => self::AVERAGE_PERFORMER,
-      'low-high' => self::SOLID_PERFORMER,
+    return $segments[$potential][$performance];
+  }
+
+  /**
+   * Get the color for the talent segment.
+   */
+  public function color(): string
+  {
+    return match ($this) {
+      self::UNDER_PERFORMER => 'bg-red-500',
+      self::AVERAGE_PERFORMER => 'bg-yellow-500',
+      self::SOLID_PERFORMER => 'bg-green-500',
+      self::INCONSISTENT_PLAYER => 'bg-red-500',
+      self::CORE_PLAYER => 'bg-yellow-500',
+      self::HIGH_PERFORMER => 'bg-green-500',
+      self::POTENTIAL_GEM => 'bg-yellow-500',
+      self::HIGH_POTENTIAL => 'bg-green-500',
+      self::STAR => 'bg-green-500',
     };
   }
 }

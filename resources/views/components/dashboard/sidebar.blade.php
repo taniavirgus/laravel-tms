@@ -1,14 +1,8 @@
-@props([
-        //
-    ])
-
 @php
   use App\Models\Training;
   use App\Enums\CompletionStatus;
 
-  $trainings = Training::get()->filter(function ($training) {
-      return $training->status == CompletionStatus::UPCOMING;
-  });
+  $trainings = Training::where('status', CompletionStatus::UPCOMING)->get();
 
   $props = $attributes
       ->class([

@@ -43,7 +43,7 @@
       <th>Period Name</th>
       <th>Evaluations</th>
       <th>Trainings</th>
-      <th>Feedback</th>
+      <th>Behavior</th>
       <th>Actions</th>
     </x-slot:head>
 
