@@ -40,6 +40,9 @@ class TrainingController extends Controller
     $status = $request->input('status');
     $type = $request->input('type');
 
+    $min_date = $request->input('min_date');
+    $max_date = $request->input('max_date');
+
     $trainings = Training::query()
       ->with(['departments', 'evaluation'])
       ->when($search, function ($q) use ($search) {
@@ -54,6 +57,13 @@ class TrainingController extends Controller
       ->when($assignment, function ($q) use ($assignment) {
         $q->where('assignment', $assignment);
       })
+      ->when($min_date, function ($q) use ($min_date) {
+        $q->where('start_date', '>=', $min_date);
+      })
+      ->when($max_date, function ($q) use ($max_date) {
+        $q->where('start_date', '<=', $max_date);
+      })
+      ->orderBy('start_date', 'asc')
       ->paginate(5)
       ->withQueryString();
 

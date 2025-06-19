@@ -56,7 +56,7 @@
     <x-slot:body>
       @forelse ($users as $user)
         <tr>
-          <td class="w-10">{{ $user->id }}</td>
+          <td class="w-10">{{ $users->firstItem() + $loop->index }}</td>
           <td>{{ $user->name }}</td>
           <td>{{ $user->email }}</td>
           <td>

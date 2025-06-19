@@ -75,7 +75,7 @@
     <x-slot:body>
       @forelse ($evaluations as $evaluation)
         <tr>
-          <td class="w-10">{{ $evaluation->id }}</td>
+          <td class="w-10">{{ $evaluations->firstItem() + $loop->index }}</td>
           <td>{{ $evaluation->name }}</td>
           <td>{{ $evaluation->department->name }}</td>
           <td>{{ $evaluation->position->name }}</td>

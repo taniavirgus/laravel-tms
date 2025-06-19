@@ -50,7 +50,7 @@
     <x-slot:body>
       @forelse ($topics as $topic)
         <tr>
-          <td class="w-10">{{ $topic->id }}</td>
+          <td class="w-10">{{ $topics->firstItem() + $loop->index }}</td>
           <td>{{ $topic->name }}</td>
           <td>
             <p class="truncate">{{ $topic->description }}</p>

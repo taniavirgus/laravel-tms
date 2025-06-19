@@ -78,7 +78,7 @@
     <x-slot:body>
       @forelse ($trainings as $training)
         <tr>
-          <td class="w-10">{{ $training->id }}</td>
+          <td class="w-10">{{ $trainings->firstItem() + $loop->index }}</td>
           <td>{{ $training->name }}</td>
           <td><x-ui.badge :value="$training->type" /></td>
           <td>

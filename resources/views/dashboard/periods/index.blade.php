@@ -50,7 +50,7 @@
     <x-slot:body>
       @forelse ($periods as $period)
         <tr>
-          <td class="w-10">{{ $period->id }}</td>
+          <td class="w-10">{{ $periods->firstItem() + $loop->index }}</td>
           <td>{{ $period->name }}</td>
           <td>{{ $period->evaluations_count }}</td>
           <td>{{ $period->trainings_count }}</td>

@@ -90,7 +90,7 @@
       <h5>Employee Matrix</h5>
     </x-slot:header>
 
-    <div class="grid grid-cols-2 xl:grid-cols-4 gap-6">
+    <div class="grid grid-cols-2 gap-6 xl:grid-cols-4">
       <dl>
         <dt class="text-sm font-medium text-base-500">Training</dt>
         <dd class="font-semibold">{{ $matrix->training_count }}</dd>
@@ -147,7 +147,7 @@
     <x-slot:body>
       @forelse ($evaluations as $evaluation)
         <tr>
-          <td class="w-10">{{ $evaluation->id }}</td>
+          <td class="w-10">{{ $evaluations->firstItem() + $loop->index }}</td>
           <td>{{ $evaluation->name }}</td>
           <td>{{ $evaluation->topic->name }}</td>
           <td>{{ $evaluation->department->name }}</td>
@@ -320,7 +320,7 @@
     <x-slot:body>
       @forelse ($trainings as $training)
         <tr>
-          <td class="w-10">{{ $training->id }}</td>
+          <td class="w-10">{{ $trainings->firstItem() + $loop->index }}</td>
           <td>{{ $training->name }}</td>
           <td><x-ui.badge :value="$training->type" /></td>
           <td>

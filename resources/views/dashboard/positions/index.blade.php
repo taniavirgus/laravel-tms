@@ -50,7 +50,7 @@
     <x-slot:body>
       @forelse ($positions as $position)
         <tr>
-          <td class="w-10">{{ $position->id }}</td>
+          <td class="w-10">{{ $positions->firstItem() + $loop->index }}</td>
           <td>
             <x-avatar-list :count="$position->employees_count" :names="$position->employees->pluck('name')" />
           </td>
