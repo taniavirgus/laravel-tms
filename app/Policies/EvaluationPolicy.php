@@ -47,7 +47,7 @@ class EvaluationPolicy
    */
   public function update(User $user, Evaluation $evaluation): bool
   {
-    return $user->role == RoleType::PD;
+    return $user->role == RoleType::PD && $evaluation->status == ApprovalType::DRAFT;
   }
 
   /**
@@ -55,7 +55,7 @@ class EvaluationPolicy
    */
   public function delete(User $user, Evaluation $evaluation): bool
   {
-    return $user->role == RoleType::PD;
+    return $user->role == RoleType::PD && $evaluation->status != ApprovalType::APPROVED;
   }
 
   /**
@@ -95,7 +95,10 @@ class EvaluationPolicy
    */
   public function approval(User $user, Evaluation $evaluation): bool
   {
-    return $user->role == RoleType::MANAGER || $user->role == RoleType::SUPERVISOR;
+    return $evaluation->status == ApprovalType::DRAFT && in_array($user->role, [
+      RoleType::MANAGER,
+      RoleType::SUPERVISOR
+    ]);
   }
 
   /**
@@ -103,6 +106,9 @@ class EvaluationPolicy
    */
   public function score(User $user, Evaluation $evaluation): bool
   {
-    return $user->role == RoleType::MANAGER || $user->role == RoleType::SUPERVISOR;
+    return $evaluation->status == ApprovalType::APPROVED && in_array($user->role, [
+      RoleType::MANAGER,
+      RoleType::SUPERVISOR
+    ]);
   }
 }

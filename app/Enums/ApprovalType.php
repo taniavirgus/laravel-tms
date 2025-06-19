@@ -14,7 +14,7 @@ enum ApprovalType: string
   public function label(): string
   {
     return match ($this) {
-      self::DRAFT => 'Draft',
+      self::DRAFT => 'Waiting Approval',
       self::APPROVED => 'Approved',
       self::REJECTED => 'Rejected',
     };
@@ -26,9 +26,9 @@ enum ApprovalType: string
   public function description(): string
   {
     return match ($this) {
-      self::DRAFT => 'Draft',
-      self::APPROVED => 'Approved',
-      self::REJECTED => 'Rejected',
+      self::DRAFT => 'Waiting for approval',
+      self::APPROVED => 'Approved by manager or supervisor',
+      self::REJECTED => 'Rejected by manager or supervisor',
     };
   }
 

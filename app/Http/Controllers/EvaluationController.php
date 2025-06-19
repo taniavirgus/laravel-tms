@@ -211,7 +211,12 @@ class EvaluationController extends Controller
   public function update(UpdateEvaluationRequest $request, Evaluation $evaluation): RedirectResponse
   {
     $validated = $request->validated();
-    $evaluation->update($validated);
+
+    $evaluation->update([
+      ...$validated,
+      'status' => ApprovalType::DRAFT,
+    ]);
+
     $evaluation->employees()->detach();
 
     return redirect()
