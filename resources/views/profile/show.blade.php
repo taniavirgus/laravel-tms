@@ -22,9 +22,11 @@
 
         <div class="field">
           <x-ui.label for="role" value="Role" />
-          <div>
-            <x-ui.badge :value="$user->role" />
-          </div>
+          <x-ui.input readonly name="role" type="text" value="{{ $user->role->label() }}">
+            <x-slot:left>
+              <i data-lucide="{{ $user->role->icon() }}" class="text-base-400 size-5"></i>
+            </x-slot:left>
+          </x-ui.input>
         </div>
 
         <div class="field col-span-full">

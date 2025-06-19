@@ -7,7 +7,7 @@
           <i data-lucide="menu" class="size-5"></i>
           <span class="sr-only">Toggle sidebar</span>
         </x-ui.button>
-        <span>Dashboard</span>
+        <span>{{ Auth::user()->role->label() }}</span>
       </div>
 
       <div class="flex items-center gap-2">

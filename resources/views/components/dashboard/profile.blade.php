@@ -4,23 +4,18 @@
   $menus = array_to_object([
       [
           'name' => 'Profile',
-          'url' => route('profile.edit'),
+          'url' => route('profile.show'),
           'icon' => 'user2',
       ],
       [
-          'name' => 'My likes',
-          'url' => '#',
-          'icon' => 'heart',
+          'name' => 'Settings',
+          'url' => route('config.settings'),
+          'icon' => 'settings',
       ],
       [
-          'name' => 'Collections',
-          'url' => '#',
-          'icon' => 'credit-card',
-      ],
-      [
-          'name' => 'Pro version',
-          'url' => '#',
-          'icon' => 'bell',
+          'name' => 'Help',
+          'url' => route('config.help'),
+          'icon' => 'life-buoy',
       ],
   ]);
 

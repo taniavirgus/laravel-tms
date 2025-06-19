@@ -16,7 +16,20 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PeriodController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware('auth')
+  ->controller(DashboardController::class)
+  ->group(function () {
+    Route::get('/', 'index')->name('dashboard');
+  });
+
+Route::middleware('auth')
+  ->prefix('config')
+  ->as('config.')
+  ->controller(DashboardController::class)
+  ->group(function () {
+    Route::get('/help', 'help')->name('help');
+    Route::get('/settings', 'settings')->name('settings');
+  });
 
 Route::middleware('auth')
   ->controller(ProfileController::class)

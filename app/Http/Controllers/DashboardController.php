@@ -10,7 +10,6 @@ use App\Models\EmployeeEvaluation;
 use App\Models\Evaluation;
 use App\Models\Topic;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -18,7 +17,7 @@ class DashboardController extends Controller
   /**
    * Show the application dashboard.
    */
-  public function __invoke(Request $request)
+  public function index()
   {
     $widgets = array_to_object([
       [
@@ -98,5 +97,36 @@ class DashboardController extends Controller
     return view('dashboard', [
       'widgets' => $widgets,
     ]);
+  }
+
+  /**
+   * Show the help center page.
+   */
+  public function help()
+  {
+    $faqs = array_to_object(
+      [
+        [
+          'question' => 'How do I update my profile?',
+          'answer' => 'You can update your profile by clicking on the Profile menu on the sidebar or by clicking on your avatar on the top right corner and selecting Profile.',
+        ],
+        [
+          'question' => 'How do I change my password?',
+          'answer' => 'You can change your password in the same profile update page by clicking on the Update Password button.',
+        ],
+      ]
+    );
+
+    return view('other.help', [
+      'faqs' => $faqs,
+    ]);
+  }
+
+  /**
+   * Show the settings page.
+   */
+  public function settings()
+  {
+    return view('other.settings');
   }
 }

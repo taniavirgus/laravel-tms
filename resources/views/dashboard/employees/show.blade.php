@@ -147,7 +147,7 @@
     <x-slot:body>
       @forelse ($evaluations as $evaluation)
         <tr>
-          <td class="w-10">{{ $evaluations->firstItem() + $loop->index }}</td>
+          <td class="w-10">{{ $loop->iteration }}</td>
           <td>{{ $evaluation->name }}</td>
           <td>{{ $evaluation->topic->name }}</td>
           <td>{{ $evaluation->department->name }}</td>
@@ -320,7 +320,7 @@
     <x-slot:body>
       @forelse ($trainings as $training)
         <tr>
-          <td class="w-10">{{ $trainings->firstItem() + $loop->index }}</td>
+          <td class="w-10">{{ $loop->iteration }}</td>
           <td>{{ $training->name }}</td>
           <td><x-ui.badge :value="$training->type" /></td>
           <td>
