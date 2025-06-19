@@ -7,18 +7,27 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+  /**
+   * Display the users profile
+   */
+  public function show(Request $request): View
+  {
+    return view('profile.show', [
+      'user' => Auth::user(),
+    ]);
+  }
+
   /**
    * Display the user's profile form.
    */
   public function edit(Request $request): View
   {
     return view('profile.edit', [
-      'user' => $request->user(),
+      'user' => Auth::user(),
     ]);
   }
 
@@ -32,7 +41,7 @@ class ProfileController extends Controller
     Auth::user()->fill($validated);
     Auth::user()->save();
 
-    return Redirect::route('profile.edit')
+    return Redirect::route('profile.show')
       ->with('success', 'Successfully saved profile information.');
   }
 

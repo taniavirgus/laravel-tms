@@ -179,8 +179,8 @@
           'menus' => [
               [
                   'type' => 'link',
-                  'href' => route('profile.edit'),
-                  'active' => request()->routeIs('profile.edit'),
+                  'href' => route('profile.show'),
+                  'active' => request()->routeIs('profile.*'),
                   'name' => 'Profile',
                   'icon' => 'user2',
               ],
