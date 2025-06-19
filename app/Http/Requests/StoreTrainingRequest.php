@@ -10,6 +10,13 @@ use Illuminate\Validation\Rules\Enum;
 class StoreTrainingRequest extends FormRequest
 {
   /**
+   * Number of days after today that the start date must be.
+   * 
+   * @var int
+   */
+  protected int $minimum = 3;
+
+  /**
    * Determine if the user is authorized to make this request.
    */
   public function authorize(): bool
@@ -30,12 +37,22 @@ class StoreTrainingRequest extends FormRequest
       'department_ids' => ['required_if:assignment,multiple', 'array'],
       'department_ids.*' => ['exists:departments,id'],
       'evaluation_id' => ['nullable', 'integer', 'exists:evaluations,id'],
-      'start_date' => ['required', 'date', 'after_or_equal:today'],
+      'start_date' => ['required', 'date', 'after:' . now()->addDays(3)->format('Y-m-d')],
       'end_date' => ['required', 'date', 'after:start_date'],
       'duration' => ['required', 'integer', 'min:0'],
       'capacity' => ['required', 'integer', 'min:0'],
       'type' => ['required', new Enum(TrainingType::class)],
       'assignment' => ['required', new Enum(AssignmentType::class)],
+    ];
+  }
+
+  /**
+   * Custom message for minimum date.
+   */
+  public function messages(): array
+  {
+    return [
+      'start_date.after' => "The start date must be at least " . $this->minimum . " days after today.",
     ];
   }
 }

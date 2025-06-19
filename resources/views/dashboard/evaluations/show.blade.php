@@ -104,7 +104,7 @@
     <x-slot:body>
       @forelse ($assigned as $employee)
         <tr>
-          <td class="w-10">{{ $employee->id }}</td>
+          <td class="w-10">{{ $loop->iteration }}</td>
           <td>
             <a href="{{ route('employees.show', $employee) }}" class="flex items-center gap-2">
               <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
@@ -166,6 +166,28 @@
 
 
   <x-ui.table>
+    <x-slot:action class="justify-between">
+      <form action="{{ route('evaluations.show', $evaluation) }}" method="GET"
+        class="flex flex-col gap-2 xl:flex-row xl:items-center">
+        <x-ui.input name="search" value="{{ request()->get('search') }}" placeholder="Search by name or email">
+          <x-slot:left>
+            <i data-lucide="search" class="text-base-500 size-5"></i>
+          </x-slot:left>
+        </x-ui.input>
+      </form>
+
+      <div class="flex items-center gap-2">
+        @if (request()->has('search'))
+          <a href="{{ route('evaluations.show', $evaluation) }}">
+            <x-ui.button variant="outline">
+              <i data-lucide="x" class="size-5"></i>
+              <span>Reset</span>
+            </x-ui.button>
+          </a>
+        @endif
+      </div>
+    </x-slot:action>
+
     <x-slot:title>
       <i data-lucide="user-plus" class="size-5 text-primary-500"></i>
       <h4>Available Employees</h4>
@@ -183,7 +205,7 @@
     <x-slot:body>
       @forelse ($employees as $employee)
         <tr>
-          <td class="w-10">{{ $employee->id }}</td>
+          <td class="w-10">{{ $employees->firstItem() + $loop->index }}</td>
           <td>
             <div class="flex items-center gap-2">
               <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
@@ -215,4 +237,6 @@
       @endforelse
     </x-slot:body>
   </x-ui.table>
+
+  {{ $employees->links() }}
 </x-dashboard-layout>

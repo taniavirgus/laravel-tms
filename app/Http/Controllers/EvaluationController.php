@@ -163,8 +163,10 @@ class EvaluationController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(Evaluation $evaluation): View
+  public function show(Request $request, Evaluation $evaluation): View
   {
+    $search = $request->input('search');
+
     $assigned = $evaluation->employees()
       ->with(['department', 'position'])
       ->get();
@@ -175,8 +177,13 @@ class EvaluationController extends Controller
       ->where('department_id', $evaluation->department_id)
       ->where('position_id', $evaluation->position_id)
       ->where('status', StatusType::ACTIVE->value)
+      ->when($search, function ($q) use ($search) {
+        $q->where(function ($query) use ($search) {
+          $query->where('name', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%');
+        });
+      })
       ->whereNotIn('id', $assigned_ids)
-      ->get();
+      ->paginate(5);
 
     return view('dashboard.evaluations.show', [
       'evaluation' => $evaluation,

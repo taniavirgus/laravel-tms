@@ -33,7 +33,7 @@
     <x-slot:body>
       @forelse ($employees as $employee)
         <tr>
-          <td class="w-10">{{ $loop->iteration }}</td>
+          <td class="w-10">{{ $employees->firstItem() + $loop->index }}</td>
           <td>
             <div class="flex items-center gap-2">
               <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
@@ -68,4 +68,6 @@
       </a>
     </x-slot:footer>
   </x-ui.table>
+
+  {{ $employees->links() }}
 </x-dashboard-layout>

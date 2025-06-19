@@ -18,17 +18,4 @@
     </x-ui.input>
     <x-ui.errors :messages="$errors->get('email')" />
   </div>
-
-  <div class="field">
-    <x-ui.label for="password" value="Password" />
-    <x-ui.input id="password" name="password" type="password" placeholder="Password" />
-    <x-ui.errors :messages="$errors->get('password')" />
-  </div>
-
-  <div class="field">
-    <x-ui.label for="password_confirmation" value="Confirm Password" />
-    <x-ui.input id="password_confirmation" name="password_confirmation" type="password"
-      placeholder="Confirm your password" />
-    <x-ui.errors :messages="$errors->get('password_confirmation')" />
-  </div>
 </div>

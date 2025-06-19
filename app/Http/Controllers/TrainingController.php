@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateTrainingRequest;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Evaluation;
+use App\Models\Position;
 use App\Notifications\TrainingNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -97,10 +98,11 @@ class TrainingController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(Training $training)
+  public function show(Request $request, Training $training)
   {
-    $assigned = collect();
-    $employees = collect();
+    $search = $request->input('search');
+    $position_id = $request->input('position_id');
+    $department_id = $request->input('department_id');
 
     $assigned = $training->employees()
       ->with(['department', 'position'])
@@ -111,11 +113,24 @@ class TrainingController extends Controller
         $q->whereIn('department_id', $training->departments->pluck('id'));
       })
       ->where('status', StatusType::ACTIVE->value)
+      ->when($search, function ($q) use ($search) {
+        $q->where(function ($query) use ($search) {
+          $query->where('name', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%');
+        });
+      })
+      ->when($position_id, function ($q) use ($position_id) {
+        $q->where('position_id', $position_id);
+      })
+      ->when($department_id, function ($q) use ($department_id) {
+        $q->where('department_id', $department_id);
+      })
       ->whereNotIn('id', $assigned->pluck('id'))
-      ->get();
+      ->paginate(5);
 
     return view('dashboard.trainings.show', [
       'training' => $training->load('departments'),
+      'departments' => Department::select(['name', 'id'])->get(),
+      'positions' => Position::select(['name', 'id'])->get(),
       'assigned' => $assigned,
       'employees' => $employees,
     ]);
