@@ -55,7 +55,7 @@
 
       <dl>
         <dt class="text-sm font-medium text-base-500">Birth Date</dt>
-        <dd>{{ $employee->birthdate->format('d M Y') }}</dd>
+        <dd>{{ $employee->birthdate->format('F j, Y') }}</dd>
       </dl>
 
       <dl class="col-span-full">
@@ -237,9 +237,9 @@
           </div>
 
           <div class="field">
-            <x-ui.label for="leadership" value="Leadership" />
-            <x-ui.range :tooltip="false" id="leadership" name="leadership" type="range" :value="old('leadership', $employee->feedback->leadership)" />
-            <x-ui.errors :messages="$errors->get('leadership')" />
+            <x-ui.label for="talent" value="Talent" />
+            <x-ui.range :tooltip="false" id="talent" name="talent" type="range" :value="old('talent', $employee->feedback->talent)" />
+            <x-ui.errors :messages="$errors->get('talent')" />
           </div>
 
           <div class="field col-span-full">
@@ -278,8 +278,8 @@
         </dl>
 
         <dl>
-          <dt class="text-sm font-medium text-base-500">Leadership</dt>
-          <dd><x-ui.progress class="py-3" :value="$employee->feedback->leadership" /></dd>
+          <dt class="text-sm font-medium text-base-500">Talent</dt>
+          <dd><x-ui.progress class="py-3" :value="$employee->feedback->talent" /></dd>
         </dl>
 
         <dl class="col-span-full">
@@ -314,6 +314,7 @@
       <th>Date</th>
       <th>Assignment Type</th>
       <th>Status</th>
+      <th>Employee Score</th>
       <th>Actions</th>
     </x-slot:head>
 
@@ -325,13 +326,14 @@
           <td><x-ui.badge :value="$training->type" /></td>
           <td>
             <div class="flex items-center gap-2">
-              <span class="whitespace-nowrap">{{ $training->start_date->format('d M Y') }}</span>
+              <span class="whitespace-nowrap">{{ $training->start_date->format('F j, Y') }}</span>
               <hr class="w-10 bg-base-500" />
-              <span class="whitespace-nowrap">{{ $training->end_date->format('d M Y') }}</span>
+              <span class="whitespace-nowrap">{{ $training->end_date->format('F j, Y') }}</span>
             </div>
           </td>
           <td><x-ui.badge :value="$training->assignment" /></td>
           <td><x-ui.badge :value="$training->status" /></td>
+          <td>{{ $training->pivot->score }} / 100</td>
           <td>
             <div class="flex items-center gap-4">
               <a href="{{ route('trainings.show', $training) }}" class="text-primary-500">
@@ -342,6 +344,51 @@
         </tr>
       @empty
         <x-ui.empty colspan="8" message="No trainings assigned to this employee" />
+      @endforelse
+    </x-slot:body>
+  </x-ui.table>
+
+  <x-ui.table>
+    <x-slot:title>
+      <i data-lucide="file-text" class="size-5 text-primary-500"></i>
+      <h4>Assigned Talent Trainings</h4>
+    </x-slot:title>
+
+    <x-slot:head>
+      <th>No</th>
+      <th>Title</th>
+      <th>Date</th>
+      <th>Segment</th>
+      <th>Status</th>
+      <th>Employee Score</th>
+      <th>Actions</th>
+    </x-slot:head>
+
+    <x-slot:body>
+      @forelse ($talents as $talent)
+        <tr>
+          <td class="w-10">{{ $loop->iteration }}</td>
+          <td>{{ $talent->name }}</td>
+          <td>
+            <div class="flex items-center gap-2">
+              <span class="whitespace-nowrap">{{ $talent->start_date->format('F j, Y') }}</span>
+              <hr class="w-10 bg-base-500" />
+              <span class="whitespace-nowrap">{{ $talent->end_date->format('F j, Y') }}</span>
+            </div>
+          </td>
+          <td><x-ui.badge :value="$talent->segment" /></td>
+          <td><x-ui.badge :value="$talent->status" /></td>
+          <td>{{ $talent->pivot->score }} / 100</td>
+          <td>
+            <div class="flex items-center gap-4">
+              <a href="{{ route('talents.show', $talent) }}" class="text-primary-500">
+                View
+              </a>
+            </div>
+          </td>
+        </tr>
+      @empty
+        <x-ui.empty colspan="8" message="No talent trainings assigned to this employee" />
       @endforelse
     </x-slot:body>
   </x-ui.table>

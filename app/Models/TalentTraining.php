@@ -3,40 +3,32 @@
 namespace App\Models;
 
 use App\Enums\CompletionStatus;
-use App\Enums\TrainingType;
-use App\Interfaces\WithPeriodPivot;
-use App\Traits\HasPeriodRelation;
+use App\Enums\SegmentType;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Enums\AssignmentType;
 
-class Training extends Model implements WithPeriodPivot
+class TalentTraining extends Model
 {
-  use HasPeriodRelation;
-
   /**
    * The attributes that are mass assignable.
    *
-   * @var list<string>
+   * @var array<string, mixed>
    */
   protected $fillable = [
     'name',
     'description',
     'start_date',
     'end_date',
-    'type',
-    'assignment',
     'duration',
     'capacity',
     'notified',
-    'evaluation_id',
+    'segment',
   ];
 
   /**
-   * The attributes that should be cast to native types.
+   * The attributes that should be cast.
    *
-   * @return array<string, string>
+   * @var array<string, string>
    */
   protected function casts(): array
   {
@@ -44,28 +36,14 @@ class Training extends Model implements WithPeriodPivot
       'start_date' => 'date',
       'end_date' => 'date',
       'notified' => 'boolean',
-      'type' => TrainingType::class,
-      'assignment' => AssignmentType::class,
+      'segment' => SegmentType::class,
     ];
   }
 
   /**
-   * Relationship with the Evaluation model.
-   * 
-   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-   */
-  public function evaluation(): BelongsTo
-  {
-    return $this->belongsTo(Evaluation::class)
-      ->withDefault([
-        'name' => 'No evaluation assigned',
-      ]);
-  }
-
-  /**
-   * Get the training's status attribute.
+   * Get the talent development's status attribute.
    *
-   * @return \App\Enums\CompletionStatus
+   * @return string
    */
   public function getStatusAttribute(): CompletionStatus
   {
@@ -78,7 +56,7 @@ class Training extends Model implements WithPeriodPivot
   }
 
   /**
-   * Scope to filter trainings by status.
+   * Scope to filter talent developments by status.
    * 
    * @param \Illuminate\Database\Eloquent\Builder $query
    * @param string $status
@@ -97,26 +75,17 @@ class Training extends Model implements WithPeriodPivot
   }
 
   /**
-   * The employees that are attending the training.
+   * The employees that are attending the talent development.
    *
    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
    */
   public function employees(): BelongsToMany
   {
-    return $this->belongsToManyWithPeriod(Employee::class, 'employee_trainings')
+    return $this->belongsToMany(Employee::class, 'employee_talent_trainings')
       ->withPivot(
         'score',
-        'email_sent'
+        'email_sent',
+        'notes'
       );
-  }
-
-  /**
-   * Relationship with the Department model.
-   * 
-   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-   */
-  public function departments(): BelongsToMany
-  {
-    return $this->belongsToMany(Department::class, 'department_training');
   }
 }

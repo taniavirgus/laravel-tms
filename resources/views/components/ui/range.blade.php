@@ -3,9 +3,10 @@
     'step' => 1,
     'max' => 100,
     'value' => 0,
+    'suffix' => '%',
+    'tooltip' => true,
     'disabled' => false,
     'required' => false,
-    'tooltip' => true,
 ])
 
 @php
@@ -37,7 +38,7 @@
         const temp = (this.value / this.max) * 100;
         const color = this.color(temp);
 
-        this.$el.style.setProperty('--range-value', temp + '%');
+        this.$el.style.setProperty('--range-value', temp + @js($suffix));
         this.$el.style.setProperty('--range-color', color);
     },
     color(value) {
@@ -60,6 +61,6 @@
       </div>
     </div>
   @else
-    <span class="text-sm font-semibold" x-text="value + '%'"></span>
+    <span class="flex-none w-10 text-sm font-semibold" x-text="value + @js($suffix)"></span>
   @endif
 </div>

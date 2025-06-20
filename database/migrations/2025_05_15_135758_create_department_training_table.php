@@ -18,8 +18,10 @@ return new class extends Migration
       $table->foreignIdFor(Department::class)->constrained()->cascadeOnDelete();
       $table->foreignIdFor(Training::class)->constrained()->cascadeOnDelete();
       $table->timestamps();
-
-      $table->unique(['department_id', 'training_id']);
+      $table->unique([
+        'department_id',
+        'training_id'
+      ]);
     });
   }
 

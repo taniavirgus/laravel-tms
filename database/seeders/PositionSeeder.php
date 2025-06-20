@@ -32,7 +32,7 @@ class PositionSeeder extends Seeder
         'requirements' => [
           'Extensive experience in HR management',
           'In-depth knowledge of employment law',
-          'Proven leadership and conflict resolution skills'
+          'Proven talent and conflict resolution skills'
         ],
       ],
       [
@@ -111,7 +111,7 @@ class PositionSeeder extends Seeder
         'level' => LevelType::SENIOR->value,
         'requirements' => [
           'Proven experience in operations management',
-          'Strong leadership and decision-making skills',
+          'Strong talent and decision-making skills',
           'Expertise in process improvement and resource allocation'
         ],
       ],

@@ -1,33 +1,108 @@
 <x-dashboard-layout>
   <x-dashboard.heading>
-    <x-slot:title>Talent Matrix</x-slot:title>
-    <x-slot:description>Nine-box grid showing employee distribution based on potential and performance</x-slot:description>
+    <x-slot:title>Talent Trainings List</x-slot:title>
+    <x-slot:description>Manage list of talent trainings in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
-  <div class="grid grid-cols-3 gap-6">
-    @foreach ($segments as $segment)
-      @php
-        $color = $segment->type->color();
-        $color = str_replace('bg-', 'text-', $color);
-      @endphp
+  <x-ui.table>
+    <x-slot:title>
+      <i data-lucide="graduation-cap" class="size-5 text-primary-500"></i>
+      <h4>Talent Trainings Table</h4>
+    </x-slot:title>
 
-      <a href="{{ route('talents.show', $segment->type->value) }}">
-        <x-ui.card>
-          <x-slot:header class="justify-between">
-            <h5 class="font-medium">{{ $segment->type->label() }}</h5>
-            <i data-lucide="trending-up" class="size-5 {{ $color }}"></i>
-          </x-slot:header>
+    <x-slot:action class="justify-between">
+      <form action="{{ route('talents.index') }}" method="GET" class="flex flex-col gap-2 xl:flex-row xl:items-center">
+        <x-ui.input name="search" value="{{ request()->get('search') }}" placeholder="Search by name or description">
+          <x-slot:left>
+            <i data-lucide="search" class="text-base-500 size-5"></i>
+          </x-slot:left>
+        </x-ui.input>
 
-          <div class="flex flex-col items-center justify-center gap-2">
-            <span class="text-5xl font-bold">{{ $segment->count }}</span>
-            <span class="text-sm text-base-500">Employees</span>
-          </div>
+        <x-ui.select name="status" onchange="this.form.submit()">
+          <option value="">All Statuses</option>
+          @foreach ($statuses as $status)
+            <option value="{{ $status->value }}" @selected(request()->get('status') == $status->value)>{{ $status->label() }}</option>
+          @endforeach
+        </x-ui.select>
 
-          <x-slot:footer>
-            <p class="text-sm text-base-500">{{ $segment->type->description() }}</p>
-          </x-slot:footer>
-        </x-ui.card>
-      </a>
-    @endforeach
-  </div>
+        <x-ui.select name="segment" onchange="this.form.submit()">
+          <option value="">All Segments</option>
+          @foreach ($segments as $segment)
+            <option value="{{ $segment->value }}" @selected(request()->get('segment') == $segment->value)>{{ $segment->label() }}</option>
+          @endforeach
+        </x-ui.select>
+      </form>
+
+      <div class="flex items-center gap-2">
+        @if (request()->has('search'))
+          <a href="{{ route('talents.index') }}">
+            <x-ui.button variant="outline">
+              <i data-lucide="x" class="size-5"></i>
+              <span>Reset</span>
+            </x-ui.button>
+          </a>
+        @endif
+
+        @can('create', App\Models\TalentTraining::class)
+          <a href="{{ route('talents.create') }}">
+            <x-ui.button>
+              <i data-lucide="plus" class="size-5"></i>
+              <span>Training</span>
+            </x-ui.button>
+          </a>
+        @endcan
+      </div>
+    </x-slot:action>
+
+    <x-slot:head>
+      <th>No</th>
+      <th>Title</th>
+      <th>Date</th>
+      <th>Segement</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </x-slot:head>
+
+    <x-slot:body>
+      @forelse ($talents as $talent)
+        <tr>
+          <td class="w-10">{{ $talents->firstItem() + $loop->index }}</td>
+          <td>{{ $talent->name }}</td>
+          <td>
+            <div class="flex items-center gap-2">
+              <span class="whitespace-nowrap">{{ $talent->start_date->format('d M Y') }}</span>
+              <hr class="w-10 bg-base-500" />
+              <span class="whitespace-nowrap">{{ $talent->end_date->format('d M Y') }}</span>
+            </div>
+          </td>
+          <td><x-ui.badge :value="$talent->segment" /></td>
+          <td><x-ui.badge :value="$talent->status" /></td>
+          <td>
+            <div class="flex items-center gap-4">
+              @can('view', $talent)
+                <a href="{{ route('talents.show', $talent) }}" class="text-primary-500">
+                  View
+                </a>
+              @endcan
+
+              @can('update', $talent)
+                <a href="{{ route('talents.edit', $talent) }}" class="text-primary-500">
+                  Edit
+                </a>
+              @endcan
+
+              @can('delete', $talent)
+                <x-delete id="{{ $talent->id }}" title="{{ $talent->name }}"
+                  route="{{ route('talents.destroy', $talent) }}" />
+              @endcan
+            </div>
+          </td>
+        </tr>
+      @empty
+        <x-ui.empty colspan="7" />
+      @endforelse
+    </x-slot:body>
+  </x-ui.table>
+
+  {{ $talents->links() }}
 </x-dashboard-layout>

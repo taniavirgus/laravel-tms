@@ -4,10 +4,10 @@ namespace App\Policies;
 
 use App\Enums\CompletionStatus;
 use App\Enums\RoleType;
-use App\Models\Training;
+use App\Models\TalentTraining;
 use App\Models\User;
 
-class TrainingPolicy
+class TalentTrainingPolicy
 {
   /**
    * List of allowed roles.
@@ -29,7 +29,7 @@ class TrainingPolicy
   /**
    * Determine whether the user can view the model.
    */
-  public function view(User $user, Training $training): bool
+  public function view(User $user, TalentTraining $talent): bool
   {
     return in_array($user->role, self::ALLOWED_ROLES);
   }
@@ -45,23 +45,23 @@ class TrainingPolicy
   /**
    * Determine whether the user can update the model.
    */
-  public function update(User $user, Training $training): bool
+  public function update(User $user, TalentTraining $talent): bool
   {
-    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
+    return $user->role == RoleType::PD && $talent->status == CompletionStatus::UPCOMING;
   }
 
   /**
    * Determine whether the user can delete the model.
    */
-  public function delete(User $user, Training $training): bool
+  public function delete(User $user, TalentTraining $talent): bool
   {
-    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
+    return $user->role == RoleType::PD && $talent->status == CompletionStatus::UPCOMING;
   }
 
   /**
    * Determine whether the user can restore the model.
    */
-  public function restore(User $user, Training $training): bool
+  public function restore(User $user, TalentTraining $talent): bool
   {
     return false;
   }
@@ -77,25 +77,25 @@ class TrainingPolicy
   /**
    * Determine whether the user can assign the employee to the training.
    */
-  public function assign(User $user, Training $training): bool
+  public function assign(User $user, TalentTraining $talent): bool
   {
-    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
+    return $user->role == RoleType::PD && $talent->status == CompletionStatus::UPCOMING;
   }
 
   /**
    * Determine whether the user can unassign the employee from the training.
    */
-  public function unassign(User $user, Training $training): bool
+  public function unassign(User $user, TalentTraining $talent): bool
   {
-    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
+    return $user->role == RoleType::PD && $talent->status == CompletionStatus::UPCOMING;
   }
 
   /**
    * Determine whether the user can set scores for the training.
    */
-  public function score(User $user, Training $training): bool
+  public function score(User $user, TalentTraining $talent): bool
   {
-    return $user->role == RoleType::PD && in_array($training->status, [
+    return $user->role == RoleType::PD && in_array($talent->status, [
       CompletionStatus::FINALIZED,
       CompletionStatus::ONGOING,
       CompletionStatus::COMPLETED,
@@ -105,8 +105,8 @@ class TrainingPolicy
   /**
    * Determine whether the user can notify and locked the training.
    */
-  public function notify(User $user, Training $training): bool
+  public function notify(User $user, TalentTraining $talent): bool
   {
-    return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
+    return $user->role == RoleType::PD && $talent->status == CompletionStatus::UPCOMING;
   }
 }

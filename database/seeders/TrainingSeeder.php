@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TalentTraining;
 use App\Models\Training;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;

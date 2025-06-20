@@ -27,7 +27,7 @@ class StoreFeedbackRequest extends FormRequest
       'initiative' => ['integer', 'between:0,100'],
       'problem_solving' => ['integer', 'between:0,100'],
       'adaptability' => ['integer', 'between:0,100'],
-      'leadership' => ['integer', 'between:0,100'],
+      'talent' => ['integer', 'between:0,100'],
       'description' => ['string', 'max:255'],
     ];
   }

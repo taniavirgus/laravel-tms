@@ -97,9 +97,10 @@ class EmployeeController extends Controller
   {
     return view('dashboard.employees.show', [
       'employee' => $employee,
+      'matrix' => $employee->matrix(),
       'evaluations' => $employee->evaluations()->with('department', 'topic')->get(),
       'trainings' => $employee->trainings()->get(),
-      'matrix' => $employee->matrix(),
+      'talents' => $employee->talents()->get(),
     ]);
   }
 

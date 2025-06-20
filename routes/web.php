@@ -9,11 +9,12 @@ use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TalentController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PeriodController;
+use App\Http\Controllers\SegmentController;
+use App\Http\Controllers\TalentTrainingController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')
@@ -75,7 +76,7 @@ Route::middleware('auth', MiddlewareRule::role(
 ))
   ->group(function () {
     Route::resource('topics', TopicController::class)->except('show');
-    Route::resource('talents', TalentController::class)->only(['index', 'show']);
+    Route::resource('segments', SegmentController::class)->only(['index', 'show']);
 
     Route::controller(EmployeeController::class)->group(function () {
       Route::patch('employees/{employee}/score', 'score')->name('employees.score');
@@ -100,6 +101,15 @@ Route::middleware('auth', MiddlewareRule::role(
     });
 
     Route::resource('trainings', TrainingController::class);
+
+    Route::controller(TalentTrainingController::class)->group(function () {
+      Route::patch('talents/{talent}/score/{employee}', 'score')->name('talents.score');
+      Route::post('talents/{talent}/assign', 'assign')->name('talents.assign');
+      Route::post('talents/{talent}/notify', 'notify')->name('talents.notify');
+      Route::delete('talents/{talent}/unassign/{employee}', 'unassign')->name('talents.unassign');
+    });
+
+    Route::resource('talents', TalentTrainingController::class);
   });
 
 

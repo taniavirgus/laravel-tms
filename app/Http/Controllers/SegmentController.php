@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\SegmentType;
 use App\Models\Employee;
+use App\Models\TalentTraining;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 
-class TalentController extends Controller
+class SegmentController extends Controller
 {
   /**
    * Display a listing of the resource.
@@ -29,7 +30,7 @@ class TalentController extends Controller
       ];
     })->values();
 
-    return view('dashboard.talents.index', [
+    return view('dashboard.segments.index', [
       'segments' => $segments,
       'totals' => $employees->count(),
     ]);
@@ -40,7 +41,7 @@ class TalentController extends Controller
    */
   public function show(string $segment): View
   {
-    $type = SegmentType::from($segment);
+    $segment = SegmentType::from($segment);
 
     $employees = Employee::with('trainings', 'evaluations', 'feedback')
       ->get()
@@ -51,7 +52,7 @@ class TalentController extends Controller
 
     $employees = $employees
       ->load('department', 'position')
-      ->filter(fn($employee) => $employee->matrix->segment === $type)
+      ->filter(fn($employee) => $employee->matrix->segment === $segment)
       ->sortByDesc('matrix.average_score');
 
     $employees = new LengthAwarePaginator(
@@ -62,9 +63,12 @@ class TalentController extends Controller
       ['path' => request()->url(), 'query' => request()->query()]
     );
 
-    return view('dashboard.talents.show', [
+    $talents = TalentTraining::where('segment', $segment)->get();
+
+    return view('dashboard.segments.show', [
+      'talents' => $talents,
       'employees' => $employees,
-      'segment' => $type,
+      'segment' => $segment,
     ]);
   }
 }

@@ -143,7 +143,7 @@ class Employee extends Model implements WithPeriodPivot
         'initiative' => 0,
         'problem_solving' => 0,
         'adaptability' => 0,
-        'leadership' => 0,
+        'talent' => 0,
         'description' => 'No feedback available',
       ]);
   }
@@ -157,5 +157,16 @@ class Employee extends Model implements WithPeriodPivot
   {
     return $this->belongsToManyWithPeriod(Training::class, 'employee_trainings')
       ->withPivot('score', 'email_sent');
+  }
+
+  /**
+   * The talent trainings that belong to the employee.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+   */
+  public function talents(): BelongsToMany
+  {
+    return $this->belongsToMany(TalentTraining::class, 'employee_talent_trainings')
+      ->withPivot('score', 'email_sent', 'notes');
   }
 }

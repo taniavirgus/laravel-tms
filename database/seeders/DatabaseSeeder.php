@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
       TopicSeeder::class,
       EvaluationSeeder::class,
       TrainingSeeder::class,
+      TalentTrainingSeeder::class,
     ]);
   }
 }

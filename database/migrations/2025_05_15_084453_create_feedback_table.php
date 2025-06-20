@@ -20,7 +20,7 @@ return new class extends Migration
       $table->integer('initiative')->default(0);
       $table->integer('problem_solving')->default(0);
       $table->integer('adaptability')->default(0);
-      $table->integer('leadership')->default(0);
+      $table->integer('talent')->default(0);
       $table->text('description');
       $table->foreignIdFor(Employee::class)->constrained()->cascadeOnDelete()->unique();
     });

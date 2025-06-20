@@ -30,9 +30,9 @@
   </div>
 
   <div class="field">
-    <x-ui.label for="leadership" value="Leadership" /> <x-ui.range id="leadership" name="leadership" type="range"
-      value="{{ old('leadership', $feedback->leadership) }}" />
-    <x-ui.errors :messages="$errors->get('leadership')" />
+    <x-ui.label for="talent" value="Talent" /> <x-ui.range id="talent" name="talent" type="range"
+      value="{{ old('talent', $feedback->talent) }}" />
+    <x-ui.errors :messages="$errors->get('talent')" />
   </div>
 
   <div class="field col-span-full">

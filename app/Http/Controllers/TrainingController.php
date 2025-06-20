@@ -46,7 +46,8 @@ class TrainingController extends Controller
     $trainings = Training::query()
       ->with(['departments', 'evaluation'])
       ->when($search, function ($q) use ($search) {
-        $q->where('name', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%');
+        $q->where('name', 'like', '%' . $search . '%')
+          ->orWhere('description', 'like', '%' . $search . '%');
       })
       ->when($type, function ($q) use ($type) {
         $q->where('type', $type);
@@ -124,9 +125,8 @@ class TrainingController extends Controller
       })
       ->where('status', StatusType::ACTIVE->value)
       ->when($search, function ($q) use ($search) {
-        $q->where(function ($query) use ($search) {
-          $query->where('name', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%');
-        });
+        $q->where('name', 'like', '%' . $search . '%')
+          ->orWhere('email', 'like', '%' . $search . '%');
       })
       ->when($position_id, function ($q) use ($position_id) {
         $q->where('position_id', $position_id);

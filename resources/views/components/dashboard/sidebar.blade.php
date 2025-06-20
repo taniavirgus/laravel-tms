@@ -2,7 +2,12 @@
   use App\Models\Training;
   use App\Enums\CompletionStatus;
 
-  $trainings = Training::where('status', CompletionStatus::UPCOMING)->get();
+  $trainings = Training::where(function ($q) {
+      $q->withStatus(CompletionStatus::UPCOMING->value);
+  });
+
+  $count = $trainings->get()->count();
+  $trainings = $trainings->take(5)->get();
 
   $props = $attributes
       ->class([
@@ -120,7 +125,7 @@
                   'href' => route('topics.index'),
                   'active' => request()->routeIs('topics.*'),
                   'name' => 'Evaluation Topic',
-                  'icon' => 'clipboard-list',
+                  'icon' => 'book-open',
               ],
               [
                   'type' => 'link',
@@ -155,7 +160,7 @@
                   'active' => request()->routeIs('trainings.show'),
                   'name' => 'Assign Employee',
                   'icon' => 'user-plus',
-                  'count' => $trainings->count(),
+                  'count' => $count,
                   'show' => Auth::user()->can('assignAny', Training::class),
               ],
           ],
@@ -166,10 +171,17 @@
           'menus' => [
               [
                   'type' => 'link',
-                  'href' => route('talents.index'),
-                  'active' => request()->routeIs('talents.index'),
-                  'name' => 'Talent Pool List',
+                  'href' => route('segments.index'),
+                  'active' => request()->routeIs('segments.*'),
+                  'name' => 'Talent Segment List',
                   'icon' => 'building2',
+              ],
+              [
+                  'type' => 'link',
+                  'href' => route('talents.index'),
+                  'active' => request()->routeIs('talents.*'),
+                  'name' => 'Talent Training List',
+                  'icon' => 'graduation-cap',
               ],
           ],
       ],
@@ -263,18 +275,19 @@
   </div>
 </aside>
 
-<x-modal name="choose-training" focusable class="!max-w-3xl">
+<x-modal name="choose-training" focusable class="!max-w-4xl">
   <x-ui.table>
     <x-slot:title>
       <i data-lucide="graduation-cap" class="size-5 text-primary-500"></i>
-      <h4>Assignable Trainings</h4>
+      <h4>Latest Upcoming Trainings</h4>
     </x-slot:title>
 
     <x-slot:head>
       <th>No</th>
       <th>Title</th>
-      <th>Status</th>
+      <th>Type</th>
       <th>Start Date</th>
+      <th>Status</th>
       <th>Actions</th>
     </x-slot:head>
 
@@ -283,8 +296,9 @@
         <tr>
           <td>{{ $training->id }}</td>
           <td>{{ $training->name }}</td>
-          <td><x-ui.badge :value="$training->status" /></td>
+          <td><x-ui.badge :value="$training->type" /></td>
           <td>{{ $training->start_date->format('d M Y') }}</td>
+          <td><x-ui.badge :value="$training->status" /></td>
           <td>
             <div class="flex items-center gap-4">
               @can('view', $training)

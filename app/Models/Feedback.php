@@ -22,7 +22,7 @@ class Feedback extends Model
     'initiative',
     'problem_solving',
     'adaptability',
-    'leadership',
+    'talent',
     'description',
     'employee_id',
     'period_id',
@@ -59,7 +59,7 @@ class Feedback extends Model
           $this->initiative,
           $this->problem_solving,
           $this->adaptability,
-          $this->leadership
+          $this->talent
         ];
 
         return array_sum($scores) / count($scores);
