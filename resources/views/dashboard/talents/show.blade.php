@@ -182,6 +182,7 @@
     <x-slot:head>
       <th>No</th>
       <th>Name</th>
+      <th>Segment</th>
       <th>Department</th>
       <th>Position</th>
       <th>Actions</th>
@@ -197,6 +198,7 @@
               <span>{{ $employee->name }}</span>
             </div>
           </td>
+          <td><x-ui.badge :value="$talent->segment" /></td>
           <td>{{ $employee->department->name }}</td>
           <td>{{ $employee->position->name }}</td>
           <td>
