@@ -78,22 +78,24 @@
       @endif
     </div>
 
-    <x-slot:footer class="justify-end">
-      <a href="{{ route('trainings.show', $training) }}">
-        <x-ui.button variant="outline" type="button">
-          <span>Back</span>
-        </x-ui.button>
-      </a>
-
-      @can('update', $training)
-        <a href="{{ route('trainings.edit', $training) }}">
-          <x-ui.button>
-            <span>Edit</span>
-            <i data-lucide="arrow-up-right" class="size-5"></i>
+    @auth
+      <x-slot:footer class="justify-end">
+        <a href="{{ route('trainings.show', $training) }}">
+          <x-ui.button variant="outline" type="button">
+            <span>Back</span>
           </x-ui.button>
         </a>
-      @endcan
-    </x-slot:footer>
+
+        @can('update', $training)
+          <a href="{{ route('trainings.edit', $training) }}">
+            <x-ui.button>
+              <span>Edit</span>
+              <i data-lucide="arrow-up-right" class="size-5"></i>
+            </x-ui.button>
+          </a>
+        @endcan
+      </x-slot:footer>
+    @endauth
   </x-ui.card>
 
   <x-ui.card>

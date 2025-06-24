@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\Training;
 use Illuminate\Console\Command;
 use App\Enums\CompletionStatus;
+use App\Models\TalentTraining;
+use App\Notifications\TalentTrainingReminderNotification;
 use App\Notifications\TrainingReminderNotification;
 
 class SendTrainingReminder extends Command
@@ -42,6 +44,21 @@ class SendTrainingReminder extends Command
       $training->employees->each(function ($employee) use ($training) {
         $employee->notify(new TrainingReminderNotification(
           $training,
+          $employee,
+        ));
+      });
+    });
+
+    $talents = TalentTraining::query()
+      ->withStatus(CompletionStatus::UPCOMING)
+      ->with('employees')
+      ->whereIn('start_date', $days)
+      ->get();
+
+    $talents->each(function ($talent) {
+      $talent->employees->each(function ($employee) use ($talent) {
+        $employee->notify(new TalentTrainingReminderNotification(
+          $talent,
           $employee,
         ));
       });

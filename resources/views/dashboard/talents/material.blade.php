@@ -49,22 +49,24 @@
       </div>
     </div>
 
-    <x-slot:footer class="justify-end">
-      <a href="{{ route('talents.index') }}">
-        <x-ui.button variant="outline" type="button">
-          <span>Back</span>
-        </x-ui.button>
-      </a>
-
-      @can('update', $talent)
-        <a href="{{ route('talents.edit', $talent) }}">
-          <x-ui.button>
-            <span>Edit</span>
-            <i data-lucide="arrow-up-right" class="size-5"></i>
+    @auth
+      <x-slot:footer class="justify-end">
+        <a href="{{ route('talents.index') }}">
+          <x-ui.button variant="outline" type="button">
+            <span>Back</span>
           </x-ui.button>
         </a>
-      @endcan
-    </x-slot:footer>
+
+        @can('update', $talent)
+          <a href="{{ route('talents.edit', $talent) }}">
+            <x-ui.button>
+              <span>Edit</span>
+              <i data-lucide="arrow-up-right" class="size-5"></i>
+            </x-ui.button>
+          </a>
+        @endcan
+      </x-slot:footer>
+    @endauth
   </x-ui.card>
 
   <x-ui.card>

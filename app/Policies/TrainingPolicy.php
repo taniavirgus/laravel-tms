@@ -123,7 +123,7 @@ class TrainingPolicy
    */
   public function material(User $user, Training $training): bool
   {
-    return in_array($user->role, self::ALLOWED_ROLES);
+    return true;
   }
 
   /**

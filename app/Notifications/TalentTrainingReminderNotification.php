@@ -3,14 +3,14 @@
 namespace App\Notifications;
 
 use App\Models\Employee;
-use App\Models\Training;
+use App\Models\TalentTraining;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 
-class TrainingReminderNotification extends Notification implements ShouldQueue
+class TalentTrainingReminderNotification extends Notification implements ShouldQueue
 {
   use Queueable;
 
@@ -18,7 +18,7 @@ class TrainingReminderNotification extends Notification implements ShouldQueue
    * Create a new notification instance.
    */
   public function __construct(
-    public Training $training,
+    public TalentTraining $training,
     public Employee $employee,
   ) {
     //
@@ -51,7 +51,7 @@ class TrainingReminderNotification extends Notification implements ShouldQueue
       ->line('Start Date: ' . $this->training->start_date->format('d-m-Y'))
       ->line('End Date: ' . $this->training->end_date->format('d-m-Y'))
       ->line('Duration: ' . $this->training->duration . ' hours')
-      ->line('Check the training details at ' . route('trainings.material', $this->training))
+      ->line('Check the training details at ' . route('talents.material', $this->training))
       ->line('Please prepare accordingly.')
       ->line('Thank you!');
   }

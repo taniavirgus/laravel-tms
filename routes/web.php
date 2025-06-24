@@ -72,6 +72,9 @@ Route::middleware('auth', MiddlewareRule::role(
     Route::resource('departments', DepartmentController::class)->except('show');
   });
 
+Route::get('talents/{talent}/material', [TalentTrainingController::class, 'material'])->name('talents.material');
+Route::get('trainings/{training}/material', [TrainingController::class, 'material'])->name('trainings.material');
+
 Route::middleware('auth', MiddlewareRule::role(
   'role',
   RoleType::PD,
@@ -104,7 +107,6 @@ Route::middleware('auth', MiddlewareRule::role(
 
     Route::controller(TrainingController::class)->group(function () {
       Route::get('trainings/export', 'export')->name('trainings.export');
-      Route::get('trainings/{training}/material', 'material')->name('trainings.material');
       Route::patch('trainings/{training}/score', 'score')->name('trainings.score');
       Route::post('trainings/{training}/assign', 'assign')->name('trainings.assign');
       Route::post('trainings/{training}/notify', 'notify')->name('trainings.notify');
@@ -117,7 +119,6 @@ Route::middleware('auth', MiddlewareRule::role(
 
     Route::controller(TalentTrainingController::class)->group(function () {
       Route::get('talents/export', 'export')->name('talents.export');
-      Route::get('talents/{talent}/material', 'material')->name('talents.material');
       Route::patch('talents/{talent}/score/{employee}', 'score')->name('talents.score');
       Route::post('talents/{talent}/assign', 'assign')->name('talents.assign');
       Route::post('talents/{talent}/notify', 'notify')->name('talents.notify');
