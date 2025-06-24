@@ -38,6 +38,12 @@
             </x-ui.button>
           </a>
         @endcan
+
+        <a href="{{ route('segments.export', $segment) }}">
+          <x-ui.button size="icon" variant="outline" tooltip="Export talent trainings">
+            <i data-lucide="download" class="size-5"></i>
+          </x-ui.button>
+        </a>
       </div>
     </x-slot:action>
 

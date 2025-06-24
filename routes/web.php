@@ -80,6 +80,10 @@ Route::middleware('auth', MiddlewareRule::role(
 ))
   ->group(function () {
     Route::resource('topics', TopicController::class)->except('show');
+
+    Route::controller(SegmentController::class)->group(function () {
+      Route::get('segments/export/{segment}', 'export')->name('segments.export');
+    });
     Route::resource('segments', SegmentController::class)->only(['index', 'show']);
 
     Route::controller(EmployeeController::class)->group(function () {

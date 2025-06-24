@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\SegmentType;
+use App\Exports\SegmentExport;
 use App\Models\Employee;
 use App\Models\TalentTraining;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelFormat;
 
 class SegmentController extends Controller
 {
@@ -70,5 +73,14 @@ class SegmentController extends Controller
       'employees' => $employees,
       'segment' => $segment,
     ]);
+  }
+
+  /**
+   * Export the segment into csv file.
+   */
+  public function export(Request $request, string $segment)
+  {
+    $segment = SegmentType::from($segment);
+    return Excel::download(new SegmentExport($segment), $segment->value . '.csv', ExcelFormat::CSV);
   }
 }
