@@ -35,7 +35,7 @@ class SendTrainingReminder extends Command
     $days = collect($days)->map(fn($day) => Carbon::today()->addDays($day));
 
     $trainings = Training::query()
-      ->withStatus(CompletionStatus::UPCOMING)
+      ->withStatus(CompletionStatus::FINALIZED)
       ->with('employees')
       ->whereIn('start_date', $days)
       ->get();
@@ -50,7 +50,7 @@ class SendTrainingReminder extends Command
     });
 
     $talents = TalentTraining::query()
-      ->withStatus(CompletionStatus::UPCOMING)
+      ->withStatus(CompletionStatus::FINALIZED)
       ->with('employees')
       ->whereIn('start_date', $days)
       ->get();
