@@ -51,7 +51,11 @@ Route::middleware('auth', MiddlewareRule::role(
   RoleType::SUPERVISOR
 ))
   ->group(function () {
+    Route::controller(EmployeeController::class)->group(function () {
+      Route::get('employees/export', 'export')->name('employees.export');
+    });
     Route::resource('employees', EmployeeController::class);
+
     Route::controller(PeriodController::class)->group(function () {
       Route::post('periods/switch', 'switch')->name('periods.switch');
     });
@@ -84,6 +88,7 @@ Route::middleware('auth', MiddlewareRule::role(
 
     Route::controller(EvaluationController::class)->group(function () {
       Route::get('evaluations/summary', 'summary')->name('evaluations.summary');
+      Route::get('evaluations/export', 'export')->name('evaluations.export');
       Route::post('evaluations/{evaluation}/assign', 'assign')->name('evaluations.assign');
       Route::patch('evaluations/{evaluation}/score', 'score')->name('evaluations.score');
       Route::patch('evaluations/{evaluation}/approval', 'approval')->name('evaluations.approval');

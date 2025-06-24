@@ -35,6 +35,14 @@ class EvaluationPolicy
   }
 
   /**
+   * Determine whether the user can export the model.
+   */
+  public function export(User $user): bool
+  {
+    return in_array($user->role, self::ALLOWED_ROLES);
+  }
+
+  /**
    * Determine whether the user can create models.
    */
   public function create(User $user): bool

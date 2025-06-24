@@ -25,6 +25,14 @@ class EmployeePolicy
   }
 
   /**
+   * Determine whether the user can export the model.
+   */
+  public function export(User $user): bool
+  {
+    return true;
+  }
+
+  /**
    * Determine whether the user can create models.
    */
   public function create(User $user): bool

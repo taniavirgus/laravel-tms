@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ApprovalType;
 use App\Enums\StatusType;
+use App\Exports\SummaryExport;
 use App\Models\Employee;
 use App\Models\Evaluation;
 use App\Http\Requests\StoreEvaluationRequest;
@@ -18,6 +19,8 @@ use Illuminate\Validation\Rules\Enum;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelFormat;
 
 class EvaluationController extends Controller
 {
@@ -64,6 +67,14 @@ class EvaluationController extends Controller
       'topics' => Topic::select(['name', 'id'])->get(),
       'statuses' => ApprovalType::cases()
     ]);
+  }
+
+  /** 
+   * Export the evaluations into csv file.
+   */
+  public function export(Request $request)
+  {
+    return Excel::download(new SummaryExport, 'evaluations.csv', ExcelFormat::CSV);
   }
 
   /**

@@ -58,6 +58,14 @@
             </x-ui.button>
           </a>
         @endcan
+
+        @can('export', App\Models\Employee::class)
+          <a href="{{ route('employees.export') }}">
+            <x-ui.button size="icon" variant="outline" tooltip="Export employees">
+              <i data-lucide="download" class="size-5"></i>
+            </x-ui.button>
+          </a>
+        @endcan
       </div>
     </x-slot:action>
 

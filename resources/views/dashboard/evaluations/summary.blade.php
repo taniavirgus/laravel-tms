@@ -85,6 +85,14 @@
           @endforeach
         </x-ui.select>
       </form>
+
+      @can('export', App\Models\Evaluation::class)
+        <a href="{{ route('evaluations.export') }}">
+          <x-ui.button size="icon" variant="outline" tooltip="Export evaluations">
+            <i data-lucide="download" class="size-5"></i>
+          </x-ui.button>
+        </a>
+      @endcan
     </x-slot:action>
 
     <x-slot:head>

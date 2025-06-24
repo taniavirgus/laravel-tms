@@ -54,28 +54,14 @@ class Employee extends Model implements WithPeriodPivot
   }
 
   /**
-   * The attributes that should be appended.
-   *
-   * @var array<string>
-   */
-  protected $appends = [
-    'training_count',
-    'evaluation_count',
-    'feedback_score',
-    'training_score',
-    'potential_score',
-    'performance_score',
-    'average_score',
-    'segment'
-  ];
-
-  /**
    * get employee matrix data
    * 
    * @return object
    */
   public function matrix(): stdClass
   {
+    $this->load('department', 'position');
+
     $DEFAULT = 0;
     $matrix = new stdClass;
 

@@ -13,7 +13,7 @@
     @csrf
     @method('PUT')
     @include('dashboard.talents.form', [
-        'talent' => new App\Models\TalentTraining(),
+        'talent' => $talent,
     ])
 
     <x-slot:footer class="justify-end">

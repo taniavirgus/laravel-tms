@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\GenderType;
 use App\Enums\ReligionType;
 use App\Enums\StatusType;
+use App\Exports\EmployeeExport;
 use App\Models\Employee;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
@@ -13,6 +14,8 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelFormat;
 
 class EmployeeController extends Controller
 {
@@ -61,6 +64,14 @@ class EmployeeController extends Controller
       'positions' => Position::select(['name', 'id'])->get(),
       'statuses' => StatusType::cases(),
     ]);
+  }
+
+  /**
+   * Export the employees into csv file.
+   */
+  public function export(Request $request)
+  {
+    return Excel::download(new EmployeeExport, 'employees.csv', ExcelFormat::CSV);
   }
 
   /**
