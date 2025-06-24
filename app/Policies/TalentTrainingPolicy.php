@@ -109,4 +109,32 @@ class TalentTrainingPolicy
   {
     return $user->role == RoleType::PD && $talent->status == CompletionStatus::UPCOMING;
   }
+
+  /**
+   * Determine wether the user can access the talent training material.
+   */
+  public function material(User $user, TalentTraining $talent): bool
+  {
+    return in_array($user->role, self::ALLOWED_ROLES);
+  }
+
+  /**
+   * Determine whether the user can upload the talent training material.
+   */
+  public function upload(User $user, TalentTraining $talent): bool
+  {
+    return $user->role == RoleType::PD && in_array($talent->status, [
+      CompletionStatus::UPCOMING,
+    ]);
+  }
+
+  /**
+   * Determine whether the user can remove the attachment from the talent training.
+   */
+  public function remove(User $user, TalentTraining $talent): bool
+  {
+    return $user->role == RoleType::PD && in_array($talent->status, [
+      CompletionStatus::UPCOMING,
+    ]);
+  }
 }

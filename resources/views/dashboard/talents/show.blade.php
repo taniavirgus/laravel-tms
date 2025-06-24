@@ -74,6 +74,15 @@
           </x-ui.button>
         </form>
       @endcan
+
+      @can('material', $talent)
+        <a href="{{ route('talents.material', $talent) }}">
+          <x-ui.button>
+            <span>Materials</span>
+            <i data-lucide="upload" class="size-5"></i>
+          </x-ui.button>
+        </a>
+      @endcan
     </x-slot:footer>
   </x-ui.card>
 

@@ -109,4 +109,32 @@ class TrainingPolicy
   {
     return $user->role == RoleType::PD && $training->status == CompletionStatus::UPCOMING;
   }
+
+  /**
+   * Determine wether the user can access the training material.
+   */
+  public function material(User $user, Training $training): bool
+  {
+    return in_array($user->role, self::ALLOWED_ROLES);
+  }
+
+  /**
+   * Determine whether the user can upload the training material.
+   */
+  public function upload(User $user, Training $training): bool
+  {
+    return $user->role == RoleType::PD && in_array($training->status, [
+      CompletionStatus::UPCOMING,
+    ]);
+  }
+
+  /**
+   * Determine whether the user can remove the attachment from the training material.
+   */
+  public function remove(User $user, Training $training): bool
+  {
+    return $user->role == RoleType::PD && in_array($training->status, [
+      CompletionStatus::UPCOMING,
+    ]);
+  }
 }

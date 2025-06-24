@@ -7,6 +7,7 @@ use App\Enums\SegmentType;
 use App\Models\TalentTraining;
 use App\Http\Requests\StoreTalentTrainingRequest;
 use App\Http\Requests\UpdateTalentTrainingRequest;
+use App\Models\Attachment;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
@@ -14,6 +15,8 @@ use App\Notifications\TalentTrainingNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Uri;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -246,5 +249,72 @@ class TalentTrainingController extends Controller
     $talent->employees()->updateExistingPivot($employee->id, $validated);
 
     return back()->with('success', "Employee score updated successfully!");
+  }
+
+  /**
+   * Display the training materials.
+   */
+  public function material(Request $request, TalentTraining $talent)
+  {
+    $assigned = $talent->employees()
+      ->with('department', 'position')
+      ->get();
+
+    return view('dashboard.talents.material', [
+      'talent' => $talent,
+      'assigned' => $assigned,
+      'attachments' => $talent->attachments,
+    ]);
+  }
+
+  /**
+   * Upload a talent material.
+   */
+  public function upload(Request $request, TalentTraining $talent)
+  {
+    $request->validate([
+      'files' => ['required', 'array'],
+      'files.*' => [
+        'required',
+        'file',
+        'max:6144',
+        'mimes:pdf,doc,docx,jpg,jpeg,png,gif,webp'
+      ],
+    ]);
+
+    $files = $request->file('files');
+    $uploaded = collect($files)->map(function ($file) {
+      $url = $file->store('uploads', 'public');
+
+      return [
+        'url' => asset($url),
+        'size' => $file->getSize(),
+        'filename' => $file->getClientOriginalName(),
+        'mime_type' => $file->getMimeType(),
+      ];
+    });
+
+    $talent->attachments()->createMany($uploaded);
+
+    return redirect()
+      ->route('talents.material', $talent)
+      ->with('success', 'Training material uploaded successfully!');
+  }
+
+  /**
+   * Remove a talent material.
+   */
+  public function remove(TalentTraining $talent, Attachment $attachment)
+  {
+    $uri = Uri::of($attachment->url);
+    $path = $uri->path();
+    $exist = Storage::disk('public')->exists($path);
+    if ($exist) Storage::disk('public')->delete($path);
+
+    $attachment->delete();
+
+    return redirect()
+      ->route('talents.material', $talent)
+      ->with('success', 'Training material removed successfully!');
   }
 }

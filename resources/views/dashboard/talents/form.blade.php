@@ -33,7 +33,7 @@
     <x-ui.errors :messages="$errors->get('duration')" />
   </div>
 
-  @if ($segment)
+  @isset($segment)
     <div class="field">
       <x-ui.label for="segment" value="Talent Segment" />
       <x-ui.input type="text" value="{{ $segment->label() }}" required readonly />
@@ -53,5 +53,5 @@
       </x-ui.select>
       <x-ui.errors :messages="$errors->get('segment')" />
     </div>
-  @endif
+  @endisset
 </div>

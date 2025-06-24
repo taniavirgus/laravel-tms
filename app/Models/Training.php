@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Enums\AssignmentType;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Training extends Model implements WithPeriodPivot
 {
@@ -118,5 +119,15 @@ class Training extends Model implements WithPeriodPivot
   public function departments(): BelongsToMany
   {
     return $this->belongsToMany(Department::class, 'department_training');
+  }
+
+  /**
+   * Relationship with the Attachment model.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+   */
+  public function attachments(): MorphMany
+  {
+    return $this->morphMany(Attachment::class, 'attachable');
   }
 }

@@ -6,6 +6,7 @@ use App\Enums\CompletionStatus;
 use App\Enums\SegmentType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class TalentTraining extends Model
 {
@@ -87,5 +88,15 @@ class TalentTraining extends Model
         'email_sent',
         'notes'
       );
+  }
+
+  /**
+   * Relationship with the Attachment model.
+   * 
+   * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+   */
+  public function attachments(): MorphMany
+  {
+    return $this->morphMany(Attachment::class, 'attachable');
   }
 }

@@ -36,6 +36,7 @@ export default {
       },
       aspectRatio: {
         'banner': '3/1',
+        'thumbnail': '4/3',
       }
     },
   },

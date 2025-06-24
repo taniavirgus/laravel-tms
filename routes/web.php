@@ -94,18 +94,24 @@ Route::middleware('auth', MiddlewareRule::role(
     Route::resource('employees.feedback', FeedbackController::class)->shallow()->only('create', 'store', 'destroy');
 
     Route::controller(TrainingController::class)->group(function () {
+      Route::get('trainings/{training}/material', 'material')->name('trainings.material');
       Route::patch('trainings/{training}/score', 'score')->name('trainings.score');
       Route::post('trainings/{training}/assign', 'assign')->name('trainings.assign');
       Route::post('trainings/{training}/notify', 'notify')->name('trainings.notify');
+      Route::post('trainings/{training}/upload', 'upload')->name('trainings.upload');
+      Route::delete('trainings/{training}/remove/{attachment}', 'remove')->name('trainings.remove');
       Route::delete('trainings/{training}/unassign/{employee}', 'unassign')->name('trainings.unassign');
     });
 
     Route::resource('trainings', TrainingController::class);
 
     Route::controller(TalentTrainingController::class)->group(function () {
+      Route::get('talents/{talent}/material', 'material')->name('talents.material');
       Route::patch('talents/{talent}/score/{employee}', 'score')->name('talents.score');
       Route::post('talents/{talent}/assign', 'assign')->name('talents.assign');
       Route::post('talents/{talent}/notify', 'notify')->name('talents.notify');
+      Route::post('talents/{talent}/upload', 'upload')->name('talents.upload');
+      Route::delete('talents/{talent}/remove/{attachment}', 'remove')->name('talents.remove');
       Route::delete('talents/{talent}/unassign/{employee}', 'unassign')->name('talents.unassign');
     });
 

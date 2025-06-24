@@ -9,6 +9,7 @@ use App\Enums\AssignmentType;
 use App\Models\Training;
 use App\Http\Requests\StoreTrainingRequest;
 use App\Http\Requests\UpdateTrainingRequest;
+use App\Models\Attachment;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Evaluation;
@@ -16,9 +17,11 @@ use App\Models\Position;
 use App\Notifications\TrainingNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
+use Illuminate\Support\Uri;
 
 class TrainingController extends Controller
 {
@@ -272,5 +275,72 @@ class TrainingController extends Controller
     }
 
     return back()->with('success', "Employee score updated successfully!");
+  }
+
+  /**
+   * Display the training materials.
+   */
+  public function material(Request $request, Training $training)
+  {
+    $assigned = $training->employees()
+      ->with('department', 'position')
+      ->get();
+
+    return view('dashboard.trainings.material', [
+      'training' => $training,
+      'assigned' => $assigned,
+      'attachments' => $training->attachments,
+    ]);
+  }
+
+  /**
+   * Upload a training material.
+   */
+  public function upload(Request $request, Training $training)
+  {
+    $request->validate([
+      'files' => ['required', 'array'],
+      'files.*' => [
+        'required',
+        'file',
+        'max:6144',
+        'mimes:pdf,doc,docx,jpg,jpeg,png,gif,webp'
+      ],
+    ]);
+
+    $files = $request->file('files');
+    $uploaded = collect($files)->map(function ($file) {
+      $url = $file->store('uploads', 'public');
+
+      return [
+        'url' => asset($url),
+        'size' => $file->getSize(),
+        'filename' => $file->getClientOriginalName(),
+        'mime_type' => $file->getMimeType(),
+      ];
+    });
+
+    $training->attachments()->createMany($uploaded);
+
+    return redirect()
+      ->route('trainings.material', $training)
+      ->with('success', 'Training material uploaded successfully!');
+  }
+
+  /**
+   * Remove a training material.
+   */
+  public function remove(Training $training, Attachment $attachment)
+  {
+    $uri = Uri::of($attachment->url);
+    $path = $uri->path();
+    $exist = Storage::disk('public')->exists($path);
+    if ($exist) Storage::disk('public')->delete($path);
+
+    $attachment->delete();
+
+    return redirect()
+      ->route('trainings.material', $training)
+      ->with('success', 'Training material removed successfully!');
   }
 }
