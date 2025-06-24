@@ -21,7 +21,6 @@ class TalentTraining extends Model
     'start_date',
     'end_date',
     'duration',
-    'capacity',
     'notified',
     'segment',
   ];

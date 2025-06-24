@@ -6,6 +6,7 @@ use App\Enums\CompletionStatus;
 use App\Enums\StatusType;
 use App\Enums\TrainingType;
 use App\Enums\AssignmentType;
+use App\Exports\TrainingExport;
 use App\Models\Training;
 use App\Http\Requests\StoreTrainingRequest;
 use App\Http\Requests\UpdateTrainingRequest;
@@ -22,6 +23,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Support\Uri;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelFormat;
 
 class TrainingController extends Controller
 {
@@ -77,6 +80,14 @@ class TrainingController extends Controller
       'statuses' => CompletionStatus::cases(),
       'assignments' => AssignmentType::cases(),
     ]);
+  }
+
+  /** 
+   * Export the trainings into csv file.
+   */
+  public function export(Request $request)
+  {
+    return Excel::download(new TrainingExport, 'trainings.csv', ExcelFormat::CSV);
   }
 
   /**

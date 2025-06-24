@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\CompletionStatus;
 use App\Enums\SegmentType;
+use App\Exports\TalentTrainingExport;
 use App\Models\TalentTraining;
 use App\Http\Requests\StoreTalentTrainingRequest;
 use App\Http\Requests\UpdateTalentTrainingRequest;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Uri;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Excel as ExcelFormat;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TalentTrainingController extends Controller
 {
@@ -58,6 +61,14 @@ class TalentTrainingController extends Controller
       'segments' => SegmentType::cases(),
       'statuses' => CompletionStatus::cases(),
     ]);
+  }
+
+  /** 
+   * Export the talent trainings into csv file.
+   */
+  public function export(Request $request)
+  {
+    return Excel::download(new TalentTrainingExport, 'talents.csv', ExcelFormat::CSV);
   }
 
   /**

@@ -62,6 +62,14 @@
             </x-ui.button>
           </a>
         @endcan
+
+        @can('export', App\Models\Training::class)
+          <a href="{{ route('trainings.export') }}">
+            <x-ui.button size="icon" variant="outline" tooltip="Export trainings">
+              <i data-lucide="download" class="size-5"></i>
+            </x-ui.button>
+          </a>
+        @endcan
       </div>
     </x-slot:action>
 

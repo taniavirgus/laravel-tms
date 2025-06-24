@@ -31,7 +31,6 @@ class Training extends Model implements WithPeriodPivot
     'duration',
     'capacity',
     'notified',
-    'evaluation_id',
   ];
 
   /**

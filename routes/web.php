@@ -99,6 +99,7 @@ Route::middleware('auth', MiddlewareRule::role(
     Route::resource('employees.feedback', FeedbackController::class)->shallow()->only('create', 'store', 'destroy');
 
     Route::controller(TrainingController::class)->group(function () {
+      Route::get('trainings/export', 'export')->name('trainings.export');
       Route::get('trainings/{training}/material', 'material')->name('trainings.material');
       Route::patch('trainings/{training}/score', 'score')->name('trainings.score');
       Route::post('trainings/{training}/assign', 'assign')->name('trainings.assign');
@@ -111,6 +112,7 @@ Route::middleware('auth', MiddlewareRule::role(
     Route::resource('trainings', TrainingController::class);
 
     Route::controller(TalentTrainingController::class)->group(function () {
+      Route::get('talents/export', 'export')->name('talents.export');
       Route::get('talents/{talent}/material', 'material')->name('talents.material');
       Route::patch('talents/{talent}/score/{employee}', 'score')->name('talents.score');
       Route::post('talents/{talent}/assign', 'assign')->name('talents.assign');
