@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\CompletionStatus;
-use App\Enums\SegmentType;
-use App\Exports\TalentTrainingExport;
-use App\Models\TalentTraining;
-use App\Http\Requests\StoreTalentTrainingRequest;
-use App\Http\Requests\UpdateTalentTrainingRequest;
-use App\Models\Attachment;
-use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
-use App\Notifications\TalentTrainingNotification;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Uri;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
-use Maatwebsite\Excel\Excel as ExcelFormat;
+use App\Enums\SegmentType;
+use App\Models\Attachment;
+use App\Models\Department;
+use Illuminate\Support\Uri;
+use Illuminate\Http\Request;
+use App\Models\TalentTraining;
+use App\Enums\CompletionStatus;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TalentTrainingExport;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Excel as ExcelFormat;
+use App\Http\Requests\AttachmentUploadRequest;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Requests\StoreTalentTrainingRequest;
+use App\Notifications\TalentTrainingNotification;
+use App\Http\Requests\UpdateTalentTrainingRequest;
 
 class TalentTrainingController extends Controller
 {
@@ -281,18 +282,8 @@ class TalentTrainingController extends Controller
   /**
    * Upload a talent material.
    */
-  public function upload(Request $request, TalentTraining $talent)
+  public function upload(AttachmentUploadRequest $request, TalentTraining $talent)
   {
-    $request->validate([
-      'files' => ['required', 'array'],
-      'files.*' => [
-        'required',
-        'file',
-        'max:6144',
-        'mimes:pdf,doc,docx,jpg,jpeg,png,gif,webp'
-      ],
-    ]);
-
     $files = $request->file('files');
     $uploaded = collect($files)->map(function ($file) {
       $url = $file->store('uploads', 'public');

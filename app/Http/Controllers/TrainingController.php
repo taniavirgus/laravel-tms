@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\CompletionStatus;
-use App\Enums\StatusType;
-use App\Enums\TrainingType;
-use App\Enums\AssignmentType;
-use App\Exports\TrainingExport;
 use App\Models\Training;
-use App\Http\Requests\StoreTrainingRequest;
-use App\Http\Requests\UpdateTrainingRequest;
+use App\Models\Employee;
+use App\Models\Position;
+use App\Enums\StatusType;
+use Illuminate\View\View;
 use App\Models\Attachment;
 use App\Models\Department;
-use App\Models\Employee;
 use App\Models\Evaluation;
-use App\Models\Position;
-use App\Notifications\TrainingNotification;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use Illuminate\View\View;
+use App\Enums\TrainingType;
 use Illuminate\Support\Str;
 use Illuminate\Support\Uri;
+use Illuminate\Http\Request;
+use App\Enums\AssignmentType;
+use App\Enums\CompletionStatus;
+use App\Exports\TrainingExport;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreTrainingRequest;
+use App\Notifications\TrainingNotification;
 use Maatwebsite\Excel\Excel as ExcelFormat;
+use App\Http\Requests\UpdateTrainingRequest;
+use App\Http\Requests\AttachmentUploadRequest;
 
 class TrainingController extends Controller
 {
@@ -307,18 +308,8 @@ class TrainingController extends Controller
   /**
    * Upload a training material.
    */
-  public function upload(Request $request, Training $training)
+  public function upload(AttachmentUploadRequest $request, Training $training)
   {
-    $request->validate([
-      'files' => ['required', 'array'],
-      'files.*' => [
-        'required',
-        'file',
-        'max:6144',
-        'mimes:pdf,doc,docx,jpg,jpeg,png,gif,webp'
-      ],
-    ]);
-
     $files = $request->file('files');
     $uploaded = collect($files)->map(function ($file) {
       $url = $file->store('uploads', 'public');

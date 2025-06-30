@@ -158,12 +158,15 @@
 
     @can('upload', $training)
       <x-slot:footer class="justify-end">
+        @if ($errors->any())
+          <pre class="text-red-500">{{ $errors->first('files.*') }}</pre>
+        @endif
+
         <form x-data x-ref="form" action="{{ route('trainings.upload', $training) }}" method="POST"
           enctype="multipart/form-data">
           @csrf
           <input type="file" name="files[]" class="hidden" x-ref="file" x-on:change="$refs.form.submit()" multiple
             accept="image/png, image/jpeg, image/jpg, image/gif, image/webp, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-          <pre class="text-red-500">{{ $errors->first('files') }}</pre>
           <x-ui.button variant="primary" type="button" x-on:click="$refs.file.click()">
             <span>Upload</span>
             <i data-lucide="upload" class="size-5"></i>

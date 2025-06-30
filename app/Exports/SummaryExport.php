@@ -3,8 +3,8 @@
 namespace App\Exports;
 
 use App\Models\Employee;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class SummaryExport implements FromCollection, WithHeadings
 {
@@ -13,7 +13,7 @@ class SummaryExport implements FromCollection, WithHeadings
    */
   public function collection()
   {
-    $employees = Employee::with('trainings', 'evaluations', 'feedback', 'departments', 'positions')
+    $employees = Employee::with('trainings', 'evaluations', 'feedback', 'department', 'position')
       ->get()
       ->map(function ($employee) {
         $employee->matrix = $employee->matrix();
