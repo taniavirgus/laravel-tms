@@ -61,11 +61,24 @@
     <x-ui.label for="point" value="Point" /> <x-ui.input id="point" name="point" type="number" min="0"
       step="1" value="{{ old('point', $evaluation->point ?? 0) }}" required />
     <x-ui.errors :messages="$errors->get('point')" />
-  </div>
+  </div> 
 
   <div class="field">
     <x-ui.label for="target" value="Target" /> <x-ui.input id="target" name="target" type="number" min="0"
       step="1" value="{{ old('target', $evaluation->target ?? 0) }}" required />
     <x-ui.errors :messages="$errors->get('target')" />
   </div>
+</div>
+
+<div class="mb-4">
+    <label for="unit" class="block text-sm font-medium text-gray-700">Unit</label>
+    <select name="unit" id="unit" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+        <option value="">Select Unit</option>
+        <option value="%">%</option>
+        <option value="Rp">Rp</option>
+        <option value="Qty">Qty</option>
+        <option value="Hours">Hours</option>
+        <option value="Days">Days</option>
+        <!-- Tambah sesuai kebutuhan -->
+    </select>
 </div>

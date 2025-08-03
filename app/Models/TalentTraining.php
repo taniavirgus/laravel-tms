@@ -23,6 +23,8 @@ class TalentTraining extends Model
     'duration',
     'notified',
     'segment',
+    'start_at',
+    'location',
   ];
 
   /**
@@ -35,6 +37,7 @@ class TalentTraining extends Model
     return [
       'start_date' => 'date',
       'end_date' => 'date',
+      'start_at' => 'datetime',
       'notified' => 'boolean',
       'segment' => SegmentType::class,
     ];

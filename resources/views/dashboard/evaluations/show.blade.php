@@ -52,6 +52,14 @@
         </dd>
       </dl>
 
+      <dl>
+        <dt class="text-sm font-medium text-base-500">Unit</dt>
+        <dd class="flex items-center gap-2">
+          <i data-lucide="chart-no-axes-column" class="size-4"></i>
+          {{ $evaluation->unit }}
+        </dd>
+      </dl>
+
       <dl class="col-span-full">
         <dt class="text-sm font-medium text-base-500">Description</dt>
         <dd>
@@ -98,6 +106,7 @@
       <th>Department</th>
       <th>Position</th>
       <th>Score</th>
+      <th>Unit</th>
       <th>Actions</th>
     </x-slot:head>
 
@@ -127,6 +136,7 @@
           @else
             <td>{{ $employee->pivot->score }} / {{ $evaluation->target }}</td>
           @endcan
+          <td>{{ $evaluation->unit }}</td>
           <td>
             <div class="flex items-center gap-4">
               <a href="{{ route('employees.show', $employee) }}" class="text-primary-500">

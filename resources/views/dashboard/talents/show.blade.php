@@ -44,6 +44,17 @@
       </div>
 
       <div>
+      <label class="text-sm font-medium text-base-500">Start Time</label>
+      <span class="block">{{ $talent->start_at?->format('H:i') ?? '-' }}
+</span>
+      </div>
+
+      <div>
+      <label class="text-sm font-medium text-base-500">Location</label>
+      <span class="block">{{ $talent->location ?? '-' }}</span>
+      </div>
+
+      <div>
         <label class="text-sm font-medium text-base-500">Talent Segment</label>
         <div><x-ui.badge :value="$talent->segment" /></div>
       </div>

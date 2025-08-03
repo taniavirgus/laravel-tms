@@ -38,7 +38,7 @@ class StoreTrainingRequest extends FormRequest
       'department_ids.*' => ['exists:departments,id'],
       'evaluation_id' => ['nullable', 'integer', 'exists:evaluations,id'],
       'start_date' => ['required', 'date', 'after:' . now()->addDays(3)->format('Y-m-d')],
-      'end_date' => ['required', 'date', 'after:start_date'],
+      'end_date' => ['required', 'date', 'after_or_equal:start_date'],
       'duration' => ['required', 'integer', 'min:0'],
       'capacity' => ['required', 'integer', 'min:0'],
       'type' => ['required', new Enum(TrainingType::class)],

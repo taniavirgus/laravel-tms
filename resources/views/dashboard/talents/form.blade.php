@@ -33,6 +33,23 @@
     <x-ui.errors :messages="$errors->get('duration')" />
   </div>
 
+  <div class="field">
+  <x-ui.label for="start_at" value="Start At (Time Only)" />
+  <x-ui.input id="start_at" name="start_at" type="time"
+    value="{{ old('start_at', isset($talent) ? $talent->start_at : '') }}"
+    required />
+  <x-ui.errors :messages="$errors->get('start_at')" />
+</div>
+
+<div class="field">
+  <x-ui.label for="location" value="Location" />
+  <x-ui.input id="location" name="location" type="text"
+    value="{{ old('location', isset($talent) ? $talent->location : '') }}"
+    required />
+  <x-ui.errors :messages="$errors->get('location')" />
+</div>
+
+
   @isset($segment)
     <div class="field">
       <x-ui.label for="segment" value="Talent Segment" />

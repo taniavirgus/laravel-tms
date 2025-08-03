@@ -28,7 +28,8 @@ class UpdateEvaluationRequest extends FormRequest
       'target' => ['required', 'integer', 'min:0'],
       'topic_id' => ['required', 'exists:topics,id'],
       'department_id' => ['required', 'exists:departments,id'],
-      'position_id' => ['required', 'exists:positions,id']
+      'position_id' => ['required', 'exists:positions,id'],
+      'unit' => 'nullable|string|max:10',
     ];
   }
 }

@@ -34,9 +34,11 @@ class UpdateTalentTrainingRequest extends FormRequest
       'name' => ['required', 'string', 'max:255'],
       'description' => ['required', 'string'],
       'start_date' => ['required', 'date', 'after:' . now()->addDays(3)->format('Y-m-d')],
-      'end_date' => ['required', 'date', 'after:start_date'],
+      'end_date' => ['required', 'date', 'after_or_equal:start_date'],
       'duration' => ['required', 'integer', 'min:0'],
       'segment' => ['required', new Enum(SegmentType::class)],
+      'start_at' => ['nullable', 'date_format:H:i'],
+      'location' => ['nullable', 'string', 'max:255'],
     ];
   }
 

@@ -27,7 +27,8 @@ class Evaluation extends Model implements WithPeriodPivot
     'status',
     'topic_id',
     'department_id',
-    'position_id'
+    'position_id',
+    'unit',
   ];
 
   /**

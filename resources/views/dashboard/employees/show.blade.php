@@ -141,6 +141,7 @@
       <th>Department</th>
       <th>Point</th>
       <th>Employee Score</th>
+      <th>Unit</th>
       <th>Actions</th>
     </x-slot:head>
 
@@ -166,6 +167,7 @@
           @else
             <td>{{ $evaluation->pivot->score }} / {{ $evaluation->target }}</td>
           @endcan
+          <td>{{ $evaluation->unit }}</td>
           <td>
             <div class="flex items-center gap-4">
               <a href="{{ route('evaluations.show', $evaluation) }}" class="text-primary-500">

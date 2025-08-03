@@ -29,6 +29,7 @@ class StoreEvaluationRequest extends FormRequest
       'topic_id' => ['required', 'exists:topics,id'],
       'department_id' => ['required', 'exists:departments,id'],
       'position_id' => ['required', 'exists:positions,id'],
+      'unit' => 'nullable|string|max:10',
     ];
   }
 }
