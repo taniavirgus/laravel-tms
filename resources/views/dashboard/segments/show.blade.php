@@ -10,42 +10,47 @@
       <h4>{{ $segment->label() }} Employees</h4>
     </x-slot:title>
 
-    <x-slot:action class="justify-between">
-      <form action="{{ route('talents.show', $segment) }}" method="GET"
-        class="flex flex-col gap-2 xl:flex-row xl:items-center">
-        <x-ui.input name="search" value="{{ request()->get('search') }}" placeholder="Search by name or description">
-          <x-slot:left>
-            <i data-lucide="search" class="text-base-500 size-5"></i>
-          </x-slot:left>
-        </x-ui.input>
-      </form>
+<x-slot:action class="justify-between">
+<form action="{{ route('segments.show', $segment) }}" method="GET" class="flex gap-2">
+  <x-ui.input name="search" value="{{ request()->get('search') }}" placeholder="Search by name" />
+  
+  <x-ui.select name="department_id" onchange="this.form.submit()">
+    <option value="">All Departments</option>
+    @foreach ($departments as $department)
+      <option value="{{ $department->id }}" @selected(request()->get('department_id') == $department->id)>
+        {{ $department->name }}
+      </option>
+    @endforeach
+  </x-ui.select>
+</form>
 
-      <div class="flex items-center gap-2">
-        @if (request()->has('search'))
-          <a href="{{ route('talents.show') }}">
-            <x-ui.button variant="outline">
-              <i data-lucide="x" class="size-5"></i>
-              <span>Reset</span>
-            </x-ui.button>
-          </a>
-        @endif
+@if (request()->hasAny(['search', 'department_id']))
+  <a href="{{ route('segments.show', $segment) }}">
+    <x-ui.button variant="outline">
+      <i data-lucide="x" class="size-5"></i>
+      <span>Reset</span>
+    </x-ui.button>
+  </a>
+@endif
 
-        @can('create', App\Models\TalentTraining::class)
-          <a href="{{ route('talents.create', ['segment' => $segment]) }}">
-            <x-ui.button>
-              <i data-lucide="plus" class="size-5"></i>
-              <span>Talent Training</span>
-            </x-ui.button>
-          </a>
-        @endcan
 
-        <a href="{{ route('segments.export', $segment) }}">
-          <x-ui.button size="icon" variant="outline" tooltip="Export talent trainings">
-            <i data-lucide="download" class="size-5"></i>
-          </x-ui.button>
-        </a>
-      </div>
-    </x-slot:action>
+    @can('create', App\Models\TalentTraining::class)
+      <a href="{{ route('talents.create', ['segment' => $segment]) }}">
+        <x-ui.button>
+          <i data-lucide="plus" class="size-5"></i>
+          <span>Talent Training</span>
+        </x-ui.button>
+      </a>
+    @endcan
+
+    <a href="{{ route('segments.export', $segment) }}">
+      <x-ui.button size="icon" variant="outline" tooltip="Export talent trainings">
+        <i data-lucide="download" class="size-5"></i>
+      </x-ui.button>
+    </a>
+  </div>
+</x-slot:action>
+
 
 
     <x-slot:head>

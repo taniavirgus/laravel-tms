@@ -96,6 +96,7 @@ class TrainingController extends Controller
    */
   public function create()
   {
+    $training = null;
     return view('dashboard.trainings.create', [
       'departments' => Department::select(['name', 'id'])->get(),
       'evaluations' => Evaluation::select(['name', 'id'])->get(),

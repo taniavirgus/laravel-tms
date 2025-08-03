@@ -31,6 +31,8 @@ class Training extends Model implements WithPeriodPivot
     'duration',
     'capacity',
     'notified',
+    'start_at',
+    'location',
   ];
 
   /**
@@ -42,6 +44,7 @@ class Training extends Model implements WithPeriodPivot
   {
     return [
       'start_date' => 'date',
+      'start_at' => 'datetime',
       'end_date' => 'date',
       'notified' => 'boolean',
       'type' => TrainingType::class,

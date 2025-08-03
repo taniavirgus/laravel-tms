@@ -351,7 +351,7 @@
   <x-ui.table>
     <x-slot:title>
       <i data-lucide="file-text" class="size-5 text-primary-500"></i>
-      <h4>Assigned Talent Trainings</h4>
+      <h4>Assigned Successional Plan</h4>
     </x-slot:title>
 
     <x-slot:head>

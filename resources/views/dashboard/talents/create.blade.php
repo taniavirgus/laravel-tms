@@ -1,13 +1,13 @@
 <x-dashboard-layout>
   <x-dashboard.heading>
-    <x-slot:title>{{ $segment ? $segment->label() : 'Add' }} Talent Training</x-slot:title>
+    <x-slot:title>{{ $segment ? $segment->label() : 'Add' }} Successional Planning</x-slot:title>
     <x-slot:description>Create a new talent training in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
   <x-ui.card as="form" method="post" action="{{ route('talents.store') }}">
     <x-slot:header>
       <i data-lucide="book-open" class="size-5 text-primary-500"></i>
-      <h5>Talent Training Information</h5>
+      <h5>Planning Information</h5>
     </x-slot:header>
 
     @csrf

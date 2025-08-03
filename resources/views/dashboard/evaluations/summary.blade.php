@@ -74,24 +74,24 @@
         <x-ui.select name="department_id" onchange="this.form.submit()">
           <option value="">All Departments</option>
           @foreach ($departments as $department)
-            <option value="{{ $department->id }}" @selected(request()->get('department_id') == $department->id)>{{ $department->name }}</option>
+          <option value="{{ $department->id }}" @selected(request()->get('department_id') == $department->id)>{{ $department->name }}</option>
           @endforeach
         </x-ui.select>
 
         <x-ui.select name="topic_id" onchange="this.form.submit()">
           <option value="">All Topics</option>
           @foreach ($topics as $topic)
-            <option value="{{ $topic->id }}" @selected(request()->get('topic_id') == $topic->id)>{{ $topic->name }}</option>
+          <option value="{{ $topic->id }}" @selected(request()->get('topic_id') == $topic->id)>{{ $topic->name }}</option>
           @endforeach
         </x-ui.select>
       </form>
 
       @can('export', App\Models\Evaluation::class)
-        <a href="{{ route('evaluations.export') }}">
-          <x-ui.button size="icon" variant="outline" tooltip="Export evaluations">
-            <i data-lucide="download" class="size-5"></i>
-          </x-ui.button>
-        </a>
+      <a href="{{ route('evaluations.export') }}">
+        <x-ui.button size="icon" variant="outline" tooltip="Export evaluations">
+          <i data-lucide="download" class="size-5"></i>
+        </x-ui.button>
+      </a>
       @endcan
     </x-slot:action>
 
@@ -117,29 +117,29 @@
 
     <x-slot:body>
       @forelse ($top_performers as $employee)
-        <tr>
-          <td class="w-10">{{ $top_performers->firstItem() + $loop->index }}</td>
-          <td>
-            <div class="flex items-center gap-2">
-              <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
-              <span>{{ $employee->name }}</span>
-            </div>
-          </td>
-          <td>{{ $employee->department->name }}</td>
-          <td class="font-semibold">{{ $employee->matrix->training_count }}</td>
-          <td class="font-semibold">{{ $employee->matrix->evaluation_count }}</td>
-          <td class="font-semibold">{{ round($employee->matrix->feedback_score) }}</td>
-          <td class="font-semibold">{{ round($employee->matrix->performance_score) }}</td>
-          <td class="font-semibold">{{ round($employee->matrix->potential_score) }}</td>
-          <td class="font-semibold">{{ round($employee->matrix->average_score) }}</td>
-          <td>
-            <a href="{{ route('employees.show', $employee->id) }}" class="text-primary-500">
-              View
-            </a>
-          </td>
-        </tr>
+      <tr>
+        <td class="w-10">{{ $top_performers->firstItem() + $loop->index }}</td>
+        <td>
+          <div class="flex items-center gap-2">
+            <x-ui.avatar name="{{ $employee->name }}" alt="{{ $employee->name }}" />
+            <span>{{ $employee->name }}</span>
+          </div>
+        </td>
+        <td>{{ $employee->department->name }}</td>
+        <td class="font-semibold">{{ $employee->matrix->training_count }}</td>
+        <td class="font-semibold">{{ $employee->matrix->evaluation_count }}</td>
+        <td class="font-semibold">{{ round($employee->matrix->feedback_score) }}</td>
+        <td class="font-semibold">{{ round($employee->matrix->performance_score) }}</td>
+        <td class="font-semibold">{{ round($employee->matrix->potential_score) }}</td>
+        <td class="font-semibold">{{ round($employee->matrix->average_score) }}</td>
+        <td>
+          <a href="{{ route('employees.show', $employee->id) }}" class="text-primary-500">
+            View
+          </a>
+        </td>
+      </tr>
       @empty
-        <x-ui.empty colspan="10" />
+      <x-ui.empty colspan="10" />
       @endforelse
     </x-slot:body>
 
@@ -156,84 +156,85 @@
   {{ $top_performers->links() }}
 
   @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const colors = {
-          primary: '#2563ea',
-          secondary: '#ffd200',
-          success: '#10b981',
-          warning: '#f59e0b',
-          danger: '#ef4444',
-          info: '#06b6d4'
-        };
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const colors = {
+        primary: '#2563ea',
+        secondary: '#ffd200',
+        success: '#10b981',
+        warning: '#f59e0b',
+        danger: '#ef4444',
+        info: '#06b6d4'
+      };
 
-        const departmentCtx = document.getElementById('department').getContext('2d');
+      const departmentCtx = document.getElementById('department').getContext('2d');
 
-        new Chart(departmentCtx, {
-          type: 'bar',
+      new Chart(departmentCtx, {
+        type: 'bar',
+        indexAxis: 'y',
+        data: {
+          labels: @json($chart->departments->pluck('label')),
+          datasets: [{
+            label: 'Average Score',
+            data: @json($chart->departments->pluck('average_score')),
+            backgroundColor: colors.primary,
+            borderWidth: 0,
+            borderRadius: 4
+          }]
+        },
+        options: {
           indexAxis: 'y',
-          data: {
-            labels: @json($chart->departments->pluck('label')),
-            datasets: [{
-              label: 'Average Score',
-              data: @json($chart->departments->pluck('average_score')),
-              backgroundColor: colors.primary,
-              borderWidth: 0,
-              borderRadius: 4
-            }]
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              min: 0,
+              max: 100
+            }
           },
-          options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                min: 0,
-                max: 100
-              }
-            },
-            plugins: {
-              legend: {
-                display: false
-              }
-            },
-          }
-        });
-
-        const topicCtx = document.getElementById('topic').getContext('2d');
-
-        new Chart(topicCtx, {
-          type: 'bar',
-          data: {
-            labels: @json($chart->topics->pluck('label')),
-            datasets: [{
-              label: 'Average Score',
-              data: @json($chart->topics->pluck('average_score')),
-              backgroundColor: colors.secondary,
-              borderWidth: 0,
-              borderRadius: 4
-            }]
+          plugins: {
+            legend: {
+              display: false
+            }
           },
-          options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                min: 0,
-                max: 100
-              }
-            },
-            plugins: {
-              legend: {
-                display: false
-              },
-            },
-          }
-        });
+        }
       });
-    </script>
+
+      const topicCtx = document.getElementById('topic').getContext('2d');
+
+      new Chart(topicCtx, {
+        type: 'bar',
+        indexAxis: 'y',
+        data: {
+          labels: @json($chart->topics->pluck('label')),
+          datasets: [{
+            label: 'Average Score',
+            data: @json($chart->topics->pluck('average_score')),
+            backgroundColor: colors.secondary,
+            borderWidth: 0,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              min: 0,
+              max: 100
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+          },
+        }
+      });
+    });
+  </script>
   @endpush
 </x-dashboard-layout>

@@ -44,6 +44,17 @@
       </div>
 
       <div>
+      <label class="text-sm font-medium text-base-500">Start Time</label>
+      <span class="block">{{ $training->start_at?->format('H:i') ?? '-' }}</span>
+      </div>
+
+      <div>
+      <label class="text-sm font-medium text-base-500">Location</label>
+      <span class="block">{{ $training->location ?? '-' }}</span>
+      </div>
+
+
+      <div>
         <label class="text-sm font-medium text-base-500">Capacity</label>
         <span class="block">{{ $training->capacity }} Employees</span>
       </div>
@@ -56,11 +67,6 @@
         ])>
           {{ $assigned->count() }} Employees
         </span>
-      </div>
-
-      <div class="col-span-2">
-        <label class="text-sm font-medium text-base-500">Evaluation</label>
-        <span class="block">{{ $training->evaluation->name }}</span>
       </div>
 
       <div>

@@ -14,7 +14,7 @@ class EmployeeSeeder extends Seeder
    */
   public function run(): void
   {
-    for ($i = 0; $i < 100; $i++) {
+    for ($i = 0; $i < 60; $i++) {
       $department = rand(1, 5);
       $position = match ($department) {
         1 => rand(1, 2),

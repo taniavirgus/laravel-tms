@@ -50,6 +50,8 @@ class TrainingReminderNotification extends Notification implements ShouldQueue
       ->line('Description: ' . $this->training->description)
       ->line('Start Date: ' . $this->training->start_date->format('d-m-Y'))
       ->line('End Date: ' . $this->training->end_date->format('d-m-Y'))
+      ->line('Start Time: ' . $this->training->start_at->format('H:i')) // jam mulai
+      ->line('Location: ' . $this->training->location) // lokasi
       ->line('Duration: ' . $this->training->duration . ' hours')
       ->line('Check the training details at ' . route('trainings.material', $this->training))
       ->line('Please prepare accordingly.')

@@ -1,13 +1,13 @@
 <x-dashboard-layout>
   <x-dashboard.heading>
-    <x-slot:title>Edit Talent Training</x-slot:title>
-    <x-slot:description>Update talent training information in {{ config('app.name') }}</x-slot:description>
+    <x-slot:title>Edit Succesional Planning</x-slot:title>
+    <x-slot:description>Update Planning information in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
   <x-ui.card as="form" method="post" action="{{ route('talents.update', $talent) }}" id="talent-form">
     <x-slot:header>
       <i data-lucide="book-open" class="size-5 text-primary-500"></i>
-      <h5>Talent Training Information</h5>
+      <h5>Planning Information</h5>
     </x-slot:header>
 
     @csrf
@@ -35,13 +35,13 @@
   <x-ui.card>
     <x-slot:header>
       <h5 class="text-lg font-semibold text-zinc-900">
-        Confirm Talent Training Update
+        Confirm Planning Update
       </h5>
     </x-slot:header>
 
     <p class="text-zinc-600 text-wrap">
-      Warning! this action will update the talent training information,
-      <span class="text-red-500">all employees attached to this talent training will be removed</span>
+      Warning! this action will update the planning information,
+      <span class="text-red-500">all employees attached to this planning will be removed</span>
       please make sure to double check the information before proceeding.
     </p>
 

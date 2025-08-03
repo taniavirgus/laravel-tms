@@ -5,14 +5,14 @@
 
 <x-dashboard-layout>
   <x-dashboard.heading>
-    <x-slot:title>{{ $talent->name }} training</x-slot:title>
+    <x-slot:title>{{ $talent->name }} </x-slot:title>
     <x-slot:description>{{ $talent->description }}</x-slot:description>
   </x-dashboard.heading>
 
   <x-ui.card>
     <x-slot:header>
       <i data-lucide="chart-pie" class="size-5 text-primary-500"></i>
-      <h5>Talent Training Details</h5>
+      <h5>Planning Details</h5>
     </x-slot:header>
 
     <div class="xl:grid-cols-4 form">

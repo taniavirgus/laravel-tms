@@ -43,6 +43,8 @@ class UpdateTrainingRequest extends FormRequest
       'capacity' => ['required', 'integer', 'min:0'],
       'type' => ['required', new Enum(TrainingType::class)],
       'assignment' => ['required', new Enum(AssignmentType::class)],
+      'start_at' => ['nullable', 'date_format:H:i'],
+      'location' => ['nullable', 'string', 'max:255'],
     ];
   }
 

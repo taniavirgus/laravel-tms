@@ -1,13 +1,13 @@
 <x-dashboard-layout>
   <x-dashboard.heading>
-    <x-slot:title>Talent Trainings List</x-slot:title>
+    <x-slot:title>Succesional Development List</x-slot:title>
     <x-slot:description>Manage list of talent trainings in {{ config('app.name') }}</x-slot:description>
   </x-dashboard.heading>
 
   <x-ui.table>
     <x-slot:title>
       <i data-lucide="graduation-cap" class="size-5 text-primary-500"></i>
-      <h4>Talent Trainings Table</h4>
+      <h4>Succesional Plan Table</h4>
     </x-slot:title>
 
     <x-slot:action class="justify-between">
@@ -47,7 +47,7 @@
           <a href="{{ route('talents.create') }}">
             <x-ui.button>
               <i data-lucide="plus" class="size-5"></i>
-              <span>Training</span>
+              <span>Plan</span>
             </x-ui.button>
           </a>
         @endcan

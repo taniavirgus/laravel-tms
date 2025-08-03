@@ -37,16 +37,19 @@ class TrainingNotification extends Notification implements ShouldQueue
    * Get the mail representation of the notification.
    */
   public function toMail(object $notifiable): MailMessage
-  {
-    return (new MailMessage)->subject('Training Notification')
-      ->greeting('Hello ' . $this->employee->name . ',')
-      ->line('You have been assigned to a new training: ' . $this->training->name)
-      ->line('Description: ' . $this->training->description)
-      ->line('Start Date: ' . $this->training->start_date->format('d-m-Y'))
-      ->line('End Date: ' . $this->training->end_date->format('d-m-Y'))
-      ->line('Duration: ' . $this->training->duration . ' hours')
-      ->line('Thank you!');
-  }
+{
+    return (new MailMessage)
+        ->subject('Training Notification')
+        ->greeting('Hello ' . $this->employee->name . ',')
+        ->line('You have been assigned to a new training: ' . $this->training->name)
+        ->line('Description: ' . $this->training->description)
+        ->line('Start Date: ' . $this->training->start_date->format('d-m-Y'))
+        ->line('End Date: ' . $this->training->end_date->format('d-m-Y'))
+        ->line('Start Time: ' . $this->training->start_at->format('H:i')) // jam mulai
+        ->line('Location: ' . $this->training->location) // lokasi
+        ->line('Duration: ' . $this->training->duration . ' hours')
+        ->line('Thank you!');
+}
 
   /**
    * Get the array representation of the notification.

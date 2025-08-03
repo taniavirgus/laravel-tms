@@ -26,26 +26,6 @@
     <x-ui.errors :messages="$errors->get('type')" />
   </div>
 
-  <div class="field col-span-full">
-    <x-ui.label for="evaluation_id" value="Evaluation" />
-    <div class="flex items-center gap-2">
-      <x-ui.select id="evaluation_id" name="evaluation_id" class="w-full">
-        <option value="">Select evaluation</option>
-        @foreach ($evaluations as $evaluation)
-          <option value="{{ $evaluation->id }}" @selected(old('evaluation_id', $training->evaluation_id) == $evaluation->id)>
-            {{ $evaluation->name }}
-          </option>
-        @endforeach
-      </x-ui.select>
-      <a href="{{ route('evaluations.create') }}">
-        <x-ui.button size="icon" type="button" tooltip="Add evaluation">
-          <i data-lucide="plus" class="size-5"></i>
-        </x-ui.button>
-      </a>
-    </div>
-    <x-ui.errors :messages="$errors->get('evaluation_id')" />
-  </div>
-
   <div class="field">
     <x-ui.label for="start_date" value="Start Date" />
     <x-ui.input id="start_date" name="start_date" type="date"
@@ -60,6 +40,7 @@
     <x-ui.errors :messages="$errors->get('end_date')" />
   </div>
 
+
   <div class="field">
     <x-ui.label for="duration" value="Duration (in hours)" />
     <x-ui.input id="duration" name="duration" type="number" value="{{ old('duration', $training->duration) }}"
@@ -67,12 +48,32 @@
     <x-ui.errors :messages="$errors->get('duration')" />
   </div>
 
+
+  <div class="field">
+  <x-ui.label for="start_at" value="Start At (Time Only)" />
+  <x-ui.input id="start_at" name="start_at" type="time"
+    value="{{ old('start_at', isset($training) ? $training->start_at : '') }}"
+    required />
+  <x-ui.errors :messages="$errors->get('start_at')" />
+</div>
+
+
   <div class="field">
     <x-ui.label for="capacity" value="Capacity" />
     <x-ui.input id="capacity" name="capacity" type="number" value="{{ old('capacity', $training->capacity) }}"
       min="1" required />
     <x-ui.errors :messages="$errors->get('capacity')" />
   </div>
+
+
+  <div class="field">
+  <x-ui.label for="location" value="Location" />
+  <x-ui.input id="location" name="location" type="text"
+    value="{{ old('location', isset($training) ? $training->location : '') }}"
+    required />
+  <x-ui.errors :messages="$errors->get('location')" />
+</div>
+
 
   <div x-data="departments()" class="flex flex-col items-start gap-4 col-span-full">
     <div class="w-full field">

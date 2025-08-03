@@ -113,18 +113,22 @@ class EvaluationController extends Controller
 
     $chart = (object) [
       'departments' => $departments->map(function ($department) use ($summary) {
-        return [
-          'label' => $department->name,
-          'average_score' => $summary->where('department_id', $department->id)->avg('average_score') ?? 0
-        ];
+          return [
+              'label' => $department->name,
+              'average_score' => $summary->where('department_id', $department->id)->avg('average_score') ?? 0
+          ];
       }),
-      'topics' => $topics->map(function ($topic) use ($summary) {
-        return [
-          'label' => $topic->name,
-          'average_score' => $summary->where('topic_id', $topic->id)->avg('average_score') ?? 0
-        ];
+      'topics' => $topics->map(function ($topic) use ($employees) {
+          $scores = $employees->flatMap(function ($employee) use ($topic) {
+              return $employee->evaluations->where('topic_id', $topic->id)->pluck('pivot.score');
+          });
+  
+          return [
+              'label' => $topic->name,
+              'average_score' => $scores->count() > 0 ? $scores->avg() : 0
+          ];
       })
-    ];
+  ];
 
     $top_performers = new LengthAwarePaginator(
       $employees->sortByDesc('matrix.average_score')->forPage($page, $per_page),
@@ -257,8 +261,10 @@ class EvaluationController extends Controller
         'required',
         'exists:employees,id',
         Rule::unique('employee_evaluations')->where(function ($query) use ($evaluation) {
-          return $query->where('evaluation_id', $evaluation->id);
-        }),
+          return $query
+              ->where('evaluation_id', $evaluation->id)
+              ->where('period_id', session('period_id'));
+      }),
       ],
     ]);
 
